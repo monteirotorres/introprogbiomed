@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,6 +35,11 @@
 <li><a href="exercicios.html" class="nav-link">📝 Exercícios</a>
 </li>
     </ul>
+    <div class="theme-toggle">
+      <button class="theme-toggle-btn" onclick="toggleTheme()" id="theme-btn">
+        <span class="theme-icon">&#9728;&#65039;</span> <span id="theme-label">Claro</span>
+      </button>
+    </div>
     <div class="sidebar-footer">Pedro Torres<br>Biofísica · UFRJ</div>
   </nav>
   <main class="content">
@@ -46,9 +51,9 @@
   Carregue, filtre, transforme e combine tabelas com Pandas e tidyverse.
 </p>
 </div>
-    <div class="page-body"><div class="colab-section"><span class="colab-section-label">Notebooks da aula</span><a href="#" target="_blank" class="colab-badge py-badge">
+    <div class="page-body"><div class="colab-section"><span class="colab-section-label">Notebooks da aula</span><a href="https://colab.research.google.com/drive/10FqwNvDGG41LHa2MiQVWGeF66k4Ly7Cq" target="_blank" class="colab-badge py-badge">
       <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Abrir no Colab"> Python
-    </a><a href="#" target="_blank" class="colab-badge r-badge">
+    </a><a href="https://colab.research.google.com/drive/1CC0sYBolxmoNQOE4gh_P8h1ws8CxEYkQ" target="_blank" class="colab-badge r-badge">
       <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Abrir no Colab"> R
     </a></div>
 <div class="section" id="leitura">
@@ -270,6 +275,25 @@ df |&gt;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-r.min.js"></script>
 <script>
+(function() {
+  var saved = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', saved);
+  updateToggle(saved);
+  function updateToggle(t) {
+    var btn = document.getElementById('theme-btn');
+    var lbl = document.getElementById('theme-label');
+    if (!btn) return;
+    if (t === 'dark') { btn.querySelector('.theme-icon').textContent = '\u{1F319}'; lbl.textContent = 'Escuro'; }
+    else { btn.querySelector('.theme-icon').textContent = '\u2600\uFE0F'; lbl.textContent = 'Claro'; }
+  }
+  window.toggleTheme = function() {
+    var cur = document.documentElement.getAttribute('data-theme');
+    var next = cur === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    updateToggle(next);
+  };
+})();
 document.addEventListener('click', function(e) {
   var s = document.querySelector('.sidebar');
   var t = document.querySelector('.sidebar-toggle');

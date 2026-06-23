@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,6 +35,11 @@
 <li><a href="exercicios.html" class="nav-link">📝 Exercícios</a>
 </li>
     </ul>
+    <div class="theme-toggle">
+      <button class="theme-toggle-btn" onclick="toggleTheme()" id="theme-btn">
+        <span class="theme-icon">&#9728;&#65039;</span> <span id="theme-label">Claro</span>
+      </button>
+    </div>
     <div class="sidebar-footer">Pedro Torres<br>Biofísica · UFRJ</div>
   </nav>
   <main class="content">
@@ -259,6 +264,25 @@ cat *.fasta > todas_as_sequencias.fasta</code></pre>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-r.min.js"></script>
 <script>
+(function() {
+  var saved = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', saved);
+  updateToggle(saved);
+  function updateToggle(t) {
+    var btn = document.getElementById('theme-btn');
+    var lbl = document.getElementById('theme-label');
+    if (!btn) return;
+    if (t === 'dark') { btn.querySelector('.theme-icon').textContent = '\u{1F319}'; lbl.textContent = 'Escuro'; }
+    else { btn.querySelector('.theme-icon').textContent = '\u2600\uFE0F'; lbl.textContent = 'Claro'; }
+  }
+  window.toggleTheme = function() {
+    var cur = document.documentElement.getAttribute('data-theme');
+    var next = cur === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    updateToggle(next);
+  };
+})();
 document.addEventListener('click', function(e) {
   var s = document.querySelector('.sidebar');
   var t = document.querySelector('.sidebar-toggle');

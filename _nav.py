@@ -113,6 +113,11 @@ def page(title, current, header_html, body_html):
     <ul class="nav-list">
 {nav}
     </ul>
+    <div class="theme-toggle">
+      <button class="theme-toggle-btn" onclick="toggleTheme()" id="theme-btn">
+        <span class="theme-icon">☀️</span> <span id="theme-label">Claro</span>
+      </button>
+    </div>
     <div class="sidebar-footer">Pedro Torres<br>Biofísica · UFRJ</div>
   </nav>
   <main class="content">
@@ -129,6 +134,25 @@ def page(title, current, header_html, body_html):
 <script src="{PRISM_PY}"></script>
 <script src="{PRISM_R}"></script>
 <script>
+(function() {{
+  var saved = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', saved);
+  updateToggle(saved);
+  function updateToggle(t) {{
+    var btn = document.getElementById('theme-btn');
+    var lbl = document.getElementById('theme-label');
+    if (!btn) return;
+    if (t === 'dark') {{ btn.querySelector('.theme-icon').textContent = '🌙'; lbl.textContent = 'Escuro'; }}
+    else {{ btn.querySelector('.theme-icon').textContent = '☀️'; lbl.textContent = 'Claro'; }}
+  }}
+  window.toggleTheme = function() {{
+    var cur = document.documentElement.getAttribute('data-theme');
+    var next = cur === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    updateToggle(next);
+  }};
+}})();
 document.addEventListener('click', function(e) {{
   var s = document.querySelector('.sidebar');
   var t = document.querySelector('.sidebar-toggle');
