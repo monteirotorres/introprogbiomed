@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aula 5 — DataFrames — IntroProgBiomed</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<button class="sidebar-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+<div class="layout">
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <div class="course-title">IntroProgBiomed</div>
+      <div class="course-sub">IBCCF · UFRJ</div>
+    </div>
+    <ul class="nav-list">
+<li><a href="index.html" class="nav-link">🏠 Início</a>
+</li>
+<li><a href="aula1.html" class="nav-link">1. Introdução ao Linux</a>
+</li>
+<li><a href="aula2.html" class="nav-link">2. Linha de Comando</a>
+</li>
+<li><a href="aula3.html" class="nav-link">3. Shell Scripting</a>
+</li>
+<li><a href="aula4.html" class="nav-link">4. Python e R — Fundamentos</a>
+</li>
+<li><a href="aula5.html" class="nav-link active">5. DataFrames</a>
+<ul class="nav-sub"><li><a href="#leitura">Leitura de dados</a></li><li><a href="#selecao">Seleção e filtragem</a></li><li><a href="#agrupamento">Agrupamento</a></li><li><a href="#join">Junção de tabelas</a></li><li><a href="#na">Dados faltantes</a></li></ul>
+</li>
+<li><a href="aula6.html" class="nav-link">6. Visualização</a>
+</li>
+<li><div class="nav-divider"></div></li>
+<li><a href="exercicios.html" class="nav-link">📝 Exercícios</a>
+</li>
+    </ul>
+    <div class="sidebar-footer">Pedro Torres<br>Biofísica · UFRJ</div>
+  </nav>
+  <main class="content">
+    <div class="page-header">
+<div class="aula-num">Aula 5 · Programação</div>
+<h1>DataFrames: Pandas e tidyverse</h1>
+<p class="page-desc">
+  Manipulação de dados tabulares em Python e R em paralelo.
+  Carregue, filtre, transforme e combine tabelas com Pandas e tidyverse.
+</p>
+</div>
+    <div class="page-body"><div class="colab-section"><span class="colab-section-label">Notebooks da aula</span><a href="#" target="_blank" class="colab-badge py-badge">
+      <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Abrir no Colab"> Python
+    </a><a href="#" target="_blank" class="colab-badge r-badge">
+      <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Abrir no Colab"> R
+    </a></div>
+<div class="section" id="leitura">
+  <h2>5.1 Importando bibliotecas e lendo dados</h2>
+  <div class="parallel-grid"><div><div class="lang-header py">🐍 Python · Pandas</div><pre><code class="language-python">import pandas as pd
+import numpy as np</code></pre></div><div><div class="lang-header r">📊 R · tidyverse</div><pre><code class="language-r">library(tidyverse)   # carrega dplyr, tidyr, readr, etc.
+# ou individualmente:
+# library(dplyr); library(readr)</code></pre></div></div>
+  <h3>Leitura de arquivos</h3>
+  <div class="parallel-grid"><div><div class="lang-header py">🐍 Python · Pandas</div><pre><code class="language-python"># CSV
+df = pd.read_csv("expressao.csv")
+
+# Excel
+df = pd.read_excel("dados.xlsx", sheet_name="Plan1")
+
+# TSV (tab-separado)
+df = pd.read_csv("genes.tsv", sep="\t")
+
+# Inspecionar
+df.head()          # primeiras 5 linhas
+df.tail(3)         # últimas 3 linhas
+df.shape           # (n_linhas, n_colunas)
+df.dtypes          # tipo de cada coluna
+df.describe()      # estatísticas descritivas
+df.info()          # resumo geral
+df.columns.tolist()  # lista de colunas</code></pre></div><div><div class="lang-header r">📊 R · tidyverse</div><pre><code class="language-r"># CSV (readr — mais rápido e informativo)
+df &lt;- read_csv("expressao.csv")
+
+# Excel
+library(readxl)
+df &lt;- read_excel("dados.xlsx", sheet="Plan1")
+
+# TSV
+df &lt;- read_tsv("genes.tsv")
+
+# Inspecionar
+head(df)           # primeiras 6 linhas
+tail(df, 3)        # últimas 3 linhas
+dim(df)            # c(n_linhas, n_colunas)
+glimpse(df)        # resumo compacto (dplyr)
+summary(df)        # estatísticas descritivas
+colnames(df)       # nomes das colunas</code></pre></div></div>
+</div>
+
+<div class="section" id="selecao">
+  <h2>5.2 Seleção, filtragem e transformação</h2>
+  <div class="parallel-grid"><div><div class="lang-header py">🐍 Python · Pandas</div><pre><code class="language-python"># Selecionar colunas
+df[["gene", "expressao"]]
+df.loc[:, "gene":"expressao"]  # por nome (slice)
+df.iloc[:, 0:3]               # por índice numérico
+
+# Filtrar linhas — boolean indexing
+df[df["expressao"] &gt; 5]
+df[df["organismo"] == "Homo sapiens"]
+df[(df["expressao"] &gt; 5) &amp; (df["cancer"] == True)]
+
+# .query() — sintaxe SQL-like
+df.query("expressao &gt; 5 and organismo == 'Homo sapiens'")
+
+# Adicionar/modificar coluna
+df["log2_expr"] = np.log2(df["expressao"])
+df["grupo"] = df["expressao"].apply(
+    lambda x: "alto" if x &gt; 5 else "baixo"
+)</code></pre></div><div><div class="lang-header r">📊 R · tidyverse</div><pre><code class="language-r"># Selecionar colunas
+select(df, gene, expressao)
+select(df, gene:expressao)     # intervalo
+select(df, -organismo)         # excluir coluna
+select(df, starts_with("ex")) # por prefixo
+
+# Filtrar linhas
+filter(df, expressao &gt; 5)
+filter(df, organismo == "Homo sapiens")
+filter(df, expressao &gt; 5, cancer == TRUE)
+
+# Pipe do tidyverse
+df |&gt;
+  filter(expressao &gt; 5) |&gt;
+  select(gene, expressao, organismo)
+
+# Adicionar/modificar coluna (mutate)
+df |&gt;
+  mutate(
+    log2_expr = log2(expressao),
+    grupo     = if_else(expressao &gt; 5,
+                        "alto", "baixo")
+  )</code></pre></div></div>
+  <div class="callout tip">
+    <strong>Dica tidyverse:</strong> o operador pipe <code>|&gt;</code> (R nativo desde 4.1)
+    ou <code>%&gt;%</code> (magrittr) encadeia operações da esquerda para a direita,
+    tornando o código muito mais legível.
+  </div>
+</div>
+
+<div class="section" id="agrupamento">
+  <h2>5.3 Agrupamento e sumarização</h2>
+  <div class="parallel-grid"><div><div class="lang-header py">🐍 Python · Pandas</div><pre><code class="language-python"># groupby + agregação
+df.groupby("organismo")["expressao"].mean()
+df.groupby("organismo")["expressao"].agg(
+    ["mean", "std", "count"]
+)
+
+# Múltiplas colunas de grupo
+df.groupby(["organismo", "cancer"]).agg(
+    media   = ("expressao", "mean"),
+    n       = ("expressao", "count"),
+    dp      = ("expressao", "std")
+).reset_index()
+
+# value_counts
+df["organismo"].value_counts()</code></pre></div><div><div class="lang-header r">📊 R · tidyverse</div><pre><code class="language-r"># group_by + summarise
+df |&gt;
+  group_by(organismo) |&gt;
+  summarise(media = mean(expressao))
+
+# Múltiplas colunas de grupo + múltiplas estatísticas
+df |&gt;
+  group_by(organismo, cancer) |&gt;
+  summarise(
+    media = mean(expressao),
+    n     = n(),
+    dp    = sd(expressao),
+    .groups = "drop"
+  )
+
+# count
+df |&gt; count(organismo, sort=TRUE)</code></pre></div></div>
+</div>
+
+<div class="section" id="join">
+  <h2>5.4 Junção de tabelas</h2>
+  <div class="parallel-grid"><div><div class="lang-header py">🐍 Python · Pandas</div><pre><code class="language-python"># merge / join de DataFrames
+# Dados clínicos + dados moleculares
+clinico  = pd.read_csv("clinico.csv")     # id, paciente, diagnostico
+molecular = pd.read_csv("molecular.csv")  # id, gene, expressao
+
+# Inner join — só linhas com correspondência nos dois
+pd.merge(clinico, molecular, on="id")
+
+# Left join — mantém todas as linhas de clinico
+pd.merge(clinico, molecular, on="id", how="left")
+
+# Chaves com nomes diferentes
+pd.merge(clinico, molecular,
+         left_on="paciente_id", right_on="id")
+
+# Concatenar DataFrames (rbind / vstack)
+pd.concat([df1, df2], ignore_index=True)</code></pre></div><div><div class="lang-header r">📊 R · tidyverse</div><pre><code class="language-r"># join de tibbles (dplyr)
+clinico  &lt;- read_csv("clinico.csv")
+molecular &lt;- read_csv("molecular.csv")
+
+# Inner join
+inner_join(clinico, molecular, by="id")
+
+# Left join
+left_join(clinico, molecular, by="id")
+
+# Right join
+right_join(clinico, molecular, by="id")
+
+# Chaves com nomes diferentes
+left_join(clinico, molecular,
+          by=c("paciente_id"="id"))
+
+# Concatenar (rbind)
+bind_rows(df1, df2)</code></pre></div></div>
+</div>
+
+<div class="section" id="na">
+  <h2>5.5 Dados faltantes</h2>
+  <div class="parallel-grid"><div><div class="lang-header py">🐍 Python · Pandas</div><pre><code class="language-python"># Verificar NAs
+df.isna().sum()          # NAs por coluna
+df.isna().any(axis=1)    # linhas com algum NA
+
+# Remover NAs
+df.dropna()              # remove linhas com qualquer NA
+df.dropna(subset=["expressao"])  # só na coluna alvo
+df.dropna(thresh=5)      # mantém se tiver &gt;= 5 não-NAs
+
+# Substituir NAs
+df.fillna(0)             # substitui por 0
+df["expressao"].fillna(df["expressao"].median())
+
+# Verificar NAs em coluna específica
+df["expressao"].isna().sum()</code></pre></div><div><div class="lang-header r">📊 R · tidyverse</div><pre><code class="language-r"># Verificar NAs
+colSums(is.na(df))       # NAs por coluna
+sum(is.na(df$expressao)) # NAs na coluna
+
+# Remover NAs
+na.omit(df)              # remove linhas com qualquer NA
+df |&gt; drop_na()          # equivalente tidyr
+df |&gt; drop_na(expressao) # só na coluna alvo
+
+# Substituir NAs (tidyr)
+df |&gt;
+  replace_na(list(expressao=0))
+
+# Com mutate + if_else
+df |&gt;
+  mutate(expressao = if_else(
+    is.na(expressao),
+    median(expressao, na.rm=TRUE),
+    expressao
+  ))</code></pre></div></div>
+  <div class="callout warning">
+    <strong>Atenção:</strong> nunca remova NAs sem entender a origem.
+    Dados ausentes podem ser informativos (ex.: perda de seguimento clínico,
+    gene não detectado). Documente sempre a decisão de imputar ou remover.
+  </div>
+</div>
+</div>
+    <footer class="page-footer">
+      Instituto de Biofísica Carlos Chagas Filho — UFRJ<br>
+      Introdução à Programação para Pesquisa Biomédica · Pedro Torres
+    </footer>
+  </main>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-r.min.js"></script>
+<script>
+document.addEventListener('click', function(e) {
+  var s = document.querySelector('.sidebar');
+  var t = document.querySelector('.sidebar-toggle');
+  if (s && t && !s.contains(e.target) && !t.contains(e.target))
+    s.classList.remove('open');
+});
+</script>
+</body>
+</html>

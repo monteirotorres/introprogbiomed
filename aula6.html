@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aula 6 — Visualização — IntroProgBiomed</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<button class="sidebar-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+<div class="layout">
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <div class="course-title">IntroProgBiomed</div>
+      <div class="course-sub">IBCCF · UFRJ</div>
+    </div>
+    <ul class="nav-list">
+<li><a href="index.html" class="nav-link">🏠 Início</a>
+</li>
+<li><a href="aula1.html" class="nav-link">1. Introdução ao Linux</a>
+</li>
+<li><a href="aula2.html" class="nav-link">2. Linha de Comando</a>
+</li>
+<li><a href="aula3.html" class="nav-link">3. Shell Scripting</a>
+</li>
+<li><a href="aula4.html" class="nav-link">4. Python e R — Fundamentos</a>
+</li>
+<li><a href="aula5.html" class="nav-link">5. DataFrames</a>
+</li>
+<li><a href="aula6.html" class="nav-link active">6. Visualização</a>
+<ul class="nav-sub"><li><a href="#scatter">Dispersão</a></li><li><a href="#histbox">Histograma e Boxplot</a></li><li><a href="#heatmap">Heatmap</a></li><li><a href="#exportar">Exportando figuras</a></li><li><a href="#git">Git básico</a></li></ul>
+</li>
+<li><div class="nav-divider"></div></li>
+<li><a href="exercicios.html" class="nav-link">📝 Exercícios</a>
+</li>
+    </ul>
+    <div class="sidebar-footer">Pedro Torres<br>Biofísica · UFRJ</div>
+  </nav>
+  <main class="content">
+    <div class="page-header"><div class="aula-num">Aula 6 &middot; Programação</div><h1>Visualização: Matplotlib/Seaborn e ggplot2</h1><p class="page-desc">Crie gráficos científicos de qualidade para publicação em Python e R. Princípios de visualização, tipos de gráfico e exportação de figuras.</p></div>
+    <div class="page-body"><div class="colab-section"><span class="colab-section-label">Notebooks da aula</span><a href="#" target="_blank" class="colab-badge py-badge">
+      <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Abrir no Colab"> Python
+    </a><a href="#" target="_blank" class="colab-badge r-badge">
+      <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Abrir no Colab"> R
+    </a></div>
+<div class="section" id="scatter">
+  <h2>6.1 Configuração e gráfico de dispersão</h2>
+  <div class="parallel-grid"><div><div class="lang-header py">&#x1F40D; Python &middot; Matplotlib/Seaborn</div><pre><code class="language-python">import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+import numpy as np
+
+# Estilo global
+sns.set_theme(style="whitegrid", palette="deep")
+plt.rcParams.update({
+    "figure.dpi": 150,
+    "axes.titlesize": 13,
+    "axes.labelsize": 12
+})</code></pre></div><div><div class="lang-header r">&#x1F4CA; R &middot; ggplot2</div><pre><code class="language-r">library(ggplot2)
+library(tidyverse)
+
+# Tema global
+theme_set(theme_classic(base_size=12))
+# Paletas: scale_fill_brewer(), scale_fill_viridis_d()</code></pre></div></div>
+  <h3>Scatter plot</h3>
+  <div class="parallel-grid"><div><div class="lang-header py">&#x1F40D; Python &middot; Matplotlib/Seaborn</div><pre><code class="language-python">df = pd.read_csv("expressao.csv")
+fig, ax = plt.subplots(figsize=(7, 5))
+sns.scatterplot(
+    data=df,
+    x="expressao_tumoral",
+    y="expressao_normal",
+    hue="subtipo",
+    alpha=0.7, s=60, ax=ax
+)
+ax.set_title("Expressão: Tumor vs. Normal")
+ax.set_xlabel("Expressão tumoral (log2)")
+ax.set_ylabel("Expressão normal (log2)")
+# Linha de identidade
+lim = df[["expressao_tumoral","expressao_normal"]].max().max()
+ax.plot([0, lim], [0, lim], "k--", lw=1)
+plt.tight_layout()
+plt.show()</code></pre></div><div><div class="lang-header r">&#x1F4CA; R &middot; ggplot2</div><pre><code class="language-r">df &lt;- read_csv("expressao.csv")
+ggplot(df, aes(x=expressao_tumoral,
+               y=expressao_normal,
+               color=subtipo)) +
+  geom_point(alpha=0.7, size=2) +
+  geom_abline(slope=1, intercept=0,
+              linetype="dashed") +
+  labs(
+    title="Expressão: Tumor vs. Normal",
+    x="Expressão tumoral (log2)",
+    y="Expressão normal (log2)",
+    color="Subtipo"
+  ) + theme_classic()</code></pre></div></div>
+  <div class="callout info">
+    <strong>Gramática dos gráficos (ggplot2):</strong> todo gráfico em ggplot2
+    é construído por camadas — dados (<code>ggplot()</code>), geometria (<code>geom_*</code>),
+    escala, tema e rótulos. Isso torna o código declarativo e fácil de modificar.
+  </div>
+</div>
+
+<div class="section" id="histbox">
+  <h2>6.2 Histograma e boxplot</h2>
+  <div class="parallel-grid"><div><div class="lang-header py">&#x1F40D; Python &middot; Matplotlib/Seaborn</div><pre><code class="language-python">fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+# Histograma com KDE
+sns.histplot(data=df, x="expressao",
+             hue="condicao", bins=30,
+             kde=True, ax=axes[0])
+axes[0].set_title("Distribuição")
+# Boxplot + pontos individuais
+sns.boxplot(data=df, x="condicao",
+            y="expressao", palette="Set2",
+            ax=axes[1])
+sns.stripplot(data=df, x="condicao",
+              y="expressao", color="black",
+              alpha=0.3, size=3, ax=axes[1])
+axes[1].set_title("Expressão por Condição")
+plt.tight_layout()</code></pre></div><div><div class="lang-header r">&#x1F4CA; R &middot; ggplot2</div><pre><code class="language-r"># Histograma
+p1 &lt;- ggplot(df, aes(x=expressao, fill=condicao)) +
+  geom_histogram(bins=30, alpha=0.7,
+                 position="identity") +
+  labs(title="Distribuição")
+
+# Boxplot + pontos
+p2 &lt;- ggplot(df, aes(x=condicao, y=expressao,
+                     fill=condicao)) +
+  geom_boxplot(outlier.shape=NA, alpha=0.7) +
+  geom_jitter(width=0.2, alpha=0.3, size=1) +
+  labs(title="Expressão por Condição") +
+  theme(legend.position="none")
+
+library(patchwork)
+p1 + p2    # combina figuras lado a lado</code></pre></div></div>
+</div>
+
+<div class="section" id="heatmap">
+  <h2>6.3 Heatmap de correlação</h2>
+  <div class="parallel-grid"><div><div class="lang-header py">&#x1F40D; Python &middot; Matplotlib/Seaborn</div><pre><code class="language-python">corr = df[gene_cols].corr()
+fig, ax = plt.subplots(figsize=(8, 7))
+sns.heatmap(corr, annot=True, fmt=".2f",
+            cmap="RdBu_r", center=0,
+            vmin=-1, vmax=1,
+            square=True, linewidths=0.5,
+            ax=ax)
+ax.set_title("Correlação entre genes")
+plt.tight_layout()</code></pre></div><div><div class="lang-header r">&#x1F4CA; R &middot; ggplot2</div><pre><code class="language-r">library(pheatmap)
+
+# Alternativa com ggplot2 + geom_tile
+df_long &lt;- df |&gt;
+  select(all_of(gene_cols)) |&gt;
+  cor() |&gt;
+  as.data.frame() |&gt;
+  rownames_to_column("g1") |&gt;
+  pivot_longer(-g1, names_to="g2",
+               values_to="cor")
+
+ggplot(df_long, aes(x=g1, y=g2, fill=cor)) +
+  geom_tile() +
+  geom_text(aes(label=round(cor,2)), size=3) +
+  scale_fill_gradient2(low="blue", mid="white",
+    high="red", midpoint=0) +
+  theme(axis.text.x=element_text(
+    angle=45, hjust=1))</code></pre></div></div>
+</div>
+
+<div class="section" id="exportar">
+  <h2>6.4 Exportando figuras para publicação</h2>
+  <div class="parallel-grid"><div><div class="lang-header py">&#x1F40D; Python &middot; Matplotlib/Seaborn</div><pre><code class="language-python">fig, ax = plt.subplots(figsize=(7, 5))
+# ... código do gráfico ...
+
+fig.savefig("figura1.png",
+            dpi=300, bbox_inches="tight",
+            facecolor="white")
+fig.savefig("figura1.pdf",   # vetorial
+            bbox_inches="tight")
+fig.savefig("figura1.svg")
+plt.close()  # libera memória</code></pre></div><div><div class="lang-header r">&#x1F4CA; R &middot; ggplot2</div><pre><code class="language-r">p &lt;- ggplot(df, aes(x=condicao, y=expressao,
+                    fill=condicao)) +
+  geom_boxplot() +
+  labs(title="Minha figura")
+
+ggsave("figura1.png", plot=p,
+       width=7, height=5,
+       dpi=300, units="in")
+ggsave("figura1.pdf", plot=p,
+       width=7, height=5)
+ggsave("figura1.svg", plot=p,
+       width=7, height=5)</code></pre></div></div>
+  <div class="callout tip">
+    <strong>Padrão para revistas:</strong> use <code>dpi=300</code> para PNG,
+    ou formatos vetoriais (PDF, SVG) para qualidade em qualquer escala.
+    Sempre consulte as instruções da revista-alvo.
+  </div>
+</div>
+
+<div class="section" id="git">
+  <h2>6.5 Versionamento básico com Git</h2>
+  <p>Git registra o histórico de mudanças, permite reverter erros e facilita a colaboração.</p>
+  <div class="code-label bash">bash</div>
+  <pre><code class="language-bash"># No terminal, dentro do projeto:
+git init
+git status                            # arquivos modificados
+git add analise.py
+git add *.R *.ipynb
+git commit -m "análise de expressão diferencial"
+
+# Conectar e enviar ao GitHub
+git remote add origin https://github.com/usuario/projeto.git
+git push -u origin main
+
+# Outros comandos úteis
+git log --oneline                     # histórico compacto
+git diff                              # mudanças não commitadas
+git checkout -- arquivo.py            # descarta mudanças locais</code></pre>
+  <div class="callout tip">
+    <strong>Regra de ouro:</strong> faça um commit sempre que o código estiver em
+    um estado funcional. Mensagens descritivas valem ouro no futuro.
+  </div>
+</div>
+</div>
+    <footer class="page-footer">
+      Instituto de Biofísica Carlos Chagas Filho — UFRJ<br>
+      Introdução à Programação para Pesquisa Biomédica · Pedro Torres
+    </footer>
+  </main>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-r.min.js"></script>
+<script>
+document.addEventListener('click', function(e) {
+  var s = document.querySelector('.sidebar');
+  var t = document.querySelector('.sidebar-toggle');
+  if (s && t && !s.contains(e.target) && !t.contains(e.target))
+    s.classList.remove('open');
+});
+</script>
+</body>
+</html>

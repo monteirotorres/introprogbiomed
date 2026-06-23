@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aula 4 — Python e R: Fundamentos — IntroProgBiomed</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<button class="sidebar-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+<div class="layout">
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <div class="course-title">IntroProgBiomed</div>
+      <div class="course-sub">IBCCF · UFRJ</div>
+    </div>
+    <ul class="nav-list">
+<li><a href="index.html" class="nav-link">🏠 Início</a>
+</li>
+<li><a href="aula1.html" class="nav-link">1. Introdução ao Linux</a>
+</li>
+<li><a href="aula2.html" class="nav-link">2. Linha de Comando</a>
+</li>
+<li><a href="aula3.html" class="nav-link">3. Shell Scripting</a>
+</li>
+<li><a href="aula4.html" class="nav-link active">4. Python e R — Fundamentos</a>
+<ul class="nav-sub"><li><a href="#ambiente">Ambientes de trabalho</a></li><li><a href="#tipos">Tipos e estruturas</a></li><li><a href="#controle">Controle de fluxo</a></li><li><a href="#funcoes">Funções</a></li></ul>
+</li>
+<li><a href="aula5.html" class="nav-link">5. DataFrames</a>
+</li>
+<li><a href="aula6.html" class="nav-link">6. Visualização</a>
+</li>
+<li><div class="nav-divider"></div></li>
+<li><a href="exercicios.html" class="nav-link">📝 Exercícios</a>
+</li>
+    </ul>
+    <div class="sidebar-footer">Pedro Torres<br>Biofísica · UFRJ</div>
+  </nav>
+  <main class="content">
+    <div class="page-header">
+<div class="aula-num">Aula 4 · Programação</div>
+<h1>Python e R — Fundamentos</h1>
+<p class="page-desc">
+  Introdução às duas linguagens em paralelo: tipos de dados, estruturas,
+  controle de fluxo e funções. Você verá que os conceitos são os mesmos —
+  apenas a sintaxe muda.
+</p>
+</div>
+    <div class="page-body"><div class="colab-section"><span class="colab-section-label">Notebooks da aula</span><a href="#" target="_blank" class="colab-badge py-badge">
+      <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Abrir no Colab"> Python
+    </a><a href="#" target="_blank" class="colab-badge r-badge">
+      <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Abrir no Colab"> R
+    </a></div>
+<div class="section" id="ambiente">
+  <h2>4.1 Ambientes de trabalho</h2>
+  <table class="data-table">
+    <thead><tr><th></th><th>Python</th><th>R</th></tr></thead>
+    <tbody>
+      <tr><td><strong>IDE</strong></td><td>Jupyter Notebook / Google Colab</td><td>RStudio / Google Colab</td></tr>
+      <tr><td><strong>Arquivo</strong></td><td><code>.ipynb</code> / <code>.py</code></td><td><code>.Rmd</code> / <code>.R</code></td></tr>
+      <tr><td><strong>Instalar pacote</strong></td><td><code>pip install pacote</code></td><td><code>install.packages("pacote")</code></td></tr>
+      <tr><td><strong>Importar</strong></td><td><code>import pacote</code></td><td><code>library(pacote)</code></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section" id="tipos">
+  <h2>4.2 Tipos e estruturas de dados</h2>
+  <h3>Tipos básicos</h3>
+  <div class="parallel-grid"><div><div class="lang-header py">🐍 Python</div><pre><code class="language-python"># Inteiro, float, string, bool, None
+n       = 42
+pi      = 3.14159
+gene    = "BRCA1"
+ativo   = True
+result  = None
+type(n)   # &lt;class 'int'&gt;
+type(gene) # &lt;class 'str'&gt;</code></pre></div><div><div class="lang-header r">📊 R</div><pre><code class="language-r"># integer, numeric, character, logical, NA
+n      &lt;- 42L
+pi     &lt;- 3.14159
+gene   &lt;- "BRCA1"
+ativo  &lt;- TRUE
+result &lt;- NA
+class(n)     # "integer"
+class(gene)  # "character"</code></pre></div></div>
+  <h3>Listas e vetores</h3>
+  <div class="parallel-grid"><div><div class="lang-header py">🐍 Python</div><pre><code class="language-python">genes   = ["BRCA1", "TP53", "EGFR"]
+genes[0]          # "BRCA1"  (index 0-based)
+genes[-1]         # "EGFR"   (último)
+genes[0:2]        # ["BRCA1", "TP53"]
+len(genes)        # 3
+genes.append("PTEN")
+genes.remove("TP53")
+
+# Tuple imutável
+coord = (10.5, -3.2)
+
+# Set — sem duplicatas
+org = {"human", "mouse", "human"}  # {"human","mouse"}</code></pre></div><div><div class="lang-header r">📊 R</div><pre><code class="language-r">genes   &lt;- c("BRCA1", "TP53", "EGFR")
+genes[1]          # "BRCA1"  (index 1-based!)
+genes[length(genes)]  # "EGFR"
+genes[1:2]        # c("BRCA1","TP53")
+length(genes)     # 3
+c(genes, "PTEN")  # adiciona (novo vetor)
+genes[-2]         # remove índice 2
+
+# Named vector
+expr &lt;- c(BRCA1=5.2, TP53=3.1, EGFR=7.8)
+expr["BRCA1"]     # 5.2
+
+# Lista heterogênea
+info &lt;- list(gene="BRCA1", n=42)</code></pre></div></div>
+  <h3>Dicionários / listas nomeadas</h3>
+  <div class="parallel-grid"><div><div class="lang-header py">🐍 Python</div><pre><code class="language-python">amostra = {
+    "id": "A001",
+    "organismo": "Homo sapiens",
+    "expressao": 7.42
+}
+amostra["id"]             # "A001"
+amostra.get("x", 0)      # 0 se chave ausente
+amostra["expressao"] = 8.1
+"id" in amostra           # True
+
+for chave, val in amostra.items():
+    print(f"{chave}: {val}")</code></pre></div><div><div class="lang-header r">📊 R</div><pre><code class="language-r">amostra &lt;- list(
+  id        = "A001",
+  organismo = "Homo sapiens",
+  expressao = 7.42
+)
+amostra$id            # "A001"
+amostra[["id"]]       # equivalente
+amostra$expressao &lt;- 8.1
+"id" %in% names(amostra)  # TRUE
+
+for (k in names(amostra)) {
+  cat(k, ":", as.character(amostra[[k]]), "
+")
+}</code></pre></div></div>
+</div>
+
+<div class="section" id="controle">
+  <h2>4.3 Controle de fluxo</h2>
+  <h3>Condicional if/elif/else</h3>
+  <div class="parallel-grid"><div><div class="lang-header py">🐍 Python</div><pre><code class="language-python">expr = 8.5
+
+if expr &gt; 10:
+    print("Alta expressão")
+elif expr &gt; 5:
+    print("Expressão moderada")
+else:
+    print("Baixa expressão")
+
+# Operadores lógicos
+if expr &gt; 5 and expr &lt; 15:
+    print("Dentro do intervalo")
+
+# Ternário
+status = "alto" if expr &gt; 10 else "baixo"</code></pre></div><div><div class="lang-header r">📊 R</div><pre><code class="language-r">expr &lt;- 8.5
+
+if (expr &gt; 10) {
+  cat("Alta expressão
+")
+} else if (expr &gt; 5) {
+  cat("Expressão moderada
+")
+} else {
+  cat("Baixa expressão
+")
+}
+
+# Operadores lógicos
+if (expr &gt; 5 &amp; expr &lt; 15) {
+  cat("Dentro do intervalo
+")
+}
+
+# ifelse vetorizado
+status &lt;- ifelse(expr &gt; 10, "alto", "baixo")</code></pre></div></div>
+  <h3>Loop for</h3>
+  <div class="parallel-grid"><div><div class="lang-header py">🐍 Python</div><pre><code class="language-python">genes = ["BRCA1", "TP53", "EGFR", "PTEN"]
+
+for gene in genes:
+    print(f"Processando {gene}")
+
+for i, gene in enumerate(genes):
+    print(f"{i+1}. {gene}")
+
+# range
+for i in range(1, 11, 2):  # 1 3 5 7 9
+    print(i)
+
+# List comprehension
+tamanhos = [len(g) for g in genes]</code></pre></div><div><div class="lang-header r">📊 R</div><pre><code class="language-r">genes &lt;- c("BRCA1", "TP53", "EGFR", "PTEN")
+
+for (gene in genes) {
+  cat("Processando", gene, "
+")
+}
+
+for (i in seq_along(genes)) {
+  cat(i, ".", genes[i], "
+")
+}
+
+# seq
+for (i in seq(1, 10, by=2)) {  # 1 3 5 7 9
+  cat(i, "
+")
+}
+
+# equivalente a list comprehension
+tamanhos &lt;- sapply(genes, nchar)</code></pre></div></div>
+</div>
+
+<div class="section" id="funcoes">
+  <h2>4.4 Funções — exemplo aplicado</h2>
+  <p>Implementamos as mesmas funções biológicas nas duas linguagens:</p>
+  <div class="parallel-grid"><div><div class="lang-header py">🐍 Python</div><pre><code class="language-python">def gc_content(seq):
+    seq = seq.upper()
+    gc  = seq.count("G") + seq.count("C")
+    return gc / len(seq) * 100
+
+def rev_comp(seq):
+    tab = str.maketrans("ATGCN", "TACGN")
+    return seq.upper().translate(tab)[::-1]
+
+def analisar(seq, nome="seq"):
+    return {
+        "nome"    : nome,
+        "tamanho" : len(seq),
+        "gc_pct"  : round(gc_content(seq), 2),
+        "rev_comp": rev_comp(seq)
+    }
+
+dna = "ATGCGCATTTACGC"
+print(analisar(dna, "exemplo"))
+# gc_pct: 50.0, rev_comp: GCGTAAATGCGCAT</code></pre></div><div><div class="lang-header r">📊 R</div><pre><code class="language-r">gc_content &lt;- function(seq) {
+  bases &lt;- strsplit(toupper(seq), "")[[1]]
+  gc    &lt;- sum(bases %in% c("G","C"))
+  gc / length(bases) * 100
+}
+
+rev_comp &lt;- function(seq) {
+  bases &lt;- strsplit(toupper(seq), "")[[1]]
+  tab   &lt;- c(A="T",T="A",G="C",C="G",N="N")
+  paste(rev(tab[bases]), collapse="")
+}
+
+analisar &lt;- function(seq, nome="seq") {
+  list(
+    nome     = nome,
+    tamanho  = nchar(seq),
+    gc_pct   = round(gc_content(seq), 2),
+    rev_comp = rev_comp(seq)
+  )
+}
+
+dna &lt;- "ATGCGCATTTACGC"
+print(analisar(dna, "exemplo"))
+# gc_pct: 50 rev_comp: GCGTAAATGCGCAT</code></pre></div></div>
+</div>
+</div>
+    <footer class="page-footer">
+      Instituto de Biofísica Carlos Chagas Filho — UFRJ<br>
+      Introdução à Programação para Pesquisa Biomédica · Pedro Torres
+    </footer>
+  </main>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-r.min.js"></script>
+<script>
+document.addEventListener('click', function(e) {
+  var s = document.querySelector('.sidebar');
+  var t = document.querySelector('.sidebar-toggle');
+  if (s && t && !s.contains(e.target) && !t.contains(e.target))
+    s.classList.remove('open');
+});
+</script>
+</body>
+</html>

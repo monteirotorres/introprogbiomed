@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aula 3 — Shell Scripting — IntroProgBiomed</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<button class="sidebar-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+<div class="layout">
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <div class="course-title">IntroProgBiomed</div>
+      <div class="course-sub">IBCCF · UFRJ</div>
+    </div>
+    <ul class="nav-list">
+<li><a href="index.html" class="nav-link">🏠 Início</a>
+</li>
+<li><a href="aula1.html" class="nav-link">1. Introdução ao Linux</a>
+</li>
+<li><a href="aula2.html" class="nav-link">2. Linha de Comando</a>
+</li>
+<li><a href="aula3.html" class="nav-link active">3. Shell Scripting</a>
+<ul class="nav-sub"><li><a href="#anatomia">Anatomia de um script</a></li><li><a href="#variaveis">Variáveis e argumentos</a></li><li><a href="#controle">Estruturas de controle</a></li><li><a href="#funcoes">Funções</a></li></ul>
+</li>
+<li><a href="aula4.html" class="nav-link">4. Python e R — Fundamentos</a>
+</li>
+<li><a href="aula5.html" class="nav-link">5. DataFrames</a>
+</li>
+<li><a href="aula6.html" class="nav-link">6. Visualização</a>
+</li>
+<li><div class="nav-divider"></div></li>
+<li><a href="exercicios.html" class="nav-link">📝 Exercícios</a>
+</li>
+    </ul>
+    <div class="sidebar-footer">Pedro Torres<br>Biofísica · UFRJ</div>
+  </nav>
+  <main class="content">
+    <div class="page-header">
+<div class="aula-num">Aula 3 · Ambiente</div>
+<h1>Shell Scripting</h1>
+<p class="page-desc">
+  Transforme comandos isolados em scripts reproduzíveis e parametrizáveis.
+  Aprenda a automatizar tarefas repetitivas com variáveis, condicionais, loops e funções em Bash.
+</p>
+</div>
+    <div class="page-body">
+<div class="colab-section">
+  <span class="colab-section-label">Notebook da aula</span>
+  <a href="#" target="_blank" class="colab-badge bash-badge">
+      <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Abrir no Colab"> Bash
+    </a>
+</div>
+
+<div class="section" id="anatomia">
+  <h2>3.1 Anatomia de um script Bash</h2>
+  <p>
+    Um script Bash é um arquivo de texto com uma sequência de comandos.
+    O <strong>shebang</strong> na primeira linha informa ao sistema qual interpretador usar.
+  </p>
+
+  <div class="code-label bash">bash</div>
+  <pre><code class="language-bash">#!/bin/bash
+# Isto é um comentário — linhas com # são ignoradas pelo shell
+
+echo "Olá, mundo!"
+echo "Hoje é: $(date)"</code></pre>
+
+  <p>Para tornar o script executável e rodá-lo:</p>
+
+  <div class="code-label bash">bash</div>
+  <pre><code class="language-bash">chmod +x meu_script.sh    # dá permissão de execução
+./meu_script.sh           # executa o script
+
+# Alternativamente, sem precisar de chmod:
+bash meu_script.sh
+
+# Para depurar (mostra cada comando antes de executar):
+bash -x meu_script.sh</code></pre>
+
+  <div class="callout info">
+    <strong>Boas práticas:</strong> sempre inclua o shebang (<code>#!/bin/bash</code>),
+    use nomes descritivos para variáveis, e adicione comentários para explicar o <em>porquê</em>,
+    não o <em>quê</em>.
+  </div>
+</div>
+
+<div class="section" id="variaveis">
+  <h2>3.2 Variáveis e argumentos</h2>
+
+  <h3>Variáveis</h3>
+  <div class="code-label bash">bash</div>
+  <pre><code class="language-bash">#!/bin/bash
+
+# Atribuição (sem espaços ao redor do =)
+ORGANISMO="Homo sapiens"
+N_SEQUENCIAS=150
+ARQUIVO="dados.fasta"
+
+# Uso (sempre com $)
+echo "Analisando: $ORGANISMO"
+echo "Arquivo: $ARQUIVO"
+echo "Total: $N_SEQUENCIAS sequências"
+
+# Capturar saída de um comando em variável
+DATA=$(date +%Y-%m-%d)
+N_LINHAS=$(wc -l < $ARQUIVO)
+echo "Data de hoje: $DATA"
+echo "Linhas no arquivo: $N_LINHAS"
+
+# Variáveis de ambiente comuns
+echo $HOME       # diretório pessoal
+echo $USER       # nome do usuário
+echo $PATH       # caminhos de busca de programas</code></pre>
+
+  <h3>Argumentos posicionais</h3>
+  <p>
+    Scripts podem receber argumentos da linha de comando.
+    Eles são acessados via <code>$1</code>, <code>$2</code>, etc.
+  </p>
+
+  <div class="code-label bash">bash</div>
+  <pre><code class="language-bash">#!/bin/bash
+# Uso: ./analisar.sh sequencias.fasta resultados/
+
+ARQUIVO=$1       # primeiro argumento
+SAIDA=$2         # segundo argumento
+
+echo "Script: $0"       # nome do próprio script
+echo "Arquivo: $1"      # primeiro argumento
+echo "Saída: $2"        # segundo argumento
+echo "Total de args: $#"  # número de argumentos
+echo "Todos os args: $@"  # todos os argumentos
+
+# Verificar se o argumento foi fornecido
+if [ -z "$1" ]; then
+    echo "Uso: $0 <arquivo.fasta> <diretório_saída>"
+    exit 1
+fi</code></pre>
+
+  <div class="callout tip">
+    <strong>Execução:</strong> <code>./analisar.sh sequencias.fasta resultados/</code>
+  </div>
+</div>
+
+<div class="section" id="controle">
+  <h2>3.3 Estruturas de controle</h2>
+
+  <h3>Condicional if/elif/else</h3>
+  <div class="code-label bash">bash</div>
+  <pre><code class="language-bash">#!/bin/bash
+ARQUIVO=$1
+
+# Verificar existência do arquivo
+if [ -f "$ARQUIVO" ]; then
+    echo "Arquivo encontrado: $ARQUIVO"
+    N=$(grep -c ">" "$ARQUIVO")
+    echo "Contém $N sequências"
+elif [ -d "$ARQUIVO" ]; then
+    echo "$ARQUIVO é um diretório, não um arquivo"
+else
+    echo "Erro: $ARQUIVO não encontrado"
+    exit 1
+fi
+
+# Comparações numéricas
+TAMANHO=$(wc -l < "$ARQUIVO")
+if [ "$TAMANHO" -gt 1000 ]; then
+    echo "Arquivo grande: $TAMANHO linhas"
+elif [ "$TAMANHO" -gt 100 ]; then
+    echo "Arquivo médio: $TAMANHO linhas"
+else
+    echo "Arquivo pequeno: $TAMANHO linhas"
+fi</code></pre>
+
+  <p><strong>Operadores de teste comuns:</strong></p>
+  <table class="data-table">
+    <thead><tr><th>Operador</th><th>Significado</th></tr></thead>
+    <tbody>
+      <tr><td><code>-f arquivo</code></td><td>Existe e é um arquivo regular</td></tr>
+      <tr><td><code>-d dir</code></td><td>Existe e é um diretório</td></tr>
+      <tr><td><code>-z "$var"</code></td><td>String vazia</td></tr>
+      <tr><td><code>-n "$var"</code></td><td>String não vazia</td></tr>
+      <tr><td><code>$a -eq $b</code></td><td>Igual (numérico)</td></tr>
+      <tr><td><code>$a -gt $b</code></td><td>Maior que (numérico)</td></tr>
+      <tr><td><code>$a -lt $b</code></td><td>Menor que (numérico)</td></tr>
+      <tr><td><code>"$a" == "$b"</code></td><td>Igual (string)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Loop for</h3>
+  <div class="code-label bash">bash</div>
+  <pre><code class="language-bash">#!/bin/bash
+
+# Iterar sobre arquivos
+for ARQUIVO in *.fasta; do
+    N=$(grep -c ">" "$ARQUIVO")
+    echo "$ARQUIVO: $N sequências"
+done
+
+# Iterar sobre uma lista
+for ORGANISMO in "human" "mouse" "zebrafish"; do
+    echo "Processando: $ORGANISMO"
+    grep "$ORGANISMO" banco_dados.csv > "${ORGANISMO}_dados.csv"
+done
+
+# Iterar sobre uma sequência numérica
+for i in {1..10}; do
+    echo "Amostra $i"
+done
+
+# Iterar com seq (mais controle)
+for i in $(seq 1 5 100); do   # 1, 6, 11, ..., 96
+    echo $i
+done</code></pre>
+
+  <h3>Loop while</h3>
+  <div class="code-label bash">bash</div>
+  <pre><code class="language-bash">#!/bin/bash
+
+# Processar arquivo linha a linha
+while IFS= read -r linha; do
+    echo "Processando: $linha"
+done < lista_amostras.txt
+
+# Contador com while
+CONTADOR=0
+while [ $CONTADOR -lt 5 ]; do
+    echo "Iteração $CONTADOR"
+    CONTADOR=$((CONTADOR + 1))
+done</code></pre>
+</div>
+
+<div class="section" id="funcoes">
+  <h2>3.4 Funções</h2>
+  <p>
+    Funções encapsulam blocos de código reutilizáveis. Em Bash, elas são
+    definidas antes de serem chamadas.
+  </p>
+
+  <div class="code-label bash">bash</div>
+  <pre><code class="language-bash">#!/bin/bash
+
+# Definição de função
+contar_sequencias() {
+    local arquivo=$1          # variável local à função
+    local n=$(grep -c ">" "$arquivo")
+    echo "$n"
+}
+
+verificar_arquivo() {
+    local arquivo=$1
+    if [ ! -f "$arquivo" ]; then
+        echo "Erro: arquivo '$arquivo' não encontrado." >&2
+        return 1              # código de saída de erro
+    fi
+    return 0
+}
+
+processar_fasta() {
+    local arquivo=$1
+    local saida=$2
+
+    verificar_arquivo "$arquivo" || exit 1
+
+    local n=$(contar_sequencias "$arquivo")
+    echo "Arquivo: $arquivo | Sequências: $n"
+
+    # Extrai IDs e salva
+    grep ">" "$arquivo" | cut -d' ' -f1 | tr -d '>' > "$saida"
+    echo "IDs salvos em: $saida"
+}
+
+# Chamada das funções
+for f in *.fasta; do
+    processar_fasta "$f" "${f%.fasta}_ids.txt"
+done</code></pre>
+
+  <div class="callout tip">
+    <strong>Script completo de exemplo — relatório de FASTAs:</strong>
+  </div>
+
+  <div class="code-label bash">bash</div>
+  <pre><code class="language-bash">#!/bin/bash
+# relatorio_fasta.sh — gera relatório de arquivos FASTA em um diretório
+# Uso: ./relatorio_fasta.sh <diretório>
+
+DIR=${1:-.}    # usa argumento ou diretório atual como padrão
+SAIDA="relatorio_$(date +%Y%m%d).txt"
+
+echo "=== Relatório FASTA ===" > "$SAIDA"
+echo "Diretório: $DIR" >> "$SAIDA"
+echo "Data: $(date)" >> "$SAIDA"
+echo "---" >> "$SAIDA"
+
+TOTAL=0
+for ARQUIVO in "$DIR"/*.fasta; do
+    [ -f "$ARQUIVO" ] || continue           # pula se não houver .fasta
+    N=$(grep -c ">" "$ARQUIVO")
+    TOTAL=$((TOTAL + N))
+    printf "%-40s %6d seqs
+" "$(basename $ARQUIVO)" "$N" >> "$SAIDA"
+done
+
+echo "---" >> "$SAIDA"
+echo "TOTAL: $TOTAL sequências" >> "$SAIDA"
+
+echo "Relatório salvo em: $SAIDA"
+cat "$SAIDA"</code></pre>
+</div>
+</div>
+    <footer class="page-footer">
+      Instituto de Biofísica Carlos Chagas Filho — UFRJ<br>
+      Introdução à Programação para Pesquisa Biomédica · Pedro Torres
+    </footer>
+  </main>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-r.min.js"></script>
+<script>
+document.addEventListener('click', function(e) {
+  var s = document.querySelector('.sidebar');
+  var t = document.querySelector('.sidebar-toggle');
+  if (s && t && !s.contains(e.target) && !t.contains(e.target))
+    s.classList.remove('open');
+});
+</script>
+</body>
+</html>

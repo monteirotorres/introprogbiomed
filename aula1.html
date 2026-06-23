@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aula 1 — Introdução ao Linux — IntroProgBiomed</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<button class="sidebar-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+<div class="layout">
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <div class="course-title">IntroProgBiomed</div>
+      <div class="course-sub">IBCCF · UFRJ</div>
+    </div>
+    <ul class="nav-list">
+<li><a href="index.html" class="nav-link">🏠 Início</a>
+</li>
+<li><a href="aula1.html" class="nav-link active">1. Introdução ao Linux</a>
+<ul class="nav-sub"><li><a href="#sistema">Sistema de arquivos</a></li><li><a href="#comandos">Comandos essenciais</a></li><li><a href="#especiais">Caracteres especiais</a></li><li><a href="#editores">Editores de texto</a></li></ul>
+</li>
+<li><a href="aula2.html" class="nav-link">2. Linha de Comando</a>
+</li>
+<li><a href="aula3.html" class="nav-link">3. Shell Scripting</a>
+</li>
+<li><a href="aula4.html" class="nav-link">4. Python e R — Fundamentos</a>
+</li>
+<li><a href="aula5.html" class="nav-link">5. DataFrames</a>
+</li>
+<li><a href="aula6.html" class="nav-link">6. Visualização</a>
+</li>
+<li><div class="nav-divider"></div></li>
+<li><a href="exercicios.html" class="nav-link">📝 Exercícios</a>
+</li>
+    </ul>
+    <div class="sidebar-footer">Pedro Torres<br>Biofísica · UFRJ</div>
+  </nav>
+  <main class="content">
+    <div class="page-header">
+<div class="aula-num">Aula 1 · Ambiente</div>
+<h1>Introdução ao Linux</h1>
+<p class="page-desc">
+  Entenda como o sistema operacional Linux organiza arquivos e diretórios,
+  e aprenda os comandos essenciais para navegar e manipular o sistema pela
+  linha de comando.
+</p>
+</div>
+    <div class="page-body">
+<div class="section" id="sistema">
+  <h2>1.1 Sistema de arquivos</h2>
+  <p>
+    Linux é um sistema operacional de código aberto baseado em Unix. Existem várias
+    distribuições (Ubuntu, Debian, Fedora, etc.); neste curso usaremos o <strong>Ubuntu</strong>.
+    Toda a hierarquia de arquivos parte de um único ponto: o diretório raiz <code>/</code>.
+  </p>
+
+  <div class="callout info">
+    Diferente do Windows, o Linux não usa letras de unidade (C:, D:). Tudo — discos,
+    dispositivos, configurações — está dentro da mesma árvore de diretórios.
+  </div>
+
+  <table class="data-table">
+    <thead><tr><th>Diretório</th><th>Conteúdo</th></tr></thead>
+    <tbody>
+      <tr><td><code>/</code></td><td>Raiz do sistema — ponto de partida de toda a hierarquia</td></tr>
+      <tr><td><code>/home</code></td><td>Diretórios pessoais dos usuários (<code>/home/usuario</code>)</td></tr>
+      <tr><td><code>/bin</code></td><td>Programas essenciais usados por todos os usuários</td></tr>
+      <tr><td><code>/sbin</code></td><td>Programas de administração do sistema (superusuário)</td></tr>
+      <tr><td><code>/etc</code></td><td>Arquivos de configuração do sistema</td></tr>
+      <tr><td><code>/tmp</code></td><td>Arquivos temporários (apagados ao reiniciar)</td></tr>
+      <tr><td><code>/usr</code></td><td>Programas e dados instalados pelo sistema</td></tr>
+      <tr><td><code>/var</code></td><td>Arquivos que mudam com frequência (logs, caches)</td></tr>
+      <tr><td><code>/dev</code></td><td>Arquivos de dispositivos (discos, terminais)</td></tr>
+      <tr><td><code>/boot</code></td><td>Arquivos de inicialização do sistema</td></tr>
+      <tr><td><code>/lib</code></td><td>Bibliotecas compartilhadas pelos programas</td></tr>
+      <tr><td><code>/mnt</code></td><td>Ponto de montagem de dispositivos externos</td></tr>
+      <tr><td><code>/root</code></td><td>Diretório pessoal do superusuário (root)</td></tr>
+    </tbody>
+  </table>
+
+  <p>
+    O seu diretório pessoal é representado pelo símbolo <code>~</code>. Ao abrir
+    um terminal, você estará automaticamente em <code>/home/seu_usuario</code>.
+  </p>
+
+  <div class="code-label bash">bash</div>
+  <pre><code class="language-bash"># Caminho absoluto: começa em /
+/home/pedro/projetos/dados.csv
+
+# Caminho relativo: parte do diretório atual
+projetos/dados.csv   # equivalente, se você estiver em /home/pedro
+
+# ~ é atalho para /home/seu_usuario
+~/projetos/dados.csv  # equivalente</code></pre>
+</div>
+
+<div class="section" id="comandos">
+  <h2>1.2 Comandos essenciais</h2>
+  <p>
+    O terminal recebe <strong>comandos</strong> no formato:
+    <code>comando [opções] [argumentos]</code>.
+    Opções começam com <code>-</code> (forma curta) ou <code>--</code> (forma longa).
+  </p>
+
+  <h3>Navegação e inspeção</h3>
+  <table class="data-table">
+    <thead><tr><th>Comando</th><th>Descrição</th><th>Exemplo</th></tr></thead>
+    <tbody>
+      <tr><td><code>pwd</code></td><td>Mostra o diretório atual (<em>print working directory</em>)</td><td><code>pwd</code></td></tr>
+      <tr><td><code>ls</code></td><td>Lista arquivos do diretório</td><td><code>ls -l</code> &nbsp;·&nbsp; <code>ls -lh</code></td></tr>
+      <tr><td><code>cd</code></td><td>Navega para o diretório indicado</td><td><code>cd ~/projetos</code> &nbsp;·&nbsp; <code>cd ..</code></td></tr>
+      <tr><td><code>who</code></td><td>Mostra usuários logados na máquina</td><td><code>who</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-label bash">bash</div>
+  <pre><code class="language-bash">pwd                   # /home/pedro
+ls                    # lista arquivos simples
+ls -l                 # lista detalhada (permissões, tamanho, data)
+ls -lh                # como -l mas com tamanhos legíveis (KB, MB)
+ls -la                # inclui arquivos ocultos (começam com .)
+cd /home/pedro        # vai para esse diretório
+cd ..                 # sobe um nível
+cd ~                  # vai para o diretório pessoal
+cd -                  # volta ao diretório anterior</code></pre>
+
+  <h3>Criação e manipulação de arquivos</h3>
+  <table class="data-table">
+    <thead><tr><th>Comando</th><th>Descrição</th><th>Exemplo</th></tr></thead>
+    <tbody>
+      <tr><td><code>mkdir</code></td><td>Cria um diretório</td><td><code>mkdir dados</code> &nbsp;·&nbsp; <code>mkdir -p a/b/c</code></td></tr>
+      <tr><td><code>touch</code></td><td>Cria arquivo vazio ou atualiza data de modificação</td><td><code>touch notas.txt</code></td></tr>
+      <tr><td><code>cp</code></td><td>Copia arquivo(s)</td><td><code>cp origem.txt destino.txt</code></td></tr>
+      <tr><td><code>mv</code></td><td>Move ou renomeia arquivo(s)</td><td><code>mv velho.txt novo.txt</code></td></tr>
+      <tr><td><code>rm</code></td><td>Remove arquivo(s)</td><td><code>rm arquivo.txt</code> &nbsp;·&nbsp; <code>rm -r pasta/</code></td></tr>
+      <tr><td><code>man</code></td><td>Abre o manual do comando</td><td><code>man ls</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-label bash">bash</div>
+  <pre><code class="language-bash">mkdir projeto                    # cria o diretório 'projeto'
+mkdir -p projeto/data/raw        # cria toda a hierarquia de uma vez
+touch projeto/README.txt         # cria arquivo vazio
+
+cp sequencias.fasta backup/      # copia para o diretório backup/
+cp -r pasta_original/ copia/     # copia diretório recursivamente
+
+mv resultado.csv resultados/     # move o arquivo
+mv antigo.py novo.py             # renomeia o arquivo
+
+rm temporario.txt                # remove (CUIDADO: sem lixeira!)
+rm -r resultados_antigos/        # remove diretório recursivamente
+rm -rf pasta/                    # força remoção sem confirmação (use com cuidado!)
+
+man cp                           # abre o manual do comando cp (q para sair)</code></pre>
+
+  <h3>Leitura de arquivos</h3>
+  <table class="data-table">
+    <thead><tr><th>Comando</th><th>Descrição</th><th>Opções úteis</th></tr></thead>
+    <tbody>
+      <tr><td><code>cat</code></td><td>Exibe todo o conteúdo do arquivo</td><td><code>-n</code> numera linhas</td></tr>
+      <tr><td><code>head</code></td><td>Exibe as primeiras 10 linhas</td><td><code>-n 20</code> exibe 20 linhas</td></tr>
+      <tr><td><code>tail</code></td><td>Exibe as últimas 10 linhas</td><td><code>-f</code> acompanha em tempo real</td></tr>
+      <tr><td><code>less</code></td><td>Exibe com rolagem (↑↓, <code>q</code> para sair)</td><td><code>/termo</code> busca no arquivo</td></tr>
+      <tr><td><code>wc</code></td><td>Conta linhas, palavras e bytes</td><td><code>-l</code> só linhas; <code>-w</code> só palavras</td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-label bash">bash</div>
+  <pre><code class="language-bash">cat sequencias.fasta             # exibe o arquivo inteiro
+cat -n sequencias.fasta          # exibe com numeração de linhas
+
+head sequencias.fasta            # primeiras 10 linhas
+head -n 20 sequencias.fasta      # primeiras 20 linhas
+
+tail sequencias.fasta            # últimas 10 linhas
+tail -n 5 resultado.csv          # últimas 5 linhas
+tail -f log.txt                  # acompanha arquivo crescente em tempo real
+
+less arquivo_grande.txt          # navegue com ↑↓ PgUp PgDn; q para sair
+
+wc sequencias.fasta              # linhas, palavras e bytes
+wc -l sequencias.fasta           # apenas o número de linhas
+wc -l *.fasta                    # conta linhas em todos os .fasta</code></pre>
+
+  <div class="callout tip">
+    <strong>Dica:</strong> Para inspecionar um arquivo desconhecido, comece com
+    <code>head</code> para ver o formato, <code>wc -l</code> para saber o tamanho,
+    e <code>less</code> para navegar pelo conteúdo.
+  </div>
+
+  <h3>Atalhos do terminal</h3>
+  <table class="data-table">
+    <thead><tr><th>Atalho</th><th>Função</th></tr></thead>
+    <tbody>
+      <tr><td><code>Tab</code></td><td>Auto-completa comandos e nomes de arquivos</td></tr>
+      <tr><td><code>↑ / ↓</code></td><td>Navega pelo histórico de comandos</td></tr>
+      <tr><td><code>Ctrl+C</code></td><td>Interrompe o programa em execução</td></tr>
+      <tr><td><code>Ctrl+Z</code></td><td>Pausa o programa (use <code>bg</code> para retomar em background)</td></tr>
+      <tr><td><code>Ctrl+L</code></td><td>Limpa a tela do terminal</td></tr>
+      <tr><td><code>history</code></td><td>Lista os últimos comandos executados</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section" id="especiais">
+  <h2>1.3 Caracteres especiais</h2>
+  <p>
+    Certos caracteres têm significados especiais no shell. Conhecê-los é
+    fundamental para construir comandos poderosos.
+  </p>
+
+  <table class="data-table">
+    <thead><tr><th>Caractere</th><th>Significado</th><th>Exemplo</th></tr></thead>
+    <tbody>
+      <tr><td><code>.</code></td><td>Diretório atual</td><td><code>./meu_script.sh</code></td></tr>
+      <tr><td><code>..</code></td><td>Diretório pai (um nível acima)</td><td><code>cd ..</code></td></tr>
+      <tr><td><code>~</code></td><td>Diretório pessoal (<code>/home/usuario</code>)</td><td><code>cd ~/projetos</code></td></tr>
+      <tr><td><code>*</code></td><td>Curinga — representa qualquer sequência de caracteres</td><td><code>ls *.csv</code></td></tr>
+      <tr><td><code>?</code></td><td>Curinga — representa exatamente um caractere</td><td><code>ls seq?.fasta</code></td></tr>
+      <tr><td><code>|</code></td><td>Pipe — encadeia a saída de um comando na entrada do próximo</td><td><code>cat f.txt | grep "gene"</code></td></tr>
+      <tr><td><code>&gt;</code></td><td>Redireciona saída para arquivo (sobrescreve)</td><td><code>ls &gt; lista.txt</code></td></tr>
+      <tr><td><code>&gt;&gt;</code></td><td>Redireciona saída para arquivo (acrescenta)</td><td><code>echo "fim" &gt;&gt; log.txt</code></td></tr>
+      <tr><td><code>;</code></td><td>Executa o próximo comando independentemente do resultado</td><td><code>mkdir a; cd a</code></td></tr>
+      <tr><td><code>&amp;</code></td><td>Executa o comando em background, liberando o terminal</td><td><code>programa &amp;</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-label bash">bash</div>
+  <pre><code class="language-bash"># Curinga * lista todos os arquivos .fasta
+ls *.fasta
+
+# Curinga ? substitui exatamente um caractere
+ls seq?.fasta       # seq1.fasta, seq2.fasta, mas NÃO seq10.fasta
+
+# Redirect > cria (ou sobrescreve) arquivo com a saída
+ls -l > inventario.txt
+
+# Redirect >> acrescenta ao final do arquivo existente
+date >> inventario.txt
+
+# ; executa sequencialmente, independente de erros
+mkdir resultados; cd resultados; touch README.txt
+
+# & envia para background (programa continua rodando)
+blast_longo &       # terminal fica livre para outros comandos</code></pre>
+</div>
+
+<div class="section" id="editores">
+  <h2>1.4 Editores de texto no terminal</h2>
+  <p>
+    Para editar arquivos sem interface gráfica — por exemplo, em servidores remotos
+    via SSH — é essencial conhecer pelo menos um editor de texto no terminal.
+  </p>
+
+  <table class="data-table">
+    <thead><tr><th>Editor</th><th>Características</th><th>Quando usar</th></tr></thead>
+    <tbody>
+      <tr><td><code>nano</code></td><td>Simples, atalhos visíveis na tela</td><td>Iniciantes; edições rápidas</td></tr>
+      <tr><td><code>vim</code></td><td>Poderoso, modos de edição (insert/normal/command)</td><td>Uso avançado; muito presente em servidores</td></tr>
+      <tr><td><code>gedit</code></td><td>Interface gráfica, intuitivo</td><td>Desktop com ambiente gráfico</td></tr>
+    </tbody>
+  </table>
+
+  <h3>nano — uso básico</h3>
+  <div class="code-label bash">bash</div>
+  <pre><code class="language-bash">nano meu_script.sh   # abre (ou cria) o arquivo
+
+# Dentro do nano:
+# Ctrl+O  → salva o arquivo (Write Out)
+# Ctrl+X  → sai do nano
+# Ctrl+W  → busca no arquivo
+# Ctrl+K  → recorta a linha inteira
+# Ctrl+U  → cola</code></pre>
+
+  <h3>vim — sobrevivência básica</h3>
+  <div class="code-label bash">bash</div>
+  <pre><code class="language-bash">vim arquivo.txt      # abre o arquivo
+
+# O vim tem MODOS — ao abrir, você está no modo NORMAL
+i          # entra no modo INSERT (pode digitar)
+Esc        # volta ao modo NORMAL
+:w         # salva
+:q         # sai
+:wq        # salva e sai
+:q!        # sai SEM salvar (descarta alterações)
+
+# No modo NORMAL:
+/palavra   # busca "palavra" no arquivo (n = próxima ocorrência)
+dd         # apaga a linha inteira
+yy         # copia a linha
+p          # cola</code></pre>
+
+  <div class="callout tip">
+    <strong>Dica:</strong> Se você se perder no vim e não conseguir sair, pressione
+    <code>Esc</code> várias vezes e depois digite <code>:q!</code> para sair sem salvar.
+  </div>
+</div>
+</div>
+    <footer class="page-footer">
+      Instituto de Biofísica Carlos Chagas Filho — UFRJ<br>
+      Introdução à Programação para Pesquisa Biomédica · Pedro Torres
+    </footer>
+  </main>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-r.min.js"></script>
+<script>
+document.addEventListener('click', function(e) {
+  var s = document.querySelector('.sidebar');
+  var t = document.querySelector('.sidebar-toggle');
+  if (s && t && !s.contains(e.target) && !t.contains(e.target))
+    s.classList.remove('open');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aula 2 — Linha de Comando — IntroProgBiomed</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<button class="sidebar-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+<div class="layout">
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <div class="course-title">IntroProgBiomed</div>
+      <div class="course-sub">IBCCF · UFRJ</div>
+    </div>
+    <ul class="nav-list">
+<li><a href="index.html" class="nav-link">🏠 Início</a>
+</li>
+<li><a href="aula1.html" class="nav-link">1. Introdução ao Linux</a>
+</li>
+<li><a href="aula2.html" class="nav-link active">2. Linha de Comando</a>
+<ul class="nav-sub"><li><a href="#pipes">Pipes e redirecionamento</a></li><li><a href="#busca">Busca e filtragem</a></li><li><a href="#processos">Processos e acesso remoto</a></li><li><a href="#pipeline">Construindo pipelines</a></li></ul>
+</li>
+<li><a href="aula3.html" class="nav-link">3. Shell Scripting</a>
+</li>
+<li><a href="aula4.html" class="nav-link">4. Python e R — Fundamentos</a>
+</li>
+<li><a href="aula5.html" class="nav-link">5. DataFrames</a>
+</li>
+<li><a href="aula6.html" class="nav-link">6. Visualização</a>
+</li>
+<li><div class="nav-divider"></div></li>
+<li><a href="exercicios.html" class="nav-link">📝 Exercícios</a>
+</li>
+    </ul>
+    <div class="sidebar-footer">Pedro Torres<br>Biofísica · UFRJ</div>
+  </nav>
+  <main class="content">
+    <div class="page-header">
+<div class="aula-num">Aula 2 · Ambiente</div>
+<h1>Linha de Comando Eficiente</h1>
+<p class="page-desc">
+  Domine pipes, redirecionamento e ferramentas de busca para construir
+  pipelines poderosos que processam dados biomédicos diretamente no terminal.
+</p>
+</div>
+    <div class="page-body">
+<div class="section" id="pipes">
+  <h2>2.1 Pipes e redirecionamento</h2>
+  <p>
+    O poder da linha de comando vem da capacidade de <strong>encadear comandos simples</strong>
+    usando pipes (<code>|</code>) e de <strong>redirecionar</strong> saídas para arquivos.
+    Cada programa lê da <em>entrada padrão</em> (stdin) e escreve na <em>saída padrão</em> (stdout).
+  </p>
+
+  <div class="code-label bash">bash</div>
+  <pre><code class="language-bash"># Pipe: saída de um comando vira entrada do próximo
+cat sequencias.fasta | wc -l        # conta linhas do arquivo
+ls -l | head -5                     # mostra só os 5 primeiros itens da lista
+
+# Redirect > (sobrescreve) e >> (acrescenta)
+ls *.fasta > lista_arquivos.txt     # salva lista de arquivos
+echo "novo registro" >> log.txt     # acrescenta ao log
+
+# Combinar: filtrar e salvar resultado
+cat dados.csv | grep "Homo sapiens" > humanos.csv</code></pre>
+
+  <div class="callout info">
+    <strong>Filosofia Unix:</strong> cada ferramenta faz uma coisa bem feita.
+    A força vem da combinação — pequenos comandos encadeados constroem
+    análises complexas sem escrever uma linha de código.
+  </div>
+</div>
+
+<div class="section" id="busca">
+  <h2>2.2 Busca e filtragem</h2>
+
+  <h3>grep — busca por padrões de texto</h3>
+  <p>
+    <code>grep</code> é uma das ferramentas mais usadas em bioinformática.
+    Ele filtra linhas que contêm um padrão — literais ou expressões regulares.
+  </p>
+
+  <div class="code-label bash">bash</div>
+  <pre><code class="language-bash"># Sintaxe básica
+grep "padrão" arquivo.txt
+
+# Buscar cabeçalhos em um FASTA (começam com >)
+grep ">" sequencias.fasta
+
+# -c conta o número de ocorrências
+grep -c ">" sequencias.fasta        # número de sequências
+
+# -i ignora maiúsculas/minúsculas
+grep -i "BRCA" genes.txt
+
+# -v inverte: mostra linhas que NÃO contêm o padrão
+grep -v ">" sequencias.fasta        # apenas as sequências (sem cabeçalhos)
+
+# -n mostra o número da linha
+grep -n "error" log.txt
+
+# Com pipe: filtrar CSV por coluna
+cat expressao.csv | grep "cancer"
+
+# Expressão regular: linhas que começam com um número
+grep "^[0-9]" dados.txt
+
+# Busca em múltiplos arquivos
+grep "TP53" *.fasta</code></pre>
+
+  <h3>find — busca de arquivos no sistema</h3>
+  <div class="code-label bash">bash</div>
+  <pre><code class="language-bash"># Buscar por nome
+find . -name "*.fasta"             # todos os .fasta no diretório atual
+find /home/pedro -name "dados*"    # arquivos que começam com "dados"
+
+# Buscar por tipo
+find . -type f -name "*.py"        # arquivos (-f) Python
+find . -type d                     # apenas diretórios (-d)
+
+# Buscar por tamanho
+find . -size +10M                  # arquivos maiores que 10 MB
+
+# Buscar e executar ação sobre cada resultado
+find . -name "*.tmp" -delete       # apaga todos os .tmp encontrados</code></pre>
+
+  <h3>wc, sort e uniq — contar e ordenar</h3>
+  <div class="code-label bash">bash</div>
+  <pre><code class="language-bash">wc -l arquivo.txt                  # conta linhas
+wc -w arquivo.txt                  # conta palavras
+
+sort nomes.txt                     # ordena alfabeticamente
+sort -n numeros.txt                # ordena numericamente
+sort -r arquivo.txt                # ordem inversa
+
+# Contar valores únicos (uniq requer entrada ordenada)
+cut -f2 tabela.tsv | sort | uniq           # valores únicos da coluna 2
+cut -f2 tabela.tsv | sort | uniq -c        # + contagem de cada valor
+cut -f2 tabela.tsv | sort | uniq -c | sort -rn  # ordena por frequência</code></pre>
+
+  <h3>cut e awk — manipulação de colunas</h3>
+  <div class="code-label bash">bash</div>
+  <pre><code class="language-bash"># cut extrai colunas de arquivos delimitados
+cut -d',' -f1,3 dados.csv          # colunas 1 e 3 de CSV
+cut -d'	' -f2 tabela.tsv          # coluna 2 de TSV
+cut -c1-10 sequencias.txt          # caracteres 1 a 10 de cada linha
+
+# awk — processamento mais flexível
+awk '{print $1, $3}' arquivo.txt           # imprime colunas 1 e 3
+awk -F',' '{print $2}' dados.csv           # col 2 de CSV
+awk '$3 > 100 {print}' tabela.txt          # filtra linhas onde col 3 > 100
+awk 'NR > 1 {print}' dados.csv             # pula o cabeçalho (linha 1)</code></pre>
+</div>
+
+<div class="section" id="processos">
+  <h2>2.3 Processos e acesso remoto</h2>
+
+  <h3>Gerenciamento de processos</h3>
+  <table class="data-table">
+    <thead><tr><th>Comando</th><th>Descrição</th><th>Exemplo</th></tr></thead>
+    <tbody>
+      <tr><td><code>top</code></td><td>Monitor de processos em tempo real</td><td><code>top</code> (q para sair)</td></tr>
+      <tr><td><code>htop</code></td><td>Versão melhorada do top (interface interativa)</td><td><code>htop</code></td></tr>
+      <tr><td><code>ps</code></td><td>Lista processos em execução</td><td><code>ps aux</code></td></tr>
+      <tr><td><code>kill</code></td><td>Encerra um processo pelo seu ID</td><td><code>kill -9 1234</code></td></tr>
+      <tr><td><code>jobs</code></td><td>Lista processos em background</td><td><code>jobs</code></td></tr>
+      <tr><td><code>bg</code></td><td>Retoma processo pausado em background</td><td><code>bg %1</code></td></tr>
+      <tr><td><code>fg</code></td><td>Traz processo de background para frente</td><td><code>fg %1</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-label bash">bash</div>
+  <pre><code class="language-bash">top                               # monitor ao vivo (q para sair)
+ps aux                            # todos os processos do sistema
+ps aux | grep python              # filtra processos Python
+
+# Matar processo
+kill 4321                         # sinal padrão (SIGTERM — gracioso)
+kill -9 4321                      # força o encerramento imediato (SIGKILL)
+
+# Background e foreground
+programa_lento &                  # inicia em background
+Ctrl+Z                            # pausa o programa atual
+bg                                # retoma em background
+fg                                # traz de volta para frente</code></pre>
+
+  <h3>SSH e SCP — acesso e cópia remota</h3>
+  <div class="code-label bash">bash</div>
+  <pre><code class="language-bash"># Conectar a servidor remoto
+ssh usuario@servidor.ufrj.br
+ssh -XY usuario@192.168.1.10      # -XY habilita interface gráfica remota
+
+# Copiar arquivos entre máquinas (scp)
+scp arquivo.txt usuario@servidor:/home/usuario/      # local → remoto
+scp usuario@servidor:/dados/resultado.csv ./         # remoto → local
+scp -r pasta/ usuario@servidor:/destino/             # copia diretório inteiro
+
+# Manter sessão ativa mesmo após desconexão (nohup)
+nohup python3 analise.py &        # roda em background, sobrevive ao logout</code></pre>
+</div>
+
+<div class="section" id="pipeline">
+  <h2>2.4 Construindo pipelines biomédicos</h2>
+  <p>
+    Veja exemplos de pipelines reais que combinam os comandos aprendidos
+    para resolver problemas comuns em bioinformática.
+  </p>
+
+  <h3>Pipeline 1 — Extrair IDs de um FASTA</h3>
+  <div class="code-label bash">bash</div>
+  <pre><code class="language-bash"># Extrair todas as linhas de cabeçalho e salvar os IDs
+grep ">" sequencias.fasta | cut -d' ' -f1 | tr -d '>' > ids.txt
+
+# Quantas sequências tem o arquivo?
+grep -c ">" sequencias.fasta</code></pre>
+
+  <h3>Pipeline 2 — Inspecionar e filtrar um CSV de expressão gênica</h3>
+  <div class="code-label bash">bash</div>
+  <pre><code class="language-bash"># Ver cabeçalho
+head -1 expressao.csv
+
+# Contar amostras (linhas menos o cabeçalho)
+tail -n +2 expressao.csv | wc -l
+
+# Filtrar amostras de um tipo celular específico
+grep "neuron" expressao.csv > neuronios.csv
+
+# Top 10 genes mais citados em um arquivo de anotação
+cut -d',' -f3 anotacao.csv | sort | uniq -c | sort -rn | head -10</code></pre>
+
+  <h3>Pipeline 3 — Processar múltiplos arquivos em lote</h3>
+  <div class="code-label bash">bash</div>
+  <pre><code class="language-bash"># Contar sequências em cada FASTA de um diretório
+for f in *.fasta; do
+    echo "$f: $(grep -c '>' $f) sequências"
+done
+
+# Concatenar todos os FASTAs em um só arquivo
+cat *.fasta > todas_as_sequencias.fasta</code></pre>
+
+  <div class="callout tip">
+    <strong>Exercício rápido:</strong> dado um arquivo <code>genes.csv</code> com colunas
+    <em>id, gene, organismo, expressao</em>, escreva um pipeline que: (1) filtra apenas
+    humanos, (2) ordena por expressão decrescente, (3) mostra os 5 mais expressos.
+  </div>
+</div>
+</div>
+    <footer class="page-footer">
+      Instituto de Biofísica Carlos Chagas Filho — UFRJ<br>
+      Introdução à Programação para Pesquisa Biomédica · Pedro Torres
+    </footer>
+  </main>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-r.min.js"></script>
+<script>
+document.addEventListener('click', function(e) {
+  var s = document.querySelector('.sidebar');
+  var t = document.querySelector('.sidebar-toggle');
+  if (s && t && !s.contains(e.target) && !t.contains(e.target))
+    s.classList.remove('open');
+});
+</script>
+</body>
+</html>
