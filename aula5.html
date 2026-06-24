@@ -12,8 +12,8 @@
 <div class="layout">
   <nav class="sidebar">
     <div class="sidebar-header">
-      <div class="course-title">IntroProgBiomed</div>
-      <div class="course-sub">IBCCF · UFRJ</div>
+      <div class="brand-logo">IntroProgBiomed</div>
+      <div class="brand-sub">IBCCF · UFRJ</div>
     </div>
     <ul class="nav-list">
 <li><a href="index.html" class="nav-link">🏠 Início</a>
@@ -35,12 +35,10 @@
 <li><a href="exercicios.html" class="nav-link">📝 Exercícios</a>
 </li>
     </ul>
-    <div class="theme-toggle">
-      <button class="theme-toggle-btn" onclick="toggleTheme()" id="theme-btn">
-        <span class="theme-icon">&#9728;&#65039;</span> <span id="theme-label">Claro</span>
-      </button>
+    <div class="sidebar-footer">
+      <div class="author-info">Pedro Torres<br>Biofísica · UFRJ</div>
+      <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Alternar tema">&#9728;&#65039;</button>
     </div>
-    <div class="sidebar-footer">Pedro Torres<br>Biofísica · UFRJ</div>
   </nav>
   <main class="content">
     <div class="page-header">
@@ -51,9 +49,9 @@
   Carregue, filtre, transforme e combine tabelas com Pandas e tidyverse.
 </p>
 </div>
-    <div class="page-body"><div class="colab-section"><span class="colab-section-label">Notebooks da aula</span><a href="https://colab.research.google.com/drive/10FqwNvDGG41LHa2MiQVWGeF66k4Ly7Cq" target="_blank" class="colab-badge py-badge">
+    <div class="page-body"><div class="colab-section"><span class="colab-section-label">Notebooks da aula</span><a href="https://colab.research.google.com/github/monteirotorres/introprogbiomed/blob/main/notebooks/aula5_pandas.ipynb" target="_blank" class="colab-badge py-badge">
       <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Abrir no Colab"> Python
-    </a><a href="https://colab.research.google.com/drive/1CC0sYBolxmoNQOE4gh_P8h1ws8CxEYkQ" target="_blank" class="colab-badge r-badge">
+    </a><a href="https://colab.research.google.com/github/monteirotorres/introprogbiomed/blob/main/notebooks/aula5_tidyverse.ipynb" target="_blank" class="colab-badge r-badge">
       <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Abrir no Colab"> R
     </a></div>
 <div class="section" id="leitura">
@@ -278,20 +276,15 @@ df |&gt;
 (function() {
   var saved = localStorage.getItem('theme') || 'light';
   document.documentElement.setAttribute('data-theme', saved);
-  updateToggle(saved);
-  function updateToggle(t) {
-    var btn = document.getElementById('theme-btn');
-    var lbl = document.getElementById('theme-label');
-    if (!btn) return;
-    if (t === 'dark') { btn.querySelector('.theme-icon').textContent = '\u{1F319}'; lbl.textContent = 'Escuro'; }
-    else { btn.querySelector('.theme-icon').textContent = '\u2600\uFE0F'; lbl.textContent = 'Claro'; }
-  }
+  var btn = document.getElementById('theme-btn');
+  if (btn) btn.textContent = saved === 'dark' ? '\u{1F319}' : '\u2600\uFE0F';
   window.toggleTheme = function() {
     var cur = document.documentElement.getAttribute('data-theme');
     var next = cur === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
-    updateToggle(next);
+    var b = document.getElementById('theme-btn');
+    if (b) b.textContent = next === 'dark' ? '\u{1F319}' : '\u2600\uFE0F';
   };
 })();
 document.addEventListener('click', function(e) {

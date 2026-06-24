@@ -107,18 +107,16 @@ def page(title, current, header_html, body_html):
 <div class="layout">
   <nav class="sidebar">
     <div class="sidebar-header">
-      <div class="course-title">IntroProgBiomed</div>
-      <div class="course-sub">IBCCF · UFRJ</div>
+      <div class="brand-logo">IntroProgBiomed</div>
+      <div class="brand-sub">IBCCF · UFRJ</div>
     </div>
     <ul class="nav-list">
 {nav}
     </ul>
-    <div class="theme-toggle">
-      <button class="theme-toggle-btn" onclick="toggleTheme()" id="theme-btn">
-        <span class="theme-icon">☀️</span> <span id="theme-label">Claro</span>
-      </button>
+    <div class="sidebar-footer">
+      <div class="author-info">Pedro Torres<br>Biofísica · UFRJ</div>
+      <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Alternar tema">☀️</button>
     </div>
-    <div class="sidebar-footer">Pedro Torres<br>Biofísica · UFRJ</div>
   </nav>
   <main class="content">
     <div class="page-header">{header_html}</div>
@@ -137,20 +135,15 @@ def page(title, current, header_html, body_html):
 (function() {{
   var saved = localStorage.getItem('theme') || 'light';
   document.documentElement.setAttribute('data-theme', saved);
-  updateToggle(saved);
-  function updateToggle(t) {{
-    var btn = document.getElementById('theme-btn');
-    var lbl = document.getElementById('theme-label');
-    if (!btn) return;
-    if (t === 'dark') {{ btn.querySelector('.theme-icon').textContent = '🌙'; lbl.textContent = 'Escuro'; }}
-    else {{ btn.querySelector('.theme-icon').textContent = '☀️'; lbl.textContent = 'Claro'; }}
-  }}
+  var btn = document.getElementById('theme-btn');
+  if (btn) btn.textContent = saved === 'dark' ? '🌙' : '☀️';
   window.toggleTheme = function() {{
     var cur = document.documentElement.getAttribute('data-theme');
     var next = cur === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
-    updateToggle(next);
+    var b = document.getElementById('theme-btn');
+    if (b) b.textContent = next === 'dark' ? '🌙' : '☀️';
   }};
 }})();
 document.addEventListener('click', function(e) {{
