@@ -1,184 +1,94 @@
 <!DOCTYPE html>
-<html lang="pt-BR" data-theme="light">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Início — IntroProgBiomed</title>
+<script>(function(){try{var t=localStorage.getItem('tema');if(!t){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
 </head>
 <body>
-<button class="sidebar-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
-<div class="layout">
-  <nav class="sidebar">
-    <div class="sidebar-header">
-      <div class="brand-logo">IntroProgBiomed</div>
-      <div class="brand-sub">IBCCF · UFRJ</div>
-    </div>
-    <ul class="nav-list">
-<li><a href="index.html" class="nav-link active">🏠 Início</a>
-</li>
-<li><a href="aula1.html" class="nav-link">1. Introdução ao Linux</a>
-</li>
-<li><a href="aula2.html" class="nav-link">2. Linha de Comando</a>
-</li>
-<li><a href="aula3.html" class="nav-link">3. Shell Scripting</a>
-</li>
-<li><a href="aula4.html" class="nav-link">4. Python e R — Fundamentos</a>
-</li>
-<li><a href="aula5.html" class="nav-link">5. DataFrames</a>
-</li>
-<li><a href="aula6.html" class="nav-link">6. Visualização</a>
-</li>
-<li><div class="nav-divider"></div></li>
-<li><a href="exercicios.html" class="nav-link">📝 Exercícios</a>
-</li>
-    </ul>
-    <div class="sidebar-footer">
-      <div class="author-info">Pedro Torres<br>Biofísica · UFRJ</div>
-      <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Alternar tema">&#9728;&#65039;</button>
-    </div>
-  </nav>
-  <main class="content">
-    <div class="page-header"><div class="page-header-inner">
-<div class="aula-num">IBCCF · UFRJ · Biofísica</div></div>
-<h1>Introdução à Programação<br>para Pesquisa Biomédica</h1>
-<p class="page-desc">
-  Aprenda Linux, shell scripting, Python e R aplicados à pesquisa biomédica.
-  O curso combina fundamentos computacionais com análise de dados reais,
-  culminando em um hackathon com datasets biomédicos públicos.
-</p>
+<button class="menu-toggle" id="menuToggle" aria-label="Menu">☰</button>
+<button class="theme-toggle" id="themeToggle" aria-label="Alternar tema" title="Alternar tema claro/escuro"><span class="theme-icon"></span></button>
+
+<nav class="sidebar" id="sidebar">
+<a class="sidebar-brand" href="index.html">Introdução à Programação<span>Pesquisa Biomédica · IBCCF · UFRJ</span></a>
+<div class="nav-group collapsed">
+<div class="nav-group-title">1. Introdução ao Linux</div><ul>
+<li><a href="aula1.html#sistema"><span class="n">1.1</span>Sistema de arquivos</a></li>
+<li><a href="aula1.html#comandos"><span class="n">1.2</span>Comandos essenciais</a></li>
+<li><a href="aula1.html#especiais"><span class="n">1.3</span>Caracteres especiais</a></li>
+<li><a href="aula1.html#editores"><span class="n">1.4</span>Editores de texto</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">2. Linha de Comando</div><ul>
+<li><a href="aula2.html#pipes"><span class="n">2.1</span>Pipes e redirecionamento</a></li>
+<li><a href="aula2.html#busca"><span class="n">2.2</span>Busca e filtragem</a></li>
+<li><a href="aula2.html#processos"><span class="n">2.3</span>Processos e acesso remoto</a></li>
+<li><a href="aula2.html#pipeline"><span class="n">2.4</span>Construindo pipelines</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">3. Shell Scripting</div><ul>
+<li><a href="aula3.html#anatomia"><span class="n">3.1</span>Anatomia de um script</a></li>
+<li><a href="aula3.html#variaveis"><span class="n">3.2</span>Variáveis e argumentos</a></li>
+<li><a href="aula3.html#controle"><span class="n">3.3</span>Estruturas de controle</a></li>
+<li><a href="aula3.html#funcoes"><span class="n">3.4</span>Funções</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">4. Python e R — Fundamentos</div><ul>
+<li><a href="aula4.html#ambiente"><span class="n">4.1</span>Ambientes de trabalho</a></li>
+<li><a href="aula4.html#tipos"><span class="n">4.2</span>Tipos e estruturas</a></li>
+<li><a href="aula4.html#controle"><span class="n">4.3</span>Controle de fluxo</a></li>
+<li><a href="aula4.html#funcoes"><span class="n">4.4</span>Funções</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">5. DataFrames</div><ul>
+<li><a href="aula5.html#leitura"><span class="n">5.1</span>Leitura de dados</a></li>
+<li><a href="aula5.html#selecao"><span class="n">5.2</span>Seleção e filtragem</a></li>
+<li><a href="aula5.html#agrupamento"><span class="n">5.3</span>Agrupamento</a></li>
+<li><a href="aula5.html#join"><span class="n">5.4</span>Junção de tabelas</a></li>
+<li><a href="aula5.html#na"><span class="n">5.5</span>Dados faltantes</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">6. Visualização e Git</div><ul>
+<li><a href="aula6.html#scatter"><span class="n">6.1</span>Dispersão</a></li>
+<li><a href="aula6.html#histbox"><span class="n">6.2</span>Histograma e boxplot</a></li>
+<li><a href="aula6.html#heatmap"><span class="n">6.3</span>Heatmap</a></li>
+<li><a href="aula6.html#exportar"><span class="n">6.4</span>Exportando figuras</a></li>
+<li><a href="aula6.html#git"><span class="n">6.5</span>Git básico</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">7. Exercícios</div><ul>
+<li><a href="exercicios.html#ex-linux"><span class="n">7.1</span>Linux</a></li>
+<li><a href="exercicios.html#ex-cli"><span class="n">7.2</span>Linha de Comando</a></li>
+<li><a href="exercicios.html#ex-shell"><span class="n">7.3</span>Shell Scripting</a></li>
+<li><a href="exercicios.html#ex-pyr"><span class="n">7.4</span>Python e R</a></li>
+<li><a href="exercicios.html#ex-df"><span class="n">7.5</span>DataFrames</a></li>
+<li><a href="exercicios.html#ex-viz"><span class="n">7.6</span>Visualização e Git</a></li>
+</ul></div>
+</nav>
+<main class="content"><div class="content-inner">
+<div class="hero">
+<h1 class="hero-title">Introdução à Programação<br>para Pesquisa Biomédica</h1>
+<p class="hero-sub">Instituto de Biofísica Carlos Chagas Filho · UFRJ</p>
+<p class="hero-desc">Disciplina de 30h com abordagem prática: do terminal Linux ao
+processamento e visualização de dados em Python e R, com notebooks no Google Colab
+e um hackathon final. Navegue pelo menu à esquerda.</p>
+<p class="hero-authors">Pedro Torres</p>
 </div>
-    <div class="page-body">
-<div class="section">
-  <h2>Sobre o curso</h2>
-  <p>
-    Este curso de 30 horas (10 aulas de 3h) é voltado para estudantes e
-    pesquisadores da área biomédica sem experiência prévia em programação.
-    Ao longo das seis primeiras aulas, você desenvolverá habilidades em
-    Linux, automação com Bash, e análise de dados com Python e R ensinados
-    em paralelo. As quatro últimas aulas são dedicadas a um hackathon com
-    dados reais.
-  </p>
-  <div class="callout info">
-    <strong>Pré-requisito:</strong> nenhum conhecimento prévio em programação é necessário.
-    Ideal para quem tem um problema biológico e quer abordá-lo computacionalmente.
-  </div>
-</div>
+<div class="cards"><a class="card" href="aula1.html#sistema"><div class="cnum">1</div><div class="ctitle">Introdução ao Linux</div><div class="cdesc">Sistema de arquivos, comandos essenciais, caracteres especiais e editores de texto.</div><div class="ctags"><span class="ctag bash">Bash</span></div><div class="ccount">4 tópicos</div></a><a class="card" href="aula2.html#pipes"><div class="cnum">2</div><div class="ctitle">Linha de Comando</div><div class="cdesc">Pipes, redirecionamento, busca com grep/find, processos e pipelines biomédicos.</div><div class="ctags"><span class="ctag bash">Bash</span></div><div class="ccount">4 tópicos</div></a><a class="card" href="aula3.html#anatomia"><div class="cnum">3</div><div class="ctitle">Shell Scripting</div><div class="cdesc">Anatomia de scripts, variáveis, estruturas de controle e funções em Bash.</div><div class="ctags"><span class="ctag bash">Bash</span></div><div class="ccount">4 tópicos</div></a><a class="card" href="aula4.html#ambiente"><div class="cnum">4</div><div class="ctitle">Python e R — Fundamentos</div><div class="cdesc">Tipos, estruturas de dados, controle de fluxo e funções, em paralelo nas duas linguagens.</div><div class="ctags"><span class="ctag py">Python</span><span class="ctag r">R</span></div><div class="ccount">4 tópicos</div></a><a class="card" href="aula5.html#leitura"><div class="cnum">5</div><div class="ctitle">DataFrames</div><div class="cdesc">Leitura, seleção, agrupamento, junção e dados faltantes com pandas e tidyverse.</div><div class="ctags"><span class="ctag py">Python</span><span class="ctag r">R</span></div><div class="ccount">5 tópicos</div></a><a class="card" href="aula6.html#scatter"><div class="cnum">6</div><div class="ctitle">Visualização e Git</div><div class="cdesc">Gráficos científicos com Matplotlib/Seaborn e ggplot2; versionamento com Git.</div><div class="ctags"><span class="ctag py">Python</span><span class="ctag r">R</span></div><div class="ccount">5 tópicos</div></a><a class="card" href="exercicios.html#ex-linux"><div class="cnum">7</div><div class="ctitle">Exercícios</div><div class="cdesc">30 exercícios resolvidos por tema, com soluções em Bash, Python e R.</div><div class="ctags"></div><div class="ccount">6 temas</div></a></div>
+<div class="sched"><h2>Cronograma — 10 aulas de 3h</h2>
+<table class="data-table"><thead><tr><th>Aula</th><th>Tema</th><th>Formato</th></tr></thead>
+<tbody><tr><td>1</td><td>Introdução ao Linux</td><td>Teoria + prática</td></tr><tr><td>2</td><td>Linha de Comando</td><td>Teoria + prática</td></tr><tr><td>3</td><td>Shell Scripting</td><td>Teoria + prática + Colab</td></tr><tr><td>4</td><td>Python e R — Fundamentos</td><td>Teoria + prática + 2 Colabs</td></tr><tr><td>5</td><td>DataFrames</td><td>Teoria + prática + 2 Colabs</td></tr><tr><td>6</td><td>Visualização e Git</td><td>Teoria + prática + 2 Colabs</td></tr><tr><td>7–10</td><td>Hackathon</td><td>Projeto aplicado em grupo</td></tr></tbody></table></div>
+<div class="footer"><div class="footer-text">Instituto de Biofísica Carlos Chagas Filho — UFRJ<br>Introdução à Programação para Pesquisa Biomédica · Pedro Torres</div></div>
+</div></main>
 
-<div class="section">
-  <h2>Aulas</h2>
-  <div class="cards-grid">
-
-    <a class="card" href="aula1.html">
-      <div class="card-num">Aula 1</div>
-      <h3>Introdução ao Linux</h3>
-      <p>Sistema de arquivos, comandos essenciais, caracteres especiais e editores de texto.</p>
-      <div class="card-tags"><span class="tag bash">Bash</span></div>
-    </a>
-
-    <a class="card" href="aula2.html">
-      <div class="card-num">Aula 2</div>
-      <h3>Linha de Comando</h3>
-      <p>Pipes, redirecionamento, grep, find e construção de pipelines eficientes.</p>
-      <div class="card-tags"><span class="tag bash">Bash</span></div>
-    </a>
-
-    <a class="card" href="aula3.html">
-      <div class="card-num">Aula 3</div>
-      <h3>Shell Scripting</h3>
-      <p>Variáveis, argumentos, condicionais, loops e funções em Bash.</p>
-      <div class="card-tags"><span class="tag bash">Bash</span></div>
-    </a>
-
-    <a class="card" href="aula4.html">
-      <div class="card-num">Aula 4</div>
-      <h3>Python e R — Fundamentos</h3>
-      <p>Tipos, estruturas de dados, controle de fluxo e funções — apresentados em paralelo.</p>
-      <div class="card-tags"><span class="tag python">Python</span><span class="tag r">R</span></div>
-    </a>
-
-    <a class="card" href="aula5.html">
-      <div class="card-num">Aula 5</div>
-      <h3>DataFrames</h3>
-      <p>Pandas e tidyverse em paralelo: leitura, filtragem, agrupamento e junção de tabelas.</p>
-      <div class="card-tags"><span class="tag python">Python</span><span class="tag r">R</span></div>
-    </a>
-
-    <a class="card" href="aula6.html">
-      <div class="card-num">Aula 6</div>
-      <h3>Visualização</h3>
-      <p>Matplotlib/Seaborn e ggplot2 em paralelo. Exportação e versionamento com Git.</p>
-      <div class="card-tags"><span class="tag python">Python</span><span class="tag r">R</span></div>
-    </a>
-
-  </div>
-</div>
-
-<div class="section">
-  <h2>Hackathon (Aulas 7–10)</h2>
-  <p>
-    As últimas quatro aulas são dedicadas a um projeto em equipe com dados biomédicos reais.
-    Cada equipe escolhe um desafio, constrói um pipeline completo e apresenta os resultados
-    na aula final.
-  </p>
-  <table class="data-table">
-    <thead><tr><th>Aula</th><th>Atividade</th><th>Entregável</th></tr></thead>
-    <tbody>
-      <tr><td><strong>7</strong></td><td>Kickoff — escolha do desafio, formação de equipes, exploração dos dados</td><td>README + estrutura no GitHub</td></tr>
-      <tr><td><strong>8</strong></td><td>Desenvolvimento I — pipeline de pré-processamento e análise exploratória</td><td>Notebook com EDA completa</td></tr>
-      <tr><td><strong>9</strong></td><td>Desenvolvimento II — visualizações finais, interpretação e documentação</td><td>Figuras + seção de discussão</td></tr>
-      <tr><td><strong>10</strong></td><td>Apresentação de trabalhos (10 min + 5 min perguntas por equipe)</td><td>Repositório público no GitHub</td></tr>
-    </tbody>
-  </table>
-  <div class="callout tip">
-    <strong>Desafios sugeridos:</strong> análise de expressão diferencial (GEO/recount3),
-    caracterização de variantes genômicas (ClinVar), análise de dados clínicos (TCGA/NHANES),
-    ou anotação funcional de proteínas (UniProt + BLAST).
-  </div>
-</div>
-
-<div class="section">
-  <h2>Exercícios</h2>
-  <p>Cada aula possui uma seção de exercícios com soluções ocultas — tente resolver antes de expandir!</p>
-  <a class="card" href="exercicios.html" style="max-width:340px">
-    <div class="card-num">Seções 1–6</div>
-    <h3>📝 Página de Exercícios</h3>
-    <p>Exercícios temáticos com respostas expansíveis por seção.</p>
-  </a>
-</div>
-</div>
-    <footer class="page-footer">
-      Instituto de Biofísica Carlos Chagas Filho — UFRJ<br>
-      Introdução à Programação para Pesquisa Biomédica · Pedro Torres
-    </footer>
-  </main>
-</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-r.min.js"></script>
-<script>
-(function() {
-  var saved = localStorage.getItem('theme') || 'light';
-  document.documentElement.setAttribute('data-theme', saved);
-  var btn = document.getElementById('theme-btn');
-  if (btn) btn.textContent = saved === 'dark' ? '\u{1F319}' : '\u2600\uFE0F';
-  window.toggleTheme = function() {
-    var cur = document.documentElement.getAttribute('data-theme');
-    var next = cur === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-    var b = document.getElementById('theme-btn');
-    if (b) b.textContent = next === 'dark' ? '\u{1F319}' : '\u2600\uFE0F';
-  };
-})();
-document.addEventListener('click', function(e) {
-  var s = document.querySelector('.sidebar');
-  var t = document.querySelector('.sidebar-toggle');
-  if (s && t && !s.contains(e.target) && !t.contains(e.target))
-    s.classList.remove('open');
-});
-</script>
+<script src="assets/app.js"></script>
 </body>
 </html>

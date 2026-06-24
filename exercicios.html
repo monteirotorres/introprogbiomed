@@ -4,52 +4,73 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Exercícios — IntroProgBiomed</title>
+<script>(function(){try{var t=localStorage.getItem('tema');if(!t){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
 </head>
 <body>
-<button class="sidebar-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
-<div class="layout">
-  <nav class="sidebar">
-    <div class="sidebar-header">
-      <div class="brand-logo">IntroProgBiomed</div>
-      <div class="brand-sub">IBCCF · UFRJ</div>
-    </div>
-    <ul class="nav-list">
-<li><a href="index.html" class="nav-link">🏠 Início</a>
-</li>
-<li><a href="aula1.html" class="nav-link">1. Introdução ao Linux</a>
-</li>
-<li><a href="aula2.html" class="nav-link">2. Linha de Comando</a>
-</li>
-<li><a href="aula3.html" class="nav-link">3. Shell Scripting</a>
-</li>
-<li><a href="aula4.html" class="nav-link">4. Python e R — Fundamentos</a>
-</li>
-<li><a href="aula5.html" class="nav-link">5. DataFrames</a>
-</li>
-<li><a href="aula6.html" class="nav-link">6. Visualização</a>
-</li>
-<li><div class="nav-divider"></div></li>
-<li><a href="exercicios.html" class="nav-link active">📝 Exercícios</a>
-<ul class="nav-sub"><li><a href="#ex-aula1">Linux</a></li><li><a href="#ex-aula2">Linha de Comando</a></li><li><a href="#ex-aula3">Shell Scripting</a></li><li><a href="#ex-aula4">Python e R</a></li><li><a href="#ex-aula5">DataFrames</a></li><li><a href="#ex-aula6">Visualização</a></li></ul>
-</li>
-    </ul>
-    <div class="sidebar-footer">
-      <div class="author-info">Pedro Torres<br>Biofísica · UFRJ</div>
-      <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Alternar tema">☀️</button>
-    </div>
-  </nav>
-  <main class="content">
-    <div class="page-header"><div class="page-header-inner"><div class="aula-num">Exercícios</div></div><h1>Exercícios — Módulos 1 a 6</h1><p class="page-desc">Tente resolver cada exercício antes de expandir a resposta. Clique nas abas para navegar entre os módulos.</p></div>
-    <div class="page-body"><div class="tab-bar">
-  <button class="tab-btn active" onclick="showTab(event,'t1')">1. Linux</button>
-  <button class="tab-btn" onclick="showTab(event,'t2')">2. Linha de Comando</button>
-  <button class="tab-btn" onclick="showTab(event,'t3')">3. Shell Scripting</button>
-  <button class="tab-btn" onclick="showTab(event,'t4')">4. Python e R</button>
-  <button class="tab-btn" onclick="showTab(event,'t5')">5. DataFrames</button>
-  <button class="tab-btn" onclick="showTab(event,'t6')">6. Visualização</button>
-</div><div class="ex-section tab-panel active" id="t1"><h2>1. Introdução ao Linux</h2><div class="exercise"><h4>Exercício 1.1 — Estrutura de diretórios</h4><p>Qual diretório você usaria para dados brutos de um projeto? E os scripts? Justifique.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><strong>Dados brutos:</strong> <code>~/projeto/data/raw/</code>. Separe dados de código para facilitar reprodutibilidade.</p><p><strong>Scripts:</strong> <code>~/projeto/scripts/</code>. Nunca armazene dados permanentes em <code>/tmp</code>.</p></div></details></div><div class="exercise"><h4>Exercício 1.2 — mkdir e navegação</h4><p>Crie a estrutura abaixo com um único comando e navegue até <code>data/raw</code>:</p><pre><code class="language-bash">projeto/data/{raw,processed}  projeto/{scripts,results/figures}</code></pre><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">mkdir -p projeto/{data/{raw,processed},scripts,results/figures}
+<button class="menu-toggle" id="menuToggle" aria-label="Menu">☰</button>
+<button class="theme-toggle" id="themeToggle" aria-label="Alternar tema" title="Alternar tema claro/escuro"><span class="theme-icon"></span></button>
+
+<nav class="sidebar" id="sidebar">
+<a class="sidebar-brand" href="index.html">Introdução à Programação<span>Pesquisa Biomédica · IBCCF · UFRJ</span></a>
+<div class="nav-group collapsed">
+<div class="nav-group-title">1. Introdução ao Linux</div><ul>
+<li><a href="aula1.html#sistema"><span class="n">1.1</span>Sistema de arquivos</a></li>
+<li><a href="aula1.html#comandos"><span class="n">1.2</span>Comandos essenciais</a></li>
+<li><a href="aula1.html#especiais"><span class="n">1.3</span>Caracteres especiais</a></li>
+<li><a href="aula1.html#editores"><span class="n">1.4</span>Editores de texto</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">2. Linha de Comando</div><ul>
+<li><a href="aula2.html#pipes"><span class="n">2.1</span>Pipes e redirecionamento</a></li>
+<li><a href="aula2.html#busca"><span class="n">2.2</span>Busca e filtragem</a></li>
+<li><a href="aula2.html#processos"><span class="n">2.3</span>Processos e acesso remoto</a></li>
+<li><a href="aula2.html#pipeline"><span class="n">2.4</span>Construindo pipelines</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">3. Shell Scripting</div><ul>
+<li><a href="aula3.html#anatomia"><span class="n">3.1</span>Anatomia de um script</a></li>
+<li><a href="aula3.html#variaveis"><span class="n">3.2</span>Variáveis e argumentos</a></li>
+<li><a href="aula3.html#controle"><span class="n">3.3</span>Estruturas de controle</a></li>
+<li><a href="aula3.html#funcoes"><span class="n">3.4</span>Funções</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">4. Python e R — Fundamentos</div><ul>
+<li><a href="aula4.html#ambiente"><span class="n">4.1</span>Ambientes de trabalho</a></li>
+<li><a href="aula4.html#tipos"><span class="n">4.2</span>Tipos e estruturas</a></li>
+<li><a href="aula4.html#controle"><span class="n">4.3</span>Controle de fluxo</a></li>
+<li><a href="aula4.html#funcoes"><span class="n">4.4</span>Funções</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">5. DataFrames</div><ul>
+<li><a href="aula5.html#leitura"><span class="n">5.1</span>Leitura de dados</a></li>
+<li><a href="aula5.html#selecao"><span class="n">5.2</span>Seleção e filtragem</a></li>
+<li><a href="aula5.html#agrupamento"><span class="n">5.3</span>Agrupamento</a></li>
+<li><a href="aula5.html#join"><span class="n">5.4</span>Junção de tabelas</a></li>
+<li><a href="aula5.html#na"><span class="n">5.5</span>Dados faltantes</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">6. Visualização e Git</div><ul>
+<li><a href="aula6.html#scatter"><span class="n">6.1</span>Dispersão</a></li>
+<li><a href="aula6.html#histbox"><span class="n">6.2</span>Histograma e boxplot</a></li>
+<li><a href="aula6.html#heatmap"><span class="n">6.3</span>Heatmap</a></li>
+<li><a href="aula6.html#exportar"><span class="n">6.4</span>Exportando figuras</a></li>
+<li><a href="aula6.html#git"><span class="n">6.5</span>Git básico</a></li>
+</ul></div>
+<div class="nav-group">
+<div class="nav-group-title">7. Exercícios</div><ul>
+<li><a class="nav-link" data-target="ex-linux" href="#ex-linux"><span class="n">7.1</span>Linux</a></li>
+<li><a class="nav-link" data-target="ex-cli" href="#ex-cli"><span class="n">7.2</span>Linha de Comando</a></li>
+<li><a class="nav-link" data-target="ex-shell" href="#ex-shell"><span class="n">7.3</span>Shell Scripting</a></li>
+<li><a class="nav-link" data-target="ex-pyr" href="#ex-pyr"><span class="n">7.4</span>Python e R</a></li>
+<li><a class="nav-link" data-target="ex-df" href="#ex-df"><span class="n">7.5</span>DataFrames</a></li>
+<li><a class="nav-link" data-target="ex-viz" href="#ex-viz"><span class="n">7.6</span>Visualização e Git</a></li>
+</ul></div>
+</nav>
+<main class="content"><div class="content-inner">
+<article id="ex-linux" class="topic"><div class="topic-num">7.1</div><h1 class="topic-title">Introdução ao Linux</h1><p>Tente resolver cada exercício antes de revelar a solução. Clique em <em>Mostrar resposta</em> para ver a resolução comentada. Use o menu à esquerda para navegar entre os temas.</p><div class="exercise"><h4>Exercício 1.1 — Estrutura de diretórios</h4><p>Qual diretório você usaria para dados brutos de um projeto? E os scripts? Justifique.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><strong>Dados brutos:</strong> <code>~/projeto/data/raw/</code>. Separe dados de código para facilitar reprodutibilidade.</p><p><strong>Scripts:</strong> <code>~/projeto/scripts/</code>. Nunca armazene dados permanentes em <code>/tmp</code>.</p></div></details></div><div class="exercise"><h4>Exercício 1.2 — mkdir e navegação</h4><p>Crie a estrutura abaixo com um único comando e navegue até <code>data/raw</code>:</p><pre><code class="language-bash">projeto/data/{raw,processed}  projeto/{scripts,results/figures}</code></pre><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">mkdir -p projeto/{data/{raw,processed},scripts,results/figures}
 cd projeto/data/raw</code></pre></p><p>O flag <code>-p</code> cria todos os níveis. Chaves <code>{}</code> expandem múltiplos ramos.</p></div></details></div><div class="exercise"><h4>Exercício 1.3 — Permissões</h4><p><code>analise.sh</code> retorna <em>Permission denied</em>. Como você diagnostica e corrige?</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">ls -l analise.sh
 chmod +x analise.sh
 ./analise.sh</code></pre></p><p><code>chmod +x</code> adiciona permissão de execução. Prefira <code>chmod 755</code> para scripts compartilhados.</p></div></details></div><div class="exercise"><h4>Exercício 1.4 — Links simbólicos</h4><p>Você tem <code>/data/genomes/hg38.fa</code> (50 GB). Como acessá-lo de vários projetos sem copiar?</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">ln -s /data/genomes/hg38.fa ~/projeto/data/genome.fa
@@ -57,12 +78,14 @@ ls -la ~/projeto/data/</code></pre></p><p>Links simbólicos são ponteiros leves
 G        # vai ao fim
 o        # nova linha, modo inserção
 threads=8
-Esc :wq  # salva e sai</code></pre></p></div></details></div></div><div class="ex-section tab-panel" id="t2"><h2>2. Linha de Comando</h2><div class="exercise"><h4>Exercício 2.1 — Contar reads FASTQ</h4><p><code>reads.fastq</code> tem 4 linhas por read. Conte os reads e salve em <code>n_reads.txt</code>.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">wc -l reads.fastq | awk '{print $1/4}' &gt; n_reads.txt</code></pre></p></div></details></div><div class="exercise"><h4>Exercício 2.2 — grep em FASTA</h4><p>Extraia todos os cabeçalhos (<code>&gt;</code>) de um FASTA e conte sequências sem arquivo intermediário.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">grep -c '^&gt;' sequences.fasta
+Esc :wq  # salva e sai</code></pre></p></div></details></div></article>
+<article id="ex-cli" class="topic"><div class="topic-num">7.2</div><h1 class="topic-title">Linha de Comando</h1><div class="exercise"><h4>Exercício 2.1 — Contar reads FASTQ</h4><p><code>reads.fastq</code> tem 4 linhas por read. Conte os reads e salve em <code>n_reads.txt</code>.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">wc -l reads.fastq | awk '{print $1/4}' &gt; n_reads.txt</code></pre></p></div></details></div><div class="exercise"><h4>Exercício 2.2 — grep em FASTA</h4><p>Extraia todos os cabeçalhos (<code>&gt;</code>) de um FASTA e conte sequências sem arquivo intermediário.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">grep -c '^&gt;' sequences.fasta
 grep '^&gt;' sequences.fasta | wc -l</code></pre></p></div></details></div><div class="exercise"><h4>Exercício 2.3 — sort e top genes</h4><p><code>expressao.tsv</code> tem colunas gene, amostra, valor (tab-separado). Liste os 5 genes com maior média.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">awk 'NR&gt;1{s[$1]+=$3;n[$1]++}END{for(g in s)print s[g]/n[g],g}' \
   expressao.tsv | sort -rn | head -5</code></pre></p></div></details></div><div class="exercise"><h4>Exercício 2.4 — sed para renomear cabeçalhos</h4><p>No FASTA, substitua <code>&gt;chr1</code> por <code>&gt;chromosome_1</code> (qualquer número).</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">sed -E 's/&gt;chr([0-9]+)/&gt;chromosome_\1/g' input.fasta &gt; output.fasta</code></pre></p></div></details></div><div class="exercise"><h4>Exercício 2.5 — find e limpeza</h4><p>Encontre todos os <code>.log</code> em <code>/var/log/bio/</code> modificados há mais de 7 dias e delete.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash"># Primeiro visualize:
 find /var/log/bio/ -name '*.log' -mtime +7
 # Depois delete:
-find /var/log/bio/ -name '*.log' -mtime +7 -delete</code></pre></p><p>Sempre confira sem <code>-delete</code> primeiro.</p></div></details></div></div><div class="ex-section tab-panel" id="t3"><h2>3. Shell Scripting</h2><div class="exercise"><h4>Exercício 3.1 — Script com argumento padrão</h4><p>Script <code>saudar.sh</code>: recebe um nome, imprime saudação. Se omitido, usa 'Pesquisador'.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">#!/bin/bash
+find /var/log/bio/ -name '*.log' -mtime +7 -delete</code></pre></p><p>Sempre confira sem <code>-delete</code> primeiro.</p></div></details></div></article>
+<article id="ex-shell" class="topic"><div class="topic-num">7.3</div><h1 class="topic-title">Shell Scripting</h1><div class="exercise"><h4>Exercício 3.1 — Script com argumento padrão</h4><p>Script <code>saudar.sh</code>: recebe um nome, imprime saudação. Se omitido, usa 'Pesquisador'.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">#!/bin/bash
 NOME=${1:-Pesquisador}
 echo "Olá, $NOME! Bem-vindo ao laboratório."</code></pre></p></div></details></div><div class="exercise"><h4>Exercício 3.2 — Validação de entrada</h4><p>Script que recebe um FASTA, verifica existência e extensão, imprime número de sequências.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">#!/bin/bash
 ARQ=${1:?Uso: $0 arquivo.fasta}
@@ -89,7 +112,8 @@ for f in "$DIR"/*.fasta "$DIR"/*.fa; do
     nseqs=$(grep -c '^&gt;' "$f")
     nbp=$(grep -v '^&gt;' "$f" | tr -d '\n' | wc -c)
     printf '%-30s %8d %12d\n' "$(basename "$f")" "$nseqs" "$nbp"
-done</code></pre></p></div></details></div></div><div class="ex-section tab-panel" id="t4"><h2>4. Python e R — Fundamentos</h2><div class="exercise"><h4>Exercício 4.1 — Tipos e formatação</h4><p>Crie variáveis com GC% de 3 sequências, calcule a média e imprima relatório formatado.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><div class="parallel-grid"><div><div class="lang-header py">Python</div><pre><code class="language-python">gcs = [45.2, 62.8, 38.5]
+done</code></pre></p></div></details></div></article>
+<article id="ex-pyr" class="topic"><div class="topic-num">7.4</div><h1 class="topic-title">Python e R — Fundamentos</h1><div class="exercise"><h4>Exercício 4.1 — Tipos e formatação</h4><p>Crie variáveis com GC% de 3 sequências, calcule a média e imprima relatório formatado.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><div class="parallel-grid"><div><div class="lang-header py">Python</div><pre><code class="language-python">gcs = [45.2, 62.8, 38.5]
 media = sum(gcs) / len(gcs)
 print(f"GC médio: {media:.2f}%")
 print(f"Min: {min(gcs):.1f}%  Max: {max(gcs):.1f}%")</code></pre></div><div><div class="lang-header r">R</div><pre><code class="language-r">gcs &lt;- c(45.2, 62.8, 38.5)
@@ -166,7 +190,8 @@ seqs&lt;-replicate(10,{
 gcs&lt;-sapply(seqs,gc)
 filt&lt;-seqs[gcs&gt;=40 &amp; gcs&lt;=60]
 filt&lt;-filt[order(nchar(filt))]
-for(s in filt) cat(sprintf("len=%2d  GC=%.1f%%  %s\n",nchar(s),gc(s),s))</code></pre></div></div></p></div></details></div></div><div class="ex-section tab-panel" id="t5"><h2>5. DataFrames</h2><div class="exercise"><h4>Exercício 5.1 — Criar e inspecionar</h4><p>Crie um DataFrame com 50 amostras (gene, organismo, condição, expressão). Inspecione dimensões, tipos e estatísticas.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><div class="parallel-grid"><div><div class="lang-header py">Python</div><pre><code class="language-python">import pandas as pd, numpy as np
+for(s in filt) cat(sprintf("len=%2d  GC=%.1f%%  %s\n",nchar(s),gc(s),s))</code></pre></div></div></p></div></details></div></article>
+<article id="ex-df" class="topic"><div class="topic-num">7.5</div><h1 class="topic-title">DataFrames</h1><div class="exercise"><h4>Exercício 5.1 — Criar e inspecionar</h4><p>Crie um DataFrame com 50 amostras (gene, organismo, condição, expressão). Inspecione dimensões, tipos e estatísticas.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><div class="parallel-grid"><div><div class="lang-header py">Python</div><pre><code class="language-python">import pandas as pd, numpy as np
 np.random.seed(0)
 n=50
 df=pd.DataFrame({"gene":[f"G{i:03d}" for i in range(n)],
@@ -218,7 +243,8 @@ df_drop&lt;-drop_na(df_na,expr)
 df_imp&lt;-df_na|&gt;group_by(org,cond)|&gt;
     mutate(expr=ifelse(is.na(expr),
         median(expr,na.rm=TRUE),expr))|&gt;ungroup()
-cat("Após imputação:",sum(is.na(df_imp$expr)),"\n")</code></pre></div></div></p></div></details></div></div><div class="ex-section tab-panel" id="t6"><h2>6. Visualização e Git</h2><div class="exercise"><h4>Exercício 6.1 — Scatter com linha de regressão</h4><p>Scatter de GC% vs. log2_expr, colorido por condição, com linha de regressão por grupo.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><div class="parallel-grid"><div><div class="lang-header py">Python</div><pre><code class="language-python">import matplotlib.pyplot as plt, seaborn as sns
+cat("Após imputação:",sum(is.na(df_imp$expr)),"\n")</code></pre></div></div></p></div></details></div></article>
+<article id="ex-viz" class="topic"><div class="topic-num">7.6</div><h1 class="topic-title">Visualização e Git</h1><div class="exercise"><h4>Exercício 6.1 — Scatter com linha de regressão</h4><p>Scatter de GC% vs. log2_expr, colorido por condição, com linha de regressão por grupo.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><div class="parallel-grid"><div><div class="lang-header py">Python</div><pre><code class="language-python">import matplotlib.pyplot as plt, seaborn as sns
 sns.set_theme(style="whitegrid")
 fig,ax=plt.subplots(figsize=(7,5))
 sns.scatterplot(data=df,x="gc_pct",y="log2_expr",
@@ -299,45 +325,14 @@ cp ~/clean_data.py scripts/
 git add scripts/clean_data.py
 git commit -m "Adiciona script de limpeza e normalização"
 
-git log --oneline</code></pre></p><p>Commits atômicos e mensagens no imperativo. Use <code>.gitignore</code> para excluir dados grandes e arquivos temporários.</p></div></details></div></div><script>
-function showTab(e,id){
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  e.currentTarget.classList.add('active');
-  document.getElementById(id).classList.add('active');
-}
-</script></div>
-    <footer class="page-footer">
-      Instituto de Biofísica Carlos Chagas Filho — UFRJ<br>
-      Introdução à Programação para Pesquisa Biomédica · Pedro Torres
-    </footer>
-  </main>
-</div>
+git log --oneline</code></pre></p><p>Commits atômicos e mensagens no imperativo. Use <code>.gitignore</code> para excluir dados grandes e arquivos temporários.</p></div></details></div></article>
+<div class="footer"><div class="footer-text">Instituto de Biofísica Carlos Chagas Filho — UFRJ<br>Introdução à Programação para Pesquisa Biomédica · Pedro Torres</div></div>
+</div></main>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-r.min.js"></script>
-<script>
-(function() {
-  var saved = localStorage.getItem('theme') || 'light';
-  document.documentElement.setAttribute('data-theme', saved);
-  var btn = document.getElementById('theme-btn');
-  if (btn) btn.textContent = saved === 'dark' ? '🌙' : '☀️';
-  window.toggleTheme = function() {
-    var cur = document.documentElement.getAttribute('data-theme');
-    var next = cur === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-    var b = document.getElementById('theme-btn');
-    if (b) b.textContent = next === 'dark' ? '🌙' : '☀️';
-  };
-})();
-document.addEventListener('click', function(e) {
-  var s = document.querySelector('.sidebar');
-  var t = document.querySelector('.sidebar-toggle');
-  if (s && t && !s.contains(e.target) && !t.contains(e.target))
-    s.classList.remove('open');
-});
-</script>
+<script src="assets/app.js"></script>
 </body>
 </html>

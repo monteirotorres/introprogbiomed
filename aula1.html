@@ -1,59 +1,76 @@
 <!DOCTYPE html>
-<html lang="pt-BR" data-theme="light">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aula 1 — Introdução ao Linux — IntroProgBiomed</title>
+<title>Introdução ao Linux — IntroProgBiomed</title>
+<script>(function(){try{var t=localStorage.getItem('tema');if(!t){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
 </head>
 <body>
-<button class="sidebar-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
-<div class="layout">
-  <nav class="sidebar">
-    <div class="sidebar-header">
-      <div class="brand-logo">IntroProgBiomed</div>
-      <div class="brand-sub">IBCCF · UFRJ</div>
-    </div>
-    <ul class="nav-list">
-<li><a href="index.html" class="nav-link">🏠 Início</a>
-</li>
-<li><a href="aula1.html" class="nav-link active">1. Introdução ao Linux</a>
-<ul class="nav-sub"><li><a href="#sistema">Sistema de arquivos</a></li><li><a href="#comandos">Comandos essenciais</a></li><li><a href="#especiais">Caracteres especiais</a></li><li><a href="#editores">Editores de texto</a></li></ul>
-</li>
-<li><a href="aula2.html" class="nav-link">2. Linha de Comando</a>
-</li>
-<li><a href="aula3.html" class="nav-link">3. Shell Scripting</a>
-</li>
-<li><a href="aula4.html" class="nav-link">4. Python e R — Fundamentos</a>
-</li>
-<li><a href="aula5.html" class="nav-link">5. DataFrames</a>
-</li>
-<li><a href="aula6.html" class="nav-link">6. Visualização</a>
-</li>
-<li><div class="nav-divider"></div></li>
-<li><a href="exercicios.html" class="nav-link">📝 Exercícios</a>
-</li>
-    </ul>
-    <div class="sidebar-footer">
-      <div class="author-info">Pedro Torres<br>Biofísica · UFRJ</div>
-      <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Alternar tema">&#9728;&#65039;</button>
-    </div>
-  </nav>
-  <main class="content">
-    <div class="page-header"><div class="page-header-inner">
-<div class="aula-num">Aula 1 · Ambiente</div></div>
-<h1>Introdução ao Linux</h1>
-<p class="page-desc">
-  Entenda como o sistema operacional Linux organiza arquivos e diretórios,
-  e aprenda os comandos essenciais para navegar e manipular o sistema pela
-  linha de comando.
-</p>
-</div>
-    <div class="page-body">
-<div class="section" id="sistema">
-  <h2>1.1 Sistema de arquivos</h2>
-  <p>
+<button class="menu-toggle" id="menuToggle" aria-label="Menu">☰</button>
+<button class="theme-toggle" id="themeToggle" aria-label="Alternar tema" title="Alternar tema claro/escuro"><span class="theme-icon"></span></button>
+
+<nav class="sidebar" id="sidebar">
+<a class="sidebar-brand" href="index.html">Introdução à Programação<span>Pesquisa Biomédica · IBCCF · UFRJ</span></a>
+<div class="nav-group">
+<div class="nav-group-title">1. Introdução ao Linux</div><ul>
+<li><a class="nav-link" data-target="sistema" href="#sistema"><span class="n">1.1</span>Sistema de arquivos</a></li>
+<li><a class="nav-link" data-target="comandos" href="#comandos"><span class="n">1.2</span>Comandos essenciais</a></li>
+<li><a class="nav-link" data-target="especiais" href="#especiais"><span class="n">1.3</span>Caracteres especiais</a></li>
+<li><a class="nav-link" data-target="editores" href="#editores"><span class="n">1.4</span>Editores de texto</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">2. Linha de Comando</div><ul>
+<li><a href="aula2.html#pipes"><span class="n">2.1</span>Pipes e redirecionamento</a></li>
+<li><a href="aula2.html#busca"><span class="n">2.2</span>Busca e filtragem</a></li>
+<li><a href="aula2.html#processos"><span class="n">2.3</span>Processos e acesso remoto</a></li>
+<li><a href="aula2.html#pipeline"><span class="n">2.4</span>Construindo pipelines</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">3. Shell Scripting</div><ul>
+<li><a href="aula3.html#anatomia"><span class="n">3.1</span>Anatomia de um script</a></li>
+<li><a href="aula3.html#variaveis"><span class="n">3.2</span>Variáveis e argumentos</a></li>
+<li><a href="aula3.html#controle"><span class="n">3.3</span>Estruturas de controle</a></li>
+<li><a href="aula3.html#funcoes"><span class="n">3.4</span>Funções</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">4. Python e R — Fundamentos</div><ul>
+<li><a href="aula4.html#ambiente"><span class="n">4.1</span>Ambientes de trabalho</a></li>
+<li><a href="aula4.html#tipos"><span class="n">4.2</span>Tipos e estruturas</a></li>
+<li><a href="aula4.html#controle"><span class="n">4.3</span>Controle de fluxo</a></li>
+<li><a href="aula4.html#funcoes"><span class="n">4.4</span>Funções</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">5. DataFrames</div><ul>
+<li><a href="aula5.html#leitura"><span class="n">5.1</span>Leitura de dados</a></li>
+<li><a href="aula5.html#selecao"><span class="n">5.2</span>Seleção e filtragem</a></li>
+<li><a href="aula5.html#agrupamento"><span class="n">5.3</span>Agrupamento</a></li>
+<li><a href="aula5.html#join"><span class="n">5.4</span>Junção de tabelas</a></li>
+<li><a href="aula5.html#na"><span class="n">5.5</span>Dados faltantes</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">6. Visualização e Git</div><ul>
+<li><a href="aula6.html#scatter"><span class="n">6.1</span>Dispersão</a></li>
+<li><a href="aula6.html#histbox"><span class="n">6.2</span>Histograma e boxplot</a></li>
+<li><a href="aula6.html#heatmap"><span class="n">6.3</span>Heatmap</a></li>
+<li><a href="aula6.html#exportar"><span class="n">6.4</span>Exportando figuras</a></li>
+<li><a href="aula6.html#git"><span class="n">6.5</span>Git básico</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">7. Exercícios</div><ul>
+<li><a href="exercicios.html#ex-linux"><span class="n">7.1</span>Linux</a></li>
+<li><a href="exercicios.html#ex-cli"><span class="n">7.2</span>Linha de Comando</a></li>
+<li><a href="exercicios.html#ex-shell"><span class="n">7.3</span>Shell Scripting</a></li>
+<li><a href="exercicios.html#ex-pyr"><span class="n">7.4</span>Python e R</a></li>
+<li><a href="exercicios.html#ex-df"><span class="n">7.5</span>DataFrames</a></li>
+<li><a href="exercicios.html#ex-viz"><span class="n">7.6</span>Visualização e Git</a></li>
+</ul></div>
+</nav>
+<main class="content"><div class="content-inner">
+<article id="sistema" class="topic"><div class="topic-num">1.1</div><h1 class="topic-title">Sistema de arquivos</h1><p>
     Linux é um sistema operacional de código aberto baseado em Unix. Existem várias
     distribuições (Ubuntu, Debian, Fedora, etc.); neste curso usaremos o <strong>Ubuntu</strong>.
     Toda a hierarquia de arquivos parte de um único ponto: o diretório raiz <code>/</code>.
@@ -96,12 +113,8 @@
 projetos/dados.csv   # equivalente, se você estiver em /home/pedro
 
 # ~ é atalho para /home/seu_usuario
-~/projetos/dados.csv  # equivalente</code></pre>
-</div>
-
-<div class="section" id="comandos">
-  <h2>1.2 Comandos essenciais</h2>
-  <p>
+~/projetos/dados.csv  # equivalente</code></pre></article>
+<article id="comandos" class="topic"><div class="topic-num">1.2</div><h1 class="topic-title">Comandos essenciais</h1><p>
     O terminal recebe <strong>comandos</strong> no formato:
     <code>comando [opções] [argumentos]</code>.
     Opções começam com <code>-</code> (forma curta) ou <code>--</code> (forma longa).
@@ -205,12 +218,8 @@ wc -l *.fasta                    # conta linhas em todos os .fasta</code></pre>
       <tr><td><code>Ctrl+L</code></td><td>Limpa a tela do terminal</td></tr>
       <tr><td><code>history</code></td><td>Lista os últimos comandos executados</td></tr>
     </tbody>
-  </table>
-</div>
-
-<div class="section" id="especiais">
-  <h2>1.3 Caracteres especiais</h2>
-  <p>
+  </table></article>
+<article id="especiais" class="topic"><div class="topic-num">1.3</div><h1 class="topic-title">Caracteres especiais</h1><p>
     Certos caracteres têm significados especiais no shell. Conhecê-los é
     fundamental para construir comandos poderosos.
   </p>
@@ -248,12 +257,8 @@ date >> inventario.txt
 mkdir resultados; cd resultados; touch README.txt
 
 # & envia para background (programa continua rodando)
-blast_longo &       # terminal fica livre para outros comandos</code></pre>
-</div>
-
-<div class="section" id="editores">
-  <h2>1.4 Editores de texto no terminal</h2>
-  <p>
+blast_longo &       # terminal fica livre para outros comandos</code></pre></article>
+<article id="editores" class="topic"><div class="topic-num">1.4</div><h1 class="topic-title">Editores de texto no terminal</h1><p>
     Para editar arquivos sem interface gráfica — por exemplo, em servidores remotos
     via SSH — é essencial conhecer pelo menos um editor de texto no terminal.
   </p>
@@ -299,40 +304,14 @@ p          # cola</code></pre>
   <div class="callout tip">
     <strong>Dica:</strong> Se você se perder no vim e não conseguir sair, pressione
     <code>Esc</code> várias vezes e depois digite <code>:q!</code> para sair sem salvar.
-  </div>
-</div>
-</div>
-    <footer class="page-footer">
-      Instituto de Biofísica Carlos Chagas Filho — UFRJ<br>
-      Introdução à Programação para Pesquisa Biomédica · Pedro Torres
-    </footer>
-  </main>
-</div>
+  </div></article>
+<div class="footer"><div class="footer-text">Instituto de Biofísica Carlos Chagas Filho — UFRJ<br>Introdução à Programação para Pesquisa Biomédica · Pedro Torres</div></div>
+</div></main>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-r.min.js"></script>
-<script>
-(function() {
-  var saved = localStorage.getItem('theme') || 'light';
-  document.documentElement.setAttribute('data-theme', saved);
-  var btn = document.getElementById('theme-btn');
-  if (btn) btn.textContent = saved === 'dark' ? '\u{1F319}' : '\u2600\uFE0F';
-  window.toggleTheme = function() {
-    var cur = document.documentElement.getAttribute('data-theme');
-    var next = cur === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-    var b = document.getElementById('theme-btn');
-    if (b) b.textContent = next === 'dark' ? '\u{1F319}' : '\u2600\uFE0F';
-  };
-})();
-document.addEventListener('click', function(e) {
-  var s = document.querySelector('.sidebar');
-  var t = document.querySelector('.sidebar-toggle');
-  if (s && t && !s.contains(e.target) && !t.contains(e.target))
-    s.classList.remove('open');
-});
-</script>
+<script src="assets/app.js"></script>
 </body>
 </html>

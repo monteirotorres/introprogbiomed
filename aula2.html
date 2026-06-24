@@ -1,58 +1,76 @@
 <!DOCTYPE html>
-<html lang="pt-BR" data-theme="light">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aula 2 — Linha de Comando — IntroProgBiomed</title>
+<title>Linha de Comando — IntroProgBiomed</title>
+<script>(function(){try{var t=localStorage.getItem('tema');if(!t){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
 </head>
 <body>
-<button class="sidebar-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
-<div class="layout">
-  <nav class="sidebar">
-    <div class="sidebar-header">
-      <div class="brand-logo">IntroProgBiomed</div>
-      <div class="brand-sub">IBCCF · UFRJ</div>
-    </div>
-    <ul class="nav-list">
-<li><a href="index.html" class="nav-link">🏠 Início</a>
-</li>
-<li><a href="aula1.html" class="nav-link">1. Introdução ao Linux</a>
-</li>
-<li><a href="aula2.html" class="nav-link active">2. Linha de Comando</a>
-<ul class="nav-sub"><li><a href="#pipes">Pipes e redirecionamento</a></li><li><a href="#busca">Busca e filtragem</a></li><li><a href="#processos">Processos e acesso remoto</a></li><li><a href="#pipeline">Construindo pipelines</a></li></ul>
-</li>
-<li><a href="aula3.html" class="nav-link">3. Shell Scripting</a>
-</li>
-<li><a href="aula4.html" class="nav-link">4. Python e R — Fundamentos</a>
-</li>
-<li><a href="aula5.html" class="nav-link">5. DataFrames</a>
-</li>
-<li><a href="aula6.html" class="nav-link">6. Visualização</a>
-</li>
-<li><div class="nav-divider"></div></li>
-<li><a href="exercicios.html" class="nav-link">📝 Exercícios</a>
-</li>
-    </ul>
-    <div class="sidebar-footer">
-      <div class="author-info">Pedro Torres<br>Biofísica · UFRJ</div>
-      <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Alternar tema">&#9728;&#65039;</button>
-    </div>
-  </nav>
-  <main class="content">
-    <div class="page-header"><div class="page-header-inner">
-<div class="aula-num">Aula 2 · Ambiente</div></div>
-<h1>Linha de Comando Eficiente</h1>
-<p class="page-desc">
-  Domine pipes, redirecionamento e ferramentas de busca para construir
-  pipelines poderosos que processam dados biomédicos diretamente no terminal.
-</p>
-</div>
-    <div class="page-body">
-<div class="section" id="pipes">
-  <h2>2.1 Pipes e redirecionamento</h2>
-  <p>
+<button class="menu-toggle" id="menuToggle" aria-label="Menu">☰</button>
+<button class="theme-toggle" id="themeToggle" aria-label="Alternar tema" title="Alternar tema claro/escuro"><span class="theme-icon"></span></button>
+
+<nav class="sidebar" id="sidebar">
+<a class="sidebar-brand" href="index.html">Introdução à Programação<span>Pesquisa Biomédica · IBCCF · UFRJ</span></a>
+<div class="nav-group collapsed">
+<div class="nav-group-title">1. Introdução ao Linux</div><ul>
+<li><a href="aula1.html#sistema"><span class="n">1.1</span>Sistema de arquivos</a></li>
+<li><a href="aula1.html#comandos"><span class="n">1.2</span>Comandos essenciais</a></li>
+<li><a href="aula1.html#especiais"><span class="n">1.3</span>Caracteres especiais</a></li>
+<li><a href="aula1.html#editores"><span class="n">1.4</span>Editores de texto</a></li>
+</ul></div>
+<div class="nav-group">
+<div class="nav-group-title">2. Linha de Comando</div><ul>
+<li><a class="nav-link" data-target="pipes" href="#pipes"><span class="n">2.1</span>Pipes e redirecionamento</a></li>
+<li><a class="nav-link" data-target="busca" href="#busca"><span class="n">2.2</span>Busca e filtragem</a></li>
+<li><a class="nav-link" data-target="processos" href="#processos"><span class="n">2.3</span>Processos e acesso remoto</a></li>
+<li><a class="nav-link" data-target="pipeline" href="#pipeline"><span class="n">2.4</span>Construindo pipelines</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">3. Shell Scripting</div><ul>
+<li><a href="aula3.html#anatomia"><span class="n">3.1</span>Anatomia de um script</a></li>
+<li><a href="aula3.html#variaveis"><span class="n">3.2</span>Variáveis e argumentos</a></li>
+<li><a href="aula3.html#controle"><span class="n">3.3</span>Estruturas de controle</a></li>
+<li><a href="aula3.html#funcoes"><span class="n">3.4</span>Funções</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">4. Python e R — Fundamentos</div><ul>
+<li><a href="aula4.html#ambiente"><span class="n">4.1</span>Ambientes de trabalho</a></li>
+<li><a href="aula4.html#tipos"><span class="n">4.2</span>Tipos e estruturas</a></li>
+<li><a href="aula4.html#controle"><span class="n">4.3</span>Controle de fluxo</a></li>
+<li><a href="aula4.html#funcoes"><span class="n">4.4</span>Funções</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">5. DataFrames</div><ul>
+<li><a href="aula5.html#leitura"><span class="n">5.1</span>Leitura de dados</a></li>
+<li><a href="aula5.html#selecao"><span class="n">5.2</span>Seleção e filtragem</a></li>
+<li><a href="aula5.html#agrupamento"><span class="n">5.3</span>Agrupamento</a></li>
+<li><a href="aula5.html#join"><span class="n">5.4</span>Junção de tabelas</a></li>
+<li><a href="aula5.html#na"><span class="n">5.5</span>Dados faltantes</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">6. Visualização e Git</div><ul>
+<li><a href="aula6.html#scatter"><span class="n">6.1</span>Dispersão</a></li>
+<li><a href="aula6.html#histbox"><span class="n">6.2</span>Histograma e boxplot</a></li>
+<li><a href="aula6.html#heatmap"><span class="n">6.3</span>Heatmap</a></li>
+<li><a href="aula6.html#exportar"><span class="n">6.4</span>Exportando figuras</a></li>
+<li><a href="aula6.html#git"><span class="n">6.5</span>Git básico</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">7. Exercícios</div><ul>
+<li><a href="exercicios.html#ex-linux"><span class="n">7.1</span>Linux</a></li>
+<li><a href="exercicios.html#ex-cli"><span class="n">7.2</span>Linha de Comando</a></li>
+<li><a href="exercicios.html#ex-shell"><span class="n">7.3</span>Shell Scripting</a></li>
+<li><a href="exercicios.html#ex-pyr"><span class="n">7.4</span>Python e R</a></li>
+<li><a href="exercicios.html#ex-df"><span class="n">7.5</span>DataFrames</a></li>
+<li><a href="exercicios.html#ex-viz"><span class="n">7.6</span>Visualização e Git</a></li>
+</ul></div>
+</nav>
+<main class="content"><div class="content-inner">
+<article id="pipes" class="topic"><div class="topic-num">2.1</div><h1 class="topic-title">Pipes e redirecionamento</h1><p>
     O poder da linha de comando vem da capacidade de <strong>encadear comandos simples</strong>
     usando pipes (<code>|</code>) e de <strong>redirecionar</strong> saídas para arquivos.
     Cada programa lê da <em>entrada padrão</em> (stdin) e escreve na <em>saída padrão</em> (stdout).
@@ -74,13 +92,8 @@ cat dados.csv | grep "Homo sapiens" > humanos.csv</code></pre>
     <strong>Filosofia Unix:</strong> cada ferramenta faz uma coisa bem feita.
     A força vem da combinação — pequenos comandos encadeados constroem
     análises complexas sem escrever uma linha de código.
-  </div>
-</div>
-
-<div class="section" id="busca">
-  <h2>2.2 Busca e filtragem</h2>
-
-  <h3>grep — busca por padrões de texto</h3>
+  </div></article>
+<article id="busca" class="topic"><div class="topic-num">2.2</div><h1 class="topic-title">Busca e filtragem</h1><h3>grep — busca por padrões de texto</h3>
   <p>
     <code>grep</code> é uma das ferramentas mais usadas em bioinformática.
     Ele filtra linhas que contêm um padrão — literais ou expressões regulares.
@@ -155,13 +168,8 @@ cut -c1-10 sequencias.txt          # caracteres 1 a 10 de cada linha
 awk '{print $1, $3}' arquivo.txt           # imprime colunas 1 e 3
 awk -F',' '{print $2}' dados.csv           # col 2 de CSV
 awk '$3 > 100 {print}' tabela.txt          # filtra linhas onde col 3 > 100
-awk 'NR > 1 {print}' dados.csv             # pula o cabeçalho (linha 1)</code></pre>
-</div>
-
-<div class="section" id="processos">
-  <h2>2.3 Processos e acesso remoto</h2>
-
-  <h3>Gerenciamento de processos</h3>
+awk 'NR > 1 {print}' dados.csv             # pula o cabeçalho (linha 1)</code></pre></article>
+<article id="processos" class="topic"><div class="topic-num">2.3</div><h1 class="topic-title">Processos e acesso remoto</h1><h3>Gerenciamento de processos</h3>
   <table class="data-table">
     <thead><tr><th>Comando</th><th>Descrição</th><th>Exemplo</th></tr></thead>
     <tbody>
@@ -202,12 +210,8 @@ scp usuario@servidor:/dados/resultado.csv ./         # remoto → local
 scp -r pasta/ usuario@servidor:/destino/             # copia diretório inteiro
 
 # Manter sessão ativa mesmo após desconexão (nohup)
-nohup python3 analise.py &        # roda em background, sobrevive ao logout</code></pre>
-</div>
-
-<div class="section" id="pipeline">
-  <h2>2.4 Construindo pipelines biomédicos</h2>
-  <p>
+nohup python3 analise.py &        # roda em background, sobrevive ao logout</code></pre></article>
+<article id="pipeline" class="topic"><div class="topic-num">2.4</div><h1 class="topic-title">Construindo pipelines biomédicos</h1><p>
     Veja exemplos de pipelines reais que combinam os comandos aprendidos
     para resolver problemas comuns em bioinformática.
   </p>
@@ -248,40 +252,14 @@ cat *.fasta > todas_as_sequencias.fasta</code></pre>
     <strong>Exercício rápido:</strong> dado um arquivo <code>genes.csv</code> com colunas
     <em>id, gene, organismo, expressao</em>, escreva um pipeline que: (1) filtra apenas
     humanos, (2) ordena por expressão decrescente, (3) mostra os 5 mais expressos.
-  </div>
-</div>
-</div>
-    <footer class="page-footer">
-      Instituto de Biofísica Carlos Chagas Filho — UFRJ<br>
-      Introdução à Programação para Pesquisa Biomédica · Pedro Torres
-    </footer>
-  </main>
-</div>
+  </div></article>
+<div class="footer"><div class="footer-text">Instituto de Biofísica Carlos Chagas Filho — UFRJ<br>Introdução à Programação para Pesquisa Biomédica · Pedro Torres</div></div>
+</div></main>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-r.min.js"></script>
-<script>
-(function() {
-  var saved = localStorage.getItem('theme') || 'light';
-  document.documentElement.setAttribute('data-theme', saved);
-  var btn = document.getElementById('theme-btn');
-  if (btn) btn.textContent = saved === 'dark' ? '\u{1F319}' : '\u2600\uFE0F';
-  window.toggleTheme = function() {
-    var cur = document.documentElement.getAttribute('data-theme');
-    var next = cur === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-    var b = document.getElementById('theme-btn');
-    if (b) b.textContent = next === 'dark' ? '\u{1F319}' : '\u2600\uFE0F';
-  };
-})();
-document.addEventListener('click', function(e) {
-  var s = document.querySelector('.sidebar');
-  var t = document.querySelector('.sidebar-toggle');
-  if (s && t && !s.contains(e.target) && !t.contains(e.target))
-    s.classList.remove('open');
-});
-</script>
+<script src="assets/app.js"></script>
 </body>
 </html>

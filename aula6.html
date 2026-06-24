@@ -1,55 +1,76 @@
 <!DOCTYPE html>
-<html lang="pt-BR" data-theme="light">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aula 6 — Visualização — IntroProgBiomed</title>
+<title>Visualização e Git — IntroProgBiomed</title>
+<script>(function(){try{var t=localStorage.getItem('tema');if(!t){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
 </head>
 <body>
-<button class="sidebar-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
-<div class="layout">
-  <nav class="sidebar">
-    <div class="sidebar-header">
-      <div class="brand-logo">IntroProgBiomed</div>
-      <div class="brand-sub">IBCCF · UFRJ</div>
-    </div>
-    <ul class="nav-list">
-<li><a href="index.html" class="nav-link">🏠 Início</a>
-</li>
-<li><a href="aula1.html" class="nav-link">1. Introdução ao Linux</a>
-</li>
-<li><a href="aula2.html" class="nav-link">2. Linha de Comando</a>
-</li>
-<li><a href="aula3.html" class="nav-link">3. Shell Scripting</a>
-</li>
-<li><a href="aula4.html" class="nav-link">4. Python e R — Fundamentos</a>
-</li>
-<li><a href="aula5.html" class="nav-link">5. DataFrames</a>
-</li>
-<li><a href="aula6.html" class="nav-link active">6. Visualização</a>
-<ul class="nav-sub"><li><a href="#scatter">Dispersão</a></li><li><a href="#histbox">Histograma e Boxplot</a></li><li><a href="#heatmap">Heatmap</a></li><li><a href="#exportar">Exportando figuras</a></li><li><a href="#git">Git básico</a></li></ul>
-</li>
-<li><div class="nav-divider"></div></li>
-<li><a href="exercicios.html" class="nav-link">📝 Exercícios</a>
-</li>
-    </ul>
-    <div class="sidebar-footer">
-      <div class="author-info">Pedro Torres<br>Biofísica · UFRJ</div>
-      <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Alternar tema">&#9728;&#65039;</button>
-    </div>
-  </nav>
-  <main class="content">
-    <div class="page-header"><div class="page-header-inner"><div class="aula-num">Aula 6 &middot; Programação</div></div><h1>Visualização: Matplotlib/Seaborn e ggplot2</h1><p class="page-desc">Crie gráficos científicos de qualidade para publicação em Python e R. Princípios de visualização, tipos de gráfico e exportação de figuras.</p></div>
-    <div class="page-body"><div class="colab-section"><span class="colab-section-label">Notebooks da aula</span><a href="https://colab.research.google.com/github/monteirotorres/introprogbiomed/blob/main/notebooks/aula6_matplotlib_seaborn.ipynb" target="_blank" class="colab-badge py-badge">
-      <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Abrir no Colab"> Python
-    </a><a href="https://colab.research.google.com/github/monteirotorres/introprogbiomed/blob/main/notebooks/aula6_ggplot2.ipynb" target="_blank" class="colab-badge r-badge">
-      <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Abrir no Colab"> R
-    </a></div>
-<div class="section" id="scatter">
-  <h2>6.1 Configuração e gráfico de dispersão</h2>
-  <div class="parallel-grid"><div><div class="lang-header py">&#x1F40D; Python &middot; Matplotlib/Seaborn</div><pre><code class="language-python">import matplotlib.pyplot as plt
+<button class="menu-toggle" id="menuToggle" aria-label="Menu">☰</button>
+<button class="theme-toggle" id="themeToggle" aria-label="Alternar tema" title="Alternar tema claro/escuro"><span class="theme-icon"></span></button>
+
+<nav class="sidebar" id="sidebar">
+<a class="sidebar-brand" href="index.html">Introdução à Programação<span>Pesquisa Biomédica · IBCCF · UFRJ</span></a>
+<div class="nav-group collapsed">
+<div class="nav-group-title">1. Introdução ao Linux</div><ul>
+<li><a href="aula1.html#sistema"><span class="n">1.1</span>Sistema de arquivos</a></li>
+<li><a href="aula1.html#comandos"><span class="n">1.2</span>Comandos essenciais</a></li>
+<li><a href="aula1.html#especiais"><span class="n">1.3</span>Caracteres especiais</a></li>
+<li><a href="aula1.html#editores"><span class="n">1.4</span>Editores de texto</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">2. Linha de Comando</div><ul>
+<li><a href="aula2.html#pipes"><span class="n">2.1</span>Pipes e redirecionamento</a></li>
+<li><a href="aula2.html#busca"><span class="n">2.2</span>Busca e filtragem</a></li>
+<li><a href="aula2.html#processos"><span class="n">2.3</span>Processos e acesso remoto</a></li>
+<li><a href="aula2.html#pipeline"><span class="n">2.4</span>Construindo pipelines</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">3. Shell Scripting</div><ul>
+<li><a href="aula3.html#anatomia"><span class="n">3.1</span>Anatomia de um script</a></li>
+<li><a href="aula3.html#variaveis"><span class="n">3.2</span>Variáveis e argumentos</a></li>
+<li><a href="aula3.html#controle"><span class="n">3.3</span>Estruturas de controle</a></li>
+<li><a href="aula3.html#funcoes"><span class="n">3.4</span>Funções</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">4. Python e R — Fundamentos</div><ul>
+<li><a href="aula4.html#ambiente"><span class="n">4.1</span>Ambientes de trabalho</a></li>
+<li><a href="aula4.html#tipos"><span class="n">4.2</span>Tipos e estruturas</a></li>
+<li><a href="aula4.html#controle"><span class="n">4.3</span>Controle de fluxo</a></li>
+<li><a href="aula4.html#funcoes"><span class="n">4.4</span>Funções</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">5. DataFrames</div><ul>
+<li><a href="aula5.html#leitura"><span class="n">5.1</span>Leitura de dados</a></li>
+<li><a href="aula5.html#selecao"><span class="n">5.2</span>Seleção e filtragem</a></li>
+<li><a href="aula5.html#agrupamento"><span class="n">5.3</span>Agrupamento</a></li>
+<li><a href="aula5.html#join"><span class="n">5.4</span>Junção de tabelas</a></li>
+<li><a href="aula5.html#na"><span class="n">5.5</span>Dados faltantes</a></li>
+</ul></div>
+<div class="nav-group">
+<div class="nav-group-title">6. Visualização e Git</div><ul>
+<li><a class="nav-link" data-target="scatter" href="#scatter"><span class="n">6.1</span>Dispersão</a></li>
+<li><a class="nav-link" data-target="histbox" href="#histbox"><span class="n">6.2</span>Histograma e boxplot</a></li>
+<li><a class="nav-link" data-target="heatmap" href="#heatmap"><span class="n">6.3</span>Heatmap</a></li>
+<li><a class="nav-link" data-target="exportar" href="#exportar"><span class="n">6.4</span>Exportando figuras</a></li>
+<li><a class="nav-link" data-target="git" href="#git"><span class="n">6.5</span>Git básico</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">7. Exercícios</div><ul>
+<li><a href="exercicios.html#ex-linux"><span class="n">7.1</span>Linux</a></li>
+<li><a href="exercicios.html#ex-cli"><span class="n">7.2</span>Linha de Comando</a></li>
+<li><a href="exercicios.html#ex-shell"><span class="n">7.3</span>Shell Scripting</a></li>
+<li><a href="exercicios.html#ex-pyr"><span class="n">7.4</span>Python e R</a></li>
+<li><a href="exercicios.html#ex-df"><span class="n">7.5</span>DataFrames</a></li>
+<li><a href="exercicios.html#ex-viz"><span class="n">7.6</span>Visualização e Git</a></li>
+</ul></div>
+</nav>
+<main class="content"><div class="content-inner">
+<article id="scatter" class="topic"><div class="topic-num">6.1</div><h1 class="topic-title">Configuração e gráfico de dispersão</h1><div class="nb-row"><span class="nb-label">Notebook</span><a class="colab-link" href="https://colab.research.google.com/github/monteirotorres/introprogbiomed/blob/main/notebooks/aula6_matplotlib_seaborn.ipynb" target="_blank" rel="noopener"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Abrir no Colab"><span class="lang-tag py">Python</span></a><a class="colab-link" href="https://colab.research.google.com/github/monteirotorres/introprogbiomed/blob/main/notebooks/aula6_ggplot2.ipynb" target="_blank" rel="noopener"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Abrir no Colab"><span class="lang-tag r">R</span></a></div><div class="parallel-grid"><div><div class="lang-header py">&#x1F40D; Python &middot; Matplotlib/Seaborn</div><pre><code class="language-python">import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 import numpy as np
@@ -100,12 +121,8 @@ ggplot(df, aes(x=expressao_tumoral,
     <strong>Gramática dos gráficos (ggplot2):</strong> todo gráfico em ggplot2
     é construído por camadas — dados (<code>ggplot()</code>), geometria (<code>geom_*</code>),
     escala, tema e rótulos. Isso torna o código declarativo e fácil de modificar.
-  </div>
-</div>
-
-<div class="section" id="histbox">
-  <h2>6.2 Histograma e boxplot</h2>
-  <div class="parallel-grid"><div><div class="lang-header py">&#x1F40D; Python &middot; Matplotlib/Seaborn</div><pre><code class="language-python">fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+  </div></article>
+<article id="histbox" class="topic"><div class="topic-num">6.2</div><h1 class="topic-title">Histograma e boxplot</h1><div class="parallel-grid"><div><div class="lang-header py">&#x1F40D; Python &middot; Matplotlib/Seaborn</div><pre><code class="language-python">fig, axes = plt.subplots(1, 2, figsize=(12, 4))
 # Histograma com KDE
 sns.histplot(data=df, x="expressao",
              hue="condicao", bins=30,
@@ -134,12 +151,8 @@ p2 &lt;- ggplot(df, aes(x=condicao, y=expressao,
   theme(legend.position="none")
 
 library(patchwork)
-p1 + p2    # combina figuras lado a lado</code></pre></div></div>
-</div>
-
-<div class="section" id="heatmap">
-  <h2>6.3 Heatmap de correlação</h2>
-  <div class="parallel-grid"><div><div class="lang-header py">&#x1F40D; Python &middot; Matplotlib/Seaborn</div><pre><code class="language-python">corr = df[gene_cols].corr()
+p1 + p2    # combina figuras lado a lado</code></pre></div></div></article>
+<article id="heatmap" class="topic"><div class="topic-num">6.3</div><h1 class="topic-title">Heatmap de correlação</h1><div class="parallel-grid"><div><div class="lang-header py">&#x1F40D; Python &middot; Matplotlib/Seaborn</div><pre><code class="language-python">corr = df[gene_cols].corr()
 fig, ax = plt.subplots(figsize=(8, 7))
 sns.heatmap(corr, annot=True, fmt=".2f",
             cmap="RdBu_r", center=0,
@@ -164,12 +177,8 @@ ggplot(df_long, aes(x=g1, y=g2, fill=cor)) +
   scale_fill_gradient2(low="blue", mid="white",
     high="red", midpoint=0) +
   theme(axis.text.x=element_text(
-    angle=45, hjust=1))</code></pre></div></div>
-</div>
-
-<div class="section" id="exportar">
-  <h2>6.4 Exportando figuras para publicação</h2>
-  <div class="parallel-grid"><div><div class="lang-header py">&#x1F40D; Python &middot; Matplotlib/Seaborn</div><pre><code class="language-python">fig, ax = plt.subplots(figsize=(7, 5))
+    angle=45, hjust=1))</code></pre></div></div></article>
+<article id="exportar" class="topic"><div class="topic-num">6.4</div><h1 class="topic-title">Exportando figuras para publicação</h1><div class="parallel-grid"><div><div class="lang-header py">&#x1F40D; Python &middot; Matplotlib/Seaborn</div><pre><code class="language-python">fig, ax = plt.subplots(figsize=(7, 5))
 # ... código do gráfico ...
 
 fig.savefig("figura1.png",
@@ -194,12 +203,8 @@ ggsave("figura1.svg", plot=p,
     <strong>Padrão para revistas:</strong> use <code>dpi=300</code> para PNG,
     ou formatos vetoriais (PDF, SVG) para qualidade em qualquer escala.
     Sempre consulte as instruções da revista-alvo.
-  </div>
-</div>
-
-<div class="section" id="git">
-  <h2>6.5 Versionamento básico com Git</h2>
-  <p>Git registra o histórico de mudanças, permite reverter erros e facilita a colaboração.</p>
+  </div></article>
+<article id="git" class="topic"><div class="topic-num">6.5</div><h1 class="topic-title">Versionamento básico com Git</h1><p>Git registra o histórico de mudanças, permite reverter erros e facilita a colaboração.</p>
   <div class="code-label bash">bash</div>
   <pre><code class="language-bash"># No terminal, dentro do projeto:
 git init
@@ -219,40 +224,14 @@ git checkout -- arquivo.py            # descarta mudanças locais</code></pre>
   <div class="callout tip">
     <strong>Regra de ouro:</strong> faça um commit sempre que o código estiver em
     um estado funcional. Mensagens descritivas valem ouro no futuro.
-  </div>
-</div>
-</div>
-    <footer class="page-footer">
-      Instituto de Biofísica Carlos Chagas Filho — UFRJ<br>
-      Introdução à Programação para Pesquisa Biomédica · Pedro Torres
-    </footer>
-  </main>
-</div>
+  </div></article>
+<div class="footer"><div class="footer-text">Instituto de Biofísica Carlos Chagas Filho — UFRJ<br>Introdução à Programação para Pesquisa Biomédica · Pedro Torres</div></div>
+</div></main>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-r.min.js"></script>
-<script>
-(function() {
-  var saved = localStorage.getItem('theme') || 'light';
-  document.documentElement.setAttribute('data-theme', saved);
-  var btn = document.getElementById('theme-btn');
-  if (btn) btn.textContent = saved === 'dark' ? '\u{1F319}' : '\u2600\uFE0F';
-  window.toggleTheme = function() {
-    var cur = document.documentElement.getAttribute('data-theme');
-    var next = cur === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-    var b = document.getElementById('theme-btn');
-    if (b) b.textContent = next === 'dark' ? '\u{1F319}' : '\u2600\uFE0F';
-  };
-})();
-document.addEventListener('click', function(e) {
-  var s = document.querySelector('.sidebar');
-  var t = document.querySelector('.sidebar-toggle');
-  if (s && t && !s.contains(e.target) && !t.contains(e.target))
-    s.classList.remove('open');
-});
-</script>
+<script src="assets/app.js"></script>
 </body>
 </html>

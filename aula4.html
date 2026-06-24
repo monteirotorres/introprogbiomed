@@ -1,63 +1,76 @@
 <!DOCTYPE html>
-<html lang="pt-BR" data-theme="light">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aula 4 — Python e R: Fundamentos — IntroProgBiomed</title>
+<title>Python e R — Fundamentos — IntroProgBiomed</title>
+<script>(function(){try{var t=localStorage.getItem('tema');if(!t){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
 </head>
 <body>
-<button class="sidebar-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
-<div class="layout">
-  <nav class="sidebar">
-    <div class="sidebar-header">
-      <div class="brand-logo">IntroProgBiomed</div>
-      <div class="brand-sub">IBCCF · UFRJ</div>
-    </div>
-    <ul class="nav-list">
-<li><a href="index.html" class="nav-link">🏠 Início</a>
-</li>
-<li><a href="aula1.html" class="nav-link">1. Introdução ao Linux</a>
-</li>
-<li><a href="aula2.html" class="nav-link">2. Linha de Comando</a>
-</li>
-<li><a href="aula3.html" class="nav-link">3. Shell Scripting</a>
-</li>
-<li><a href="aula4.html" class="nav-link active">4. Python e R — Fundamentos</a>
-<ul class="nav-sub"><li><a href="#ambiente">Ambientes de trabalho</a></li><li><a href="#tipos">Tipos e estruturas</a></li><li><a href="#controle">Controle de fluxo</a></li><li><a href="#funcoes">Funções</a></li></ul>
-</li>
-<li><a href="aula5.html" class="nav-link">5. DataFrames</a>
-</li>
-<li><a href="aula6.html" class="nav-link">6. Visualização</a>
-</li>
-<li><div class="nav-divider"></div></li>
-<li><a href="exercicios.html" class="nav-link">📝 Exercícios</a>
-</li>
-    </ul>
-    <div class="sidebar-footer">
-      <div class="author-info">Pedro Torres<br>Biofísica · UFRJ</div>
-      <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Alternar tema">&#9728;&#65039;</button>
-    </div>
-  </nav>
-  <main class="content">
-    <div class="page-header"><div class="page-header-inner">
-<div class="aula-num">Aula 4 · Programação</div></div>
-<h1>Python e R — Fundamentos</h1>
-<p class="page-desc">
-  Introdução às duas linguagens em paralelo: tipos de dados, estruturas,
-  controle de fluxo e funções. Você verá que os conceitos são os mesmos —
-  apenas a sintaxe muda.
-</p>
-</div>
-    <div class="page-body"><div class="colab-section"><span class="colab-section-label">Notebooks da aula</span><a href="https://colab.research.google.com/github/monteirotorres/introprogbiomed/blob/main/notebooks/aula4_python_fundamentos.ipynb" target="_blank" class="colab-badge py-badge">
-      <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Abrir no Colab"> Python
-    </a><a href="https://colab.research.google.com/github/monteirotorres/introprogbiomed/blob/main/notebooks/aula4_r_fundamentos.ipynb" target="_blank" class="colab-badge r-badge">
-      <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Abrir no Colab"> R
-    </a></div>
-<div class="section" id="ambiente">
-  <h2>4.1 Ambientes de trabalho</h2>
-  <table class="data-table">
+<button class="menu-toggle" id="menuToggle" aria-label="Menu">☰</button>
+<button class="theme-toggle" id="themeToggle" aria-label="Alternar tema" title="Alternar tema claro/escuro"><span class="theme-icon"></span></button>
+
+<nav class="sidebar" id="sidebar">
+<a class="sidebar-brand" href="index.html">Introdução à Programação<span>Pesquisa Biomédica · IBCCF · UFRJ</span></a>
+<div class="nav-group collapsed">
+<div class="nav-group-title">1. Introdução ao Linux</div><ul>
+<li><a href="aula1.html#sistema"><span class="n">1.1</span>Sistema de arquivos</a></li>
+<li><a href="aula1.html#comandos"><span class="n">1.2</span>Comandos essenciais</a></li>
+<li><a href="aula1.html#especiais"><span class="n">1.3</span>Caracteres especiais</a></li>
+<li><a href="aula1.html#editores"><span class="n">1.4</span>Editores de texto</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">2. Linha de Comando</div><ul>
+<li><a href="aula2.html#pipes"><span class="n">2.1</span>Pipes e redirecionamento</a></li>
+<li><a href="aula2.html#busca"><span class="n">2.2</span>Busca e filtragem</a></li>
+<li><a href="aula2.html#processos"><span class="n">2.3</span>Processos e acesso remoto</a></li>
+<li><a href="aula2.html#pipeline"><span class="n">2.4</span>Construindo pipelines</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">3. Shell Scripting</div><ul>
+<li><a href="aula3.html#anatomia"><span class="n">3.1</span>Anatomia de um script</a></li>
+<li><a href="aula3.html#variaveis"><span class="n">3.2</span>Variáveis e argumentos</a></li>
+<li><a href="aula3.html#controle"><span class="n">3.3</span>Estruturas de controle</a></li>
+<li><a href="aula3.html#funcoes"><span class="n">3.4</span>Funções</a></li>
+</ul></div>
+<div class="nav-group">
+<div class="nav-group-title">4. Python e R — Fundamentos</div><ul>
+<li><a class="nav-link" data-target="ambiente" href="#ambiente"><span class="n">4.1</span>Ambientes de trabalho</a></li>
+<li><a class="nav-link" data-target="tipos" href="#tipos"><span class="n">4.2</span>Tipos e estruturas</a></li>
+<li><a class="nav-link" data-target="controle" href="#controle"><span class="n">4.3</span>Controle de fluxo</a></li>
+<li><a class="nav-link" data-target="funcoes" href="#funcoes"><span class="n">4.4</span>Funções</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">5. DataFrames</div><ul>
+<li><a href="aula5.html#leitura"><span class="n">5.1</span>Leitura de dados</a></li>
+<li><a href="aula5.html#selecao"><span class="n">5.2</span>Seleção e filtragem</a></li>
+<li><a href="aula5.html#agrupamento"><span class="n">5.3</span>Agrupamento</a></li>
+<li><a href="aula5.html#join"><span class="n">5.4</span>Junção de tabelas</a></li>
+<li><a href="aula5.html#na"><span class="n">5.5</span>Dados faltantes</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">6. Visualização e Git</div><ul>
+<li><a href="aula6.html#scatter"><span class="n">6.1</span>Dispersão</a></li>
+<li><a href="aula6.html#histbox"><span class="n">6.2</span>Histograma e boxplot</a></li>
+<li><a href="aula6.html#heatmap"><span class="n">6.3</span>Heatmap</a></li>
+<li><a href="aula6.html#exportar"><span class="n">6.4</span>Exportando figuras</a></li>
+<li><a href="aula6.html#git"><span class="n">6.5</span>Git básico</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">7. Exercícios</div><ul>
+<li><a href="exercicios.html#ex-linux"><span class="n">7.1</span>Linux</a></li>
+<li><a href="exercicios.html#ex-cli"><span class="n">7.2</span>Linha de Comando</a></li>
+<li><a href="exercicios.html#ex-shell"><span class="n">7.3</span>Shell Scripting</a></li>
+<li><a href="exercicios.html#ex-pyr"><span class="n">7.4</span>Python e R</a></li>
+<li><a href="exercicios.html#ex-df"><span class="n">7.5</span>DataFrames</a></li>
+<li><a href="exercicios.html#ex-viz"><span class="n">7.6</span>Visualização e Git</a></li>
+</ul></div>
+</nav>
+<main class="content"><div class="content-inner">
+<article id="ambiente" class="topic"><div class="topic-num">4.1</div><h1 class="topic-title">Ambientes de trabalho</h1><div class="nb-row"><span class="nb-label">Notebook</span><a class="colab-link" href="https://colab.research.google.com/github/monteirotorres/introprogbiomed/blob/main/notebooks/aula4_python_fundamentos.ipynb" target="_blank" rel="noopener"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Abrir no Colab"><span class="lang-tag py">Python</span></a><a class="colab-link" href="https://colab.research.google.com/github/monteirotorres/introprogbiomed/blob/main/notebooks/aula4_r_fundamentos.ipynb" target="_blank" rel="noopener"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Abrir no Colab"><span class="lang-tag r">R</span></a></div><table class="data-table">
     <thead><tr><th></th><th>Python</th><th>R</th></tr></thead>
     <tbody>
       <tr><td><strong>IDE</strong></td><td>Jupyter Notebook / Google Colab</td><td>RStudio / Google Colab</td></tr>
@@ -65,12 +78,8 @@
       <tr><td><strong>Instalar pacote</strong></td><td><code>pip install pacote</code></td><td><code>install.packages("pacote")</code></td></tr>
       <tr><td><strong>Importar</strong></td><td><code>import pacote</code></td><td><code>library(pacote)</code></td></tr>
     </tbody>
-  </table>
-</div>
-
-<div class="section" id="tipos">
-  <h2>4.2 Tipos e estruturas de dados</h2>
-  <h3>Tipos básicos</h3>
+  </table></article>
+<article id="tipos" class="topic"><div class="topic-num">4.2</div><h1 class="topic-title">Tipos e estruturas de dados</h1><h3>Tipos básicos</h3>
   <div class="parallel-grid"><div><div class="lang-header py">🐍 Python</div><pre><code class="language-python"># Inteiro, float, string, bool, None
 n       = 42
 pi      = 3.14159
@@ -138,12 +147,8 @@ amostra$expressao &lt;- 8.1
 for (k in names(amostra)) {
   cat(k, ":", as.character(amostra[[k]]), "
 ")
-}</code></pre></div></div>
-</div>
-
-<div class="section" id="controle">
-  <h2>4.3 Controle de fluxo</h2>
-  <h3>Condicional if/elif/else</h3>
+}</code></pre></div></div></article>
+<article id="controle" class="topic"><div class="topic-num">4.3</div><h1 class="topic-title">Controle de fluxo</h1><h3>Condicional if/elif/else</h3>
   <div class="parallel-grid"><div><div class="lang-header py">🐍 Python</div><pre><code class="language-python">expr = 8.5
 
 if expr &gt; 10:
@@ -212,12 +217,8 @@ for (i in seq(1, 10, by=2)) {  # 1 3 5 7 9
 }
 
 # equivalente a list comprehension
-tamanhos &lt;- sapply(genes, nchar)</code></pre></div></div>
-</div>
-
-<div class="section" id="funcoes">
-  <h2>4.4 Funções — exemplo aplicado</h2>
-  <p>Implementamos as mesmas funções biológicas nas duas linguagens:</p>
+tamanhos &lt;- sapply(genes, nchar)</code></pre></div></div></article>
+<article id="funcoes" class="topic"><div class="topic-num">4.4</div><h1 class="topic-title">Funções — exemplo aplicado</h1><p>Implementamos as mesmas funções biológicas nas duas linguagens:</p>
   <div class="parallel-grid"><div><div class="lang-header py">🐍 Python</div><pre><code class="language-python">def gc_content(seq):
     seq = seq.upper()
     gc  = seq.count("G") + seq.count("C")
@@ -260,40 +261,14 @@ analisar &lt;- function(seq, nome="seq") {
 
 dna &lt;- "ATGCGCATTTACGC"
 print(analisar(dna, "exemplo"))
-# gc_pct: 50 rev_comp: GCGTAAATGCGCAT</code></pre></div></div>
-</div>
-</div>
-    <footer class="page-footer">
-      Instituto de Biofísica Carlos Chagas Filho — UFRJ<br>
-      Introdução à Programação para Pesquisa Biomédica · Pedro Torres
-    </footer>
-  </main>
-</div>
+# gc_pct: 50 rev_comp: GCGTAAATGCGCAT</code></pre></div></div></article>
+<div class="footer"><div class="footer-text">Instituto de Biofísica Carlos Chagas Filho — UFRJ<br>Introdução à Programação para Pesquisa Biomédica · Pedro Torres</div></div>
+</div></main>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-r.min.js"></script>
-<script>
-(function() {
-  var saved = localStorage.getItem('theme') || 'light';
-  document.documentElement.setAttribute('data-theme', saved);
-  var btn = document.getElementById('theme-btn');
-  if (btn) btn.textContent = saved === 'dark' ? '\u{1F319}' : '\u2600\uFE0F';
-  window.toggleTheme = function() {
-    var cur = document.documentElement.getAttribute('data-theme');
-    var next = cur === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-    var b = document.getElementById('theme-btn');
-    if (b) b.textContent = next === 'dark' ? '\u{1F319}' : '\u2600\uFE0F';
-  };
-})();
-document.addEventListener('click', function(e) {
-  var s = document.querySelector('.sidebar');
-  var t = document.querySelector('.sidebar-toggle');
-  if (s && t && !s.contains(e.target) && !t.contains(e.target))
-    s.classList.remove('open');
-});
-</script>
+<script src="assets/app.js"></script>
 </body>
 </html>

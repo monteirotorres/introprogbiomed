@@ -1,62 +1,76 @@
 <!DOCTYPE html>
-<html lang="pt-BR" data-theme="light">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aula 5 — DataFrames — IntroProgBiomed</title>
+<title>DataFrames — IntroProgBiomed</title>
+<script>(function(){try{var t=localStorage.getItem('tema');if(!t){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
 </head>
 <body>
-<button class="sidebar-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
-<div class="layout">
-  <nav class="sidebar">
-    <div class="sidebar-header">
-      <div class="brand-logo">IntroProgBiomed</div>
-      <div class="brand-sub">IBCCF · UFRJ</div>
-    </div>
-    <ul class="nav-list">
-<li><a href="index.html" class="nav-link">🏠 Início</a>
-</li>
-<li><a href="aula1.html" class="nav-link">1. Introdução ao Linux</a>
-</li>
-<li><a href="aula2.html" class="nav-link">2. Linha de Comando</a>
-</li>
-<li><a href="aula3.html" class="nav-link">3. Shell Scripting</a>
-</li>
-<li><a href="aula4.html" class="nav-link">4. Python e R — Fundamentos</a>
-</li>
-<li><a href="aula5.html" class="nav-link active">5. DataFrames</a>
-<ul class="nav-sub"><li><a href="#leitura">Leitura de dados</a></li><li><a href="#selecao">Seleção e filtragem</a></li><li><a href="#agrupamento">Agrupamento</a></li><li><a href="#join">Junção de tabelas</a></li><li><a href="#na">Dados faltantes</a></li></ul>
-</li>
-<li><a href="aula6.html" class="nav-link">6. Visualização</a>
-</li>
-<li><div class="nav-divider"></div></li>
-<li><a href="exercicios.html" class="nav-link">📝 Exercícios</a>
-</li>
-    </ul>
-    <div class="sidebar-footer">
-      <div class="author-info">Pedro Torres<br>Biofísica · UFRJ</div>
-      <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Alternar tema">&#9728;&#65039;</button>
-    </div>
-  </nav>
-  <main class="content">
-    <div class="page-header"><div class="page-header-inner">
-<div class="aula-num">Aula 5 · Programação</div></div>
-<h1>DataFrames: Pandas e tidyverse</h1>
-<p class="page-desc">
-  Manipulação de dados tabulares em Python e R em paralelo.
-  Carregue, filtre, transforme e combine tabelas com Pandas e tidyverse.
-</p>
-</div>
-    <div class="page-body"><div class="colab-section"><span class="colab-section-label">Notebooks da aula</span><a href="https://colab.research.google.com/github/monteirotorres/introprogbiomed/blob/main/notebooks/aula5_pandas.ipynb" target="_blank" class="colab-badge py-badge">
-      <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Abrir no Colab"> Python
-    </a><a href="https://colab.research.google.com/github/monteirotorres/introprogbiomed/blob/main/notebooks/aula5_tidyverse.ipynb" target="_blank" class="colab-badge r-badge">
-      <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Abrir no Colab"> R
-    </a></div>
-<div class="section" id="leitura">
-  <h2>5.1 Importando bibliotecas e lendo dados</h2>
-  <div class="parallel-grid"><div><div class="lang-header py">🐍 Python · Pandas</div><pre><code class="language-python">import pandas as pd
+<button class="menu-toggle" id="menuToggle" aria-label="Menu">☰</button>
+<button class="theme-toggle" id="themeToggle" aria-label="Alternar tema" title="Alternar tema claro/escuro"><span class="theme-icon"></span></button>
+
+<nav class="sidebar" id="sidebar">
+<a class="sidebar-brand" href="index.html">Introdução à Programação<span>Pesquisa Biomédica · IBCCF · UFRJ</span></a>
+<div class="nav-group collapsed">
+<div class="nav-group-title">1. Introdução ao Linux</div><ul>
+<li><a href="aula1.html#sistema"><span class="n">1.1</span>Sistema de arquivos</a></li>
+<li><a href="aula1.html#comandos"><span class="n">1.2</span>Comandos essenciais</a></li>
+<li><a href="aula1.html#especiais"><span class="n">1.3</span>Caracteres especiais</a></li>
+<li><a href="aula1.html#editores"><span class="n">1.4</span>Editores de texto</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">2. Linha de Comando</div><ul>
+<li><a href="aula2.html#pipes"><span class="n">2.1</span>Pipes e redirecionamento</a></li>
+<li><a href="aula2.html#busca"><span class="n">2.2</span>Busca e filtragem</a></li>
+<li><a href="aula2.html#processos"><span class="n">2.3</span>Processos e acesso remoto</a></li>
+<li><a href="aula2.html#pipeline"><span class="n">2.4</span>Construindo pipelines</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">3. Shell Scripting</div><ul>
+<li><a href="aula3.html#anatomia"><span class="n">3.1</span>Anatomia de um script</a></li>
+<li><a href="aula3.html#variaveis"><span class="n">3.2</span>Variáveis e argumentos</a></li>
+<li><a href="aula3.html#controle"><span class="n">3.3</span>Estruturas de controle</a></li>
+<li><a href="aula3.html#funcoes"><span class="n">3.4</span>Funções</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">4. Python e R — Fundamentos</div><ul>
+<li><a href="aula4.html#ambiente"><span class="n">4.1</span>Ambientes de trabalho</a></li>
+<li><a href="aula4.html#tipos"><span class="n">4.2</span>Tipos e estruturas</a></li>
+<li><a href="aula4.html#controle"><span class="n">4.3</span>Controle de fluxo</a></li>
+<li><a href="aula4.html#funcoes"><span class="n">4.4</span>Funções</a></li>
+</ul></div>
+<div class="nav-group">
+<div class="nav-group-title">5. DataFrames</div><ul>
+<li><a class="nav-link" data-target="leitura" href="#leitura"><span class="n">5.1</span>Leitura de dados</a></li>
+<li><a class="nav-link" data-target="selecao" href="#selecao"><span class="n">5.2</span>Seleção e filtragem</a></li>
+<li><a class="nav-link" data-target="agrupamento" href="#agrupamento"><span class="n">5.3</span>Agrupamento</a></li>
+<li><a class="nav-link" data-target="join" href="#join"><span class="n">5.4</span>Junção de tabelas</a></li>
+<li><a class="nav-link" data-target="na" href="#na"><span class="n">5.5</span>Dados faltantes</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">6. Visualização e Git</div><ul>
+<li><a href="aula6.html#scatter"><span class="n">6.1</span>Dispersão</a></li>
+<li><a href="aula6.html#histbox"><span class="n">6.2</span>Histograma e boxplot</a></li>
+<li><a href="aula6.html#heatmap"><span class="n">6.3</span>Heatmap</a></li>
+<li><a href="aula6.html#exportar"><span class="n">6.4</span>Exportando figuras</a></li>
+<li><a href="aula6.html#git"><span class="n">6.5</span>Git básico</a></li>
+</ul></div>
+<div class="nav-group collapsed">
+<div class="nav-group-title">7. Exercícios</div><ul>
+<li><a href="exercicios.html#ex-linux"><span class="n">7.1</span>Linux</a></li>
+<li><a href="exercicios.html#ex-cli"><span class="n">7.2</span>Linha de Comando</a></li>
+<li><a href="exercicios.html#ex-shell"><span class="n">7.3</span>Shell Scripting</a></li>
+<li><a href="exercicios.html#ex-pyr"><span class="n">7.4</span>Python e R</a></li>
+<li><a href="exercicios.html#ex-df"><span class="n">7.5</span>DataFrames</a></li>
+<li><a href="exercicios.html#ex-viz"><span class="n">7.6</span>Visualização e Git</a></li>
+</ul></div>
+</nav>
+<main class="content"><div class="content-inner">
+<article id="leitura" class="topic"><div class="topic-num">5.1</div><h1 class="topic-title">Importando bibliotecas e lendo dados</h1><div class="nb-row"><span class="nb-label">Notebook</span><a class="colab-link" href="https://colab.research.google.com/github/monteirotorres/introprogbiomed/blob/main/notebooks/aula5_pandas.ipynb" target="_blank" rel="noopener"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Abrir no Colab"><span class="lang-tag py">Python</span></a><a class="colab-link" href="https://colab.research.google.com/github/monteirotorres/introprogbiomed/blob/main/notebooks/aula5_tidyverse.ipynb" target="_blank" rel="noopener"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Abrir no Colab"><span class="lang-tag r">R</span></a></div><div class="parallel-grid"><div><div class="lang-header py">🐍 Python · Pandas</div><pre><code class="language-python">import pandas as pd
 import numpy as np</code></pre></div><div><div class="lang-header r">📊 R · tidyverse</div><pre><code class="language-r">library(tidyverse)   # carrega dplyr, tidyr, readr, etc.
 # ou individualmente:
 # library(dplyr); library(readr)</code></pre></div></div>
@@ -93,12 +107,8 @@ tail(df, 3)        # últimas 3 linhas
 dim(df)            # c(n_linhas, n_colunas)
 glimpse(df)        # resumo compacto (dplyr)
 summary(df)        # estatísticas descritivas
-colnames(df)       # nomes das colunas</code></pre></div></div>
-</div>
-
-<div class="section" id="selecao">
-  <h2>5.2 Seleção, filtragem e transformação</h2>
-  <div class="parallel-grid"><div><div class="lang-header py">🐍 Python · Pandas</div><pre><code class="language-python"># Selecionar colunas
+colnames(df)       # nomes das colunas</code></pre></div></div></article>
+<article id="selecao" class="topic"><div class="topic-num">5.2</div><h1 class="topic-title">Seleção, filtragem e transformação</h1><div class="parallel-grid"><div><div class="lang-header py">🐍 Python · Pandas</div><pre><code class="language-python"># Selecionar colunas
 df[["gene", "expressao"]]
 df.loc[:, "gene":"expressao"]  # por nome (slice)
 df.iloc[:, 0:3]               # por índice numérico
@@ -142,12 +152,8 @@ df |&gt;
     <strong>Dica tidyverse:</strong> o operador pipe <code>|&gt;</code> (R nativo desde 4.1)
     ou <code>%&gt;%</code> (magrittr) encadeia operações da esquerda para a direita,
     tornando o código muito mais legível.
-  </div>
-</div>
-
-<div class="section" id="agrupamento">
-  <h2>5.3 Agrupamento e sumarização</h2>
-  <div class="parallel-grid"><div><div class="lang-header py">🐍 Python · Pandas</div><pre><code class="language-python"># groupby + agregação
+  </div></article>
+<article id="agrupamento" class="topic"><div class="topic-num">5.3</div><h1 class="topic-title">Agrupamento e sumarização</h1><div class="parallel-grid"><div><div class="lang-header py">🐍 Python · Pandas</div><pre><code class="language-python"># groupby + agregação
 df.groupby("organismo")["expressao"].mean()
 df.groupby("organismo")["expressao"].agg(
     ["mean", "std", "count"]
@@ -177,12 +183,8 @@ df |&gt;
   )
 
 # count
-df |&gt; count(organismo, sort=TRUE)</code></pre></div></div>
-</div>
-
-<div class="section" id="join">
-  <h2>5.4 Junção de tabelas</h2>
-  <div class="parallel-grid"><div><div class="lang-header py">🐍 Python · Pandas</div><pre><code class="language-python"># merge / join de DataFrames
+df |&gt; count(organismo, sort=TRUE)</code></pre></div></div></article>
+<article id="join" class="topic"><div class="topic-num">5.4</div><h1 class="topic-title">Junção de tabelas</h1><div class="parallel-grid"><div><div class="lang-header py">🐍 Python · Pandas</div><pre><code class="language-python"># merge / join de DataFrames
 # Dados clínicos + dados moleculares
 clinico  = pd.read_csv("clinico.csv")     # id, paciente, diagnostico
 molecular = pd.read_csv("molecular.csv")  # id, gene, expressao
@@ -216,12 +218,8 @@ left_join(clinico, molecular,
           by=c("paciente_id"="id"))
 
 # Concatenar (rbind)
-bind_rows(df1, df2)</code></pre></div></div>
-</div>
-
-<div class="section" id="na">
-  <h2>5.5 Dados faltantes</h2>
-  <div class="parallel-grid"><div><div class="lang-header py">🐍 Python · Pandas</div><pre><code class="language-python"># Verificar NAs
+bind_rows(df1, df2)</code></pre></div></div></article>
+<article id="na" class="topic"><div class="topic-num">5.5</div><h1 class="topic-title">Dados faltantes</h1><div class="parallel-grid"><div><div class="lang-header py">🐍 Python · Pandas</div><pre><code class="language-python"># Verificar NAs
 df.isna().sum()          # NAs por coluna
 df.isna().any(axis=1)    # linhas com algum NA
 
@@ -259,40 +257,14 @@ df |&gt;
     <strong>Atenção:</strong> nunca remova NAs sem entender a origem.
     Dados ausentes podem ser informativos (ex.: perda de seguimento clínico,
     gene não detectado). Documente sempre a decisão de imputar ou remover.
-  </div>
-</div>
-</div>
-    <footer class="page-footer">
-      Instituto de Biofísica Carlos Chagas Filho — UFRJ<br>
-      Introdução à Programação para Pesquisa Biomédica · Pedro Torres
-    </footer>
-  </main>
-</div>
+  </div></article>
+<div class="footer"><div class="footer-text">Instituto de Biofísica Carlos Chagas Filho — UFRJ<br>Introdução à Programação para Pesquisa Biomédica · Pedro Torres</div></div>
+</div></main>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-r.min.js"></script>
-<script>
-(function() {
-  var saved = localStorage.getItem('theme') || 'light';
-  document.documentElement.setAttribute('data-theme', saved);
-  var btn = document.getElementById('theme-btn');
-  if (btn) btn.textContent = saved === 'dark' ? '\u{1F319}' : '\u2600\uFE0F';
-  window.toggleTheme = function() {
-    var cur = document.documentElement.getAttribute('data-theme');
-    var next = cur === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-    var b = document.getElementById('theme-btn');
-    if (b) b.textContent = next === 'dark' ? '\u{1F319}' : '\u2600\uFE0F';
-  };
-})();
-document.addEventListener('click', function(e) {
-  var s = document.querySelector('.sidebar');
-  var t = document.querySelector('.sidebar-toggle');
-  if (s && t && !s.contains(e.target) && !t.contains(e.target))
-    s.classList.remove('open');
-});
-</script>
+<script src="assets/app.js"></script>
 </body>
 </html>
