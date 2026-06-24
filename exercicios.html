@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" data-theme="light">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,512 +37,276 @@
     </ul>
     <div class="sidebar-footer">
       <div class="author-info">Pedro Torres<br>Biofísica · UFRJ</div>
-      <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Alternar tema">&#9728;&#65039;</button>
+      <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Alternar tema">☀️</button>
     </div>
   </nav>
   <main class="content">
-    <div class="page-header"><div class="aula-num">Exercícios</div><h1>Exercícios — Seções 1 a 6</h1><p class="page-desc">Tente resolver cada exercício antes de expandir a resposta. Clique em <em>Mostrar resposta</em> para ver a solução comentada.</p></div>
-    <div class="page-body"><div class="ex-section" id="ex-aula1"><h2>1. Introdução ao Linux</h2>
-<div class="exercise">
-  <h4>Exercício 1.1 — Estrutura de diretórios</h4>
-  <p>Qual diretório você usaria para armazenar os dados brutos de um projeto de pesquisa? E os scripts de análise? Justifique.</p>
-  <details class="resposta">
-    <summary>Mostrar resposta</summary>
-    <div class="resposta-content"><p><strong>Dados brutos:</strong> geralmente em <code>~/projeto/data/raw/</code> — dentro do <code>/home</code> do usuário, organizado por projeto. Nunca em <code>/tmp</code> (apagado ao reiniciar).</p><p><strong>Scripts:</strong> em <code>~/projeto/scripts/</code> ou <code>~/projeto/src/</code>. Separar dados de código facilita versionamento e reprodutibilidade.</p></div>
-  </details>
-</div>
-<div class="exercise">
-  <h4>Exercício 1.2 — Navegação e criação</h4>
-  <p>Crie a seguinte estrutura de diretórios com um único comando, depois entre em <code>data/raw</code>:</p><pre><code>projeto/
-  data/
-    raw/
-    processed/
-  scripts/
-  results/</code></pre>
-  <details class="resposta">
-    <summary>Mostrar resposta</summary>
-    <div class="resposta-content"><div class='code-label bash'>bash</div><pre><code class='language-bash'>mkdir -p projeto/data/raw projeto/data/processed projeto/scripts projeto/results
-cd projeto/data/raw
-pwd   # /home/usuario/projeto/data/raw</code></pre><p>A flag <code>-p</code> cria toda a hierarquia de uma vez e não dá erro se o diretório já existir.</p></div>
-  </details>
-</div>
-<div class="exercise">
-  <h4>Exercício 1.3 — Inspecionando arquivos</h4>
-  <p>Dado um arquivo <code>sequencias.fasta</code> com 10.000 sequências, responda sem abrir o arquivo inteiro:</p><ol><li>Como você veria as 3 primeiras sequências (cabeçalho + sequência)?</li><li>Como você contaria o número total de sequências?</li><li>Como você verificaria se o arquivo contém a sequência <code>NM_007294</code>?</li></ol>
-  <details class="resposta">
-    <summary>Mostrar resposta</summary>
-    <div class="resposta-content"><div class='code-label bash'>bash</div><pre><code class='language-bash'># 1. Primeiras linhas (cada seq FASTA = 2 linhas: > + sequência)
-head -6 sequencias.fasta
-
-# 2. Contar cabeçalhos (linhas com >)
-grep -c '>' sequencias.fasta
-
-# 3. Verificar presença do ID
-grep 'NM_007294' sequencias.fasta</code></pre></div>
-  </details>
-</div>
-<div class="exercise">
-  <h4>Exercício 1.4 — Redirecionamento</h4>
-  <p>Você quer criar um inventário com a listagem detalhada de todos os arquivos <code>.csv</code> no diretório atual, e depois acrescentar a data de criação ao final do arquivo. Como fazer isso em dois comandos?</p>
-  <details class="resposta">
-    <summary>Mostrar resposta</summary>
-    <div class="resposta-content"><div class='code-label bash'>bash</div><pre><code class='language-bash'>ls -lh *.csv > inventario.txt      # cria (ou sobrescreve)
-date >> inventario.txt              # acrescenta ao final
-cat inventario.txt                  # confere o resultado</code></pre><p>Note: <code>&gt;</code> sobrescreve; <code>&gt;&gt;</code> acrescenta.</p></div>
-  </details>
-</div>
-<div class="exercise">
-  <h4>Exercício 1.5 — Vim — sobrevivência</h4>
-  <p>Você está conectado via SSH em um servidor sem interface gráfica. Precisa editar a linha 42 de <code>config.sh</code>. Descreva a sequência de teclas para: abrir o arquivo, ir à linha 42, editar, salvar e sair.</p>
-  <details class="resposta">
-    <summary>Mostrar resposta</summary>
-    <div class="resposta-content"><div class='code-label bash'>bash</div><pre><code class='language-bash'>vim config.sh</code></pre><p>Dentro do vim:</p><pre><code>42G        → vai para a linha 42 (no modo NORMAL)
-i          → entra no modo INSERT
-           → edite o que for necessário
-Esc        → volta ao modo NORMAL
-:wq        → salva e sai</code></pre></div>
-  </details>
-</div></div><div class="ex-section" id="ex-aula2"><h2>2. Linha de Comando</h2>
-<div class="exercise">
-  <h4>Exercício 2.1 — Pipeline com grep e wc</h4>
-  <p>Dado o arquivo <code>genes.csv</code> com colunas <code>id,gene,organismo,expressao</code>:</p><ol><li>Quantas linhas correspondem a <em>Homo sapiens</em>?</li><li>Salve essas linhas (sem o cabeçalho) em <code>humanos.csv</code>.</li></ol>
-  <details class="resposta">
-    <summary>Mostrar resposta</summary>
-    <div class="resposta-content"><div class='code-label bash'>bash</div><pre><code class='language-bash'># 1. Contar linhas de Homo sapiens
-grep -c 'Homo sapiens' genes.csv
-
-# 2. Salvar (com cabeçalho)
-head -1 genes.csv > humanos.csv
-grep 'Homo sapiens' genes.csv >> humanos.csv</code></pre></div>
-  </details>
-</div>
-<div class="exercise">
-  <h4>Exercício 2.2 — Top genes por frequência</h4>
-  <p>No arquivo <code>anotacao.tsv</code> (TSV), a coluna 3 contém o nome do gene. Liste os 5 genes mais frequentes com suas contagens.</p>
-  <details class="resposta">
-    <summary>Mostrar resposta</summary>
-    <div class="resposta-content"><div class='code-label bash'>bash</div><pre><code class='language-bash'>cut -f3 anotacao.tsv | sort | uniq -c | sort -rn | head -5</code></pre><p><code>cut -f3</code> extrai a coluna 3; <code>uniq -c</code> conta ocorrências (requer entrada ordenada); <code>sort -rn</code> ordena numericamente em ordem decrescente.</p></div>
-  </details>
-</div>
-<div class="exercise">
-  <h4>Exercício 2.3 — Lote de arquivos</h4>
-  <p>Você tem 20 arquivos <code>amostra_01.fasta</code> ... <code>amostra_20.fasta</code>. Escreva um comando (ou mini pipeline) que imprima para cada arquivo: <code>nome_do_arquivo: N sequências</code>.</p>
-  <details class="resposta">
-    <summary>Mostrar resposta</summary>
-    <div class="resposta-content"><div class='code-label bash'>bash</div><pre><code class='language-bash'>for f in amostra_*.fasta; do
-    echo "$f: $(grep -c '>' $f) sequências"
-done</code></pre></div>
-  </details>
-</div>
-<div class="exercise">
-  <h4>Exercício 2.4 — find + ação</h4>
-  <p>Encontre todos os arquivos <code>.tmp</code> criados há mais de 7 dias e os remova.</p>
-  <details class="resposta">
-    <summary>Mostrar resposta</summary>
-    <div class="resposta-content"><div class='code-label bash'>bash</div><pre><code class='language-bash'># Listar primeiro para conferir
-find . -name '*.tmp' -mtime +7
-
-# Remover
-find . -name '*.tmp' -mtime +7 -delete</code></pre><p>Sempre liste antes de deletar!</p></div>
-  </details>
-</div></div><div class="ex-section" id="ex-aula3"><h2>3. Shell Scripting</h2>
-<div class="exercise">
-  <h4>Exercício 3.1 — Script com argumento e verificação</h4>
-  <p>Escreva um script <code>contar_seq.sh</code> que:</p><ol><li>Recebe um arquivo FASTA como argumento.</li><li>Verifica se o arquivo existe; caso contrário, imprime mensagem de erro e sai.</li><li>Imprime o número de sequências.</li></ol>
-  <details class="resposta">
-    <summary>Mostrar resposta</summary>
-    <div class="resposta-content"><div class='code-label bash'>bash</div><pre><code class='language-bash'>#!/bin/bash
-# Uso: ./contar_seq.sh arquivo.fasta
-
-if [ -z "$1" ]; then
-    echo "Uso: $0 <arquivo.fasta>"
-    exit 1
-fi
-
-if [ ! -f "$1" ]; then
-    echo "Erro: arquivo '$1' não encontrado."
-    exit 1
-fi
-
-N=$(grep -c '>' "$1")
-echo "$(basename $1): $N sequências"</code></pre></div>
-  </details>
-</div>
-<div class="exercise">
-  <h4>Exercício 3.2 — Relatório em lote</h4>
-  <p>Adapte o script anterior para processar <em>todos</em> os arquivos <code>.fasta</code> de um diretório (passado como argumento) e salvar o relatório em <code>relatorio.txt</code>.</p>
-  <details class="resposta">
-    <summary>Mostrar resposta</summary>
-    <div class="resposta-content"><div class='code-label bash'>bash</div><pre><code class='language-bash'>#!/bin/bash
+    <div class="page-header"><div class="page-header-inner"><div class="aula-num">Exercícios</div></div><h1>Exercícios — Módulos 1 a 6</h1><p class="page-desc">Tente resolver cada exercício antes de expandir a resposta. Clique nas abas para navegar entre os módulos.</p></div>
+    <div class="page-body"><div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab(event,'t1')">1. Linux</button>
+  <button class="tab-btn" onclick="showTab(event,'t2')">2. Linha de Comando</button>
+  <button class="tab-btn" onclick="showTab(event,'t3')">3. Shell Scripting</button>
+  <button class="tab-btn" onclick="showTab(event,'t4')">4. Python e R</button>
+  <button class="tab-btn" onclick="showTab(event,'t5')">5. DataFrames</button>
+  <button class="tab-btn" onclick="showTab(event,'t6')">6. Visualização</button>
+</div><div class="ex-section tab-panel active" id="t1"><h2>1. Introdução ao Linux</h2><div class="exercise"><h4>Exercício 1.1 — Estrutura de diretórios</h4><p>Qual diretório você usaria para dados brutos de um projeto? E os scripts? Justifique.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><strong>Dados brutos:</strong> <code>~/projeto/data/raw/</code>. Separe dados de código para facilitar reprodutibilidade.</p><p><strong>Scripts:</strong> <code>~/projeto/scripts/</code>. Nunca armazene dados permanentes em <code>/tmp</code>.</p></div></details></div><div class="exercise"><h4>Exercício 1.2 — mkdir e navegação</h4><p>Crie a estrutura abaixo com um único comando e navegue até <code>data/raw</code>:</p><pre><code class="language-bash">projeto/data/{raw,processed}  projeto/{scripts,results/figures}</code></pre><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">mkdir -p projeto/{data/{raw,processed},scripts,results/figures}
+cd projeto/data/raw</code></pre></p><p>O flag <code>-p</code> cria todos os níveis. Chaves <code>{}</code> expandem múltiplos ramos.</p></div></details></div><div class="exercise"><h4>Exercício 1.3 — Permissões</h4><p><code>analise.sh</code> retorna <em>Permission denied</em>. Como você diagnostica e corrige?</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">ls -l analise.sh
+chmod +x analise.sh
+./analise.sh</code></pre></p><p><code>chmod +x</code> adiciona permissão de execução. Prefira <code>chmod 755</code> para scripts compartilhados.</p></div></details></div><div class="exercise"><h4>Exercício 1.4 — Links simbólicos</h4><p>Você tem <code>/data/genomes/hg38.fa</code> (50 GB). Como acessá-lo de vários projetos sem copiar?</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">ln -s /data/genomes/hg38.fa ~/projeto/data/genome.fa
+ls -la ~/projeto/data/</code></pre></p><p>Links simbólicos são ponteiros leves. Deletar o link não apaga o original.</p></div></details></div><div class="exercise"><h4>Exercício 1.5 — Editores de texto</h4><p>Abra <code>config.txt</code> com nano, adicione <code>threads=8</code> ao final, salve e saia. Repita com vim.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><strong>nano:</strong> <kbd>Ctrl+O</kbd> salva, <kbd>Ctrl+X</kbd> sai.</p><p><pre><code class="language-bash">vim config.txt
+G        # vai ao fim
+o        # nova linha, modo inserção
+threads=8
+Esc :wq  # salva e sai</code></pre></p></div></details></div></div><div class="ex-section tab-panel" id="t2"><h2>2. Linha de Comando</h2><div class="exercise"><h4>Exercício 2.1 — Contar reads FASTQ</h4><p><code>reads.fastq</code> tem 4 linhas por read. Conte os reads e salve em <code>n_reads.txt</code>.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">wc -l reads.fastq | awk '{print $1/4}' &gt; n_reads.txt</code></pre></p></div></details></div><div class="exercise"><h4>Exercício 2.2 — grep em FASTA</h4><p>Extraia todos os cabeçalhos (<code>&gt;</code>) de um FASTA e conte sequências sem arquivo intermediário.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">grep -c '^&gt;' sequences.fasta
+grep '^&gt;' sequences.fasta | wc -l</code></pre></p></div></details></div><div class="exercise"><h4>Exercício 2.3 — sort e top genes</h4><p><code>expressao.tsv</code> tem colunas gene, amostra, valor (tab-separado). Liste os 5 genes com maior média.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">awk 'NR&gt;1{s[$1]+=$3;n[$1]++}END{for(g in s)print s[g]/n[g],g}' \
+  expressao.tsv | sort -rn | head -5</code></pre></p></div></details></div><div class="exercise"><h4>Exercício 2.4 — sed para renomear cabeçalhos</h4><p>No FASTA, substitua <code>&gt;chr1</code> por <code>&gt;chromosome_1</code> (qualquer número).</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">sed -E 's/&gt;chr([0-9]+)/&gt;chromosome_\1/g' input.fasta &gt; output.fasta</code></pre></p></div></details></div><div class="exercise"><h4>Exercício 2.5 — find e limpeza</h4><p>Encontre todos os <code>.log</code> em <code>/var/log/bio/</code> modificados há mais de 7 dias e delete.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash"># Primeiro visualize:
+find /var/log/bio/ -name '*.log' -mtime +7
+# Depois delete:
+find /var/log/bio/ -name '*.log' -mtime +7 -delete</code></pre></p><p>Sempre confira sem <code>-delete</code> primeiro.</p></div></details></div></div><div class="ex-section tab-panel" id="t3"><h2>3. Shell Scripting</h2><div class="exercise"><h4>Exercício 3.1 — Script com argumento padrão</h4><p>Script <code>saudar.sh</code>: recebe um nome, imprime saudação. Se omitido, usa 'Pesquisador'.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">#!/bin/bash
+NOME=${1:-Pesquisador}
+echo "Olá, $NOME! Bem-vindo ao laboratório."</code></pre></p></div></details></div><div class="exercise"><h4>Exercício 3.2 — Validação de entrada</h4><p>Script que recebe um FASTA, verifica existência e extensão, imprime número de sequências.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">#!/bin/bash
+ARQ=${1:?Uso: $0 arquivo.fasta}
+[[ -f "$ARQ" ]] || { echo "Erro: não encontrado" &gt;&amp;2; exit 1; }
+[[ "$ARQ" =~ \.(fasta|fa)$ ]] || echo "Aviso: extensão inesperada"
+grep -c '^&gt;' "$ARQ"</code></pre></p></div></details></div><div class="exercise"><h4>Exercício 3.3 — Loop com array de organismos</h4><p>Dado um array <code>("Homo_sapiens" "Mus_musculus" "Danio_rerio")</code>, crie subdiretórios em <code>resultados/</code>.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">#!/bin/bash
+ORGS=("Homo_sapiens" "Mus_musculus" "Danio_rerio")
+for org in "${ORGS[@]}"; do
+    mkdir -p "resultados/$org"/{raw,processed,figures}
+    echo "Criado: resultados/$org"
+done</code></pre></p></div></details></div><div class="exercise"><h4>Exercício 3.4 — Função gc_content</h4><p>Função <code>gc_content</code> que recebe DNA e imprime %GC. Teste com 3 sequências.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">#!/bin/bash
+gc_content() {
+    local seq=$(echo "$1" | tr '[:lower:]' '[:upper:]')
+    local gc=$(echo "$seq" | tr -cd 'GC' | wc -c)
+    awk "BEGIN{printf \"%.1f%%\\n\",$gc/${#seq}*100}"
+}
+gc_content "ATGCGCATTTACGC"
+gc_content "GGGGCCCCAAAATT"
+gc_content "ATATATAT"</code></pre></p></div></details></div><div class="exercise"><h4>Exercício 3.5 — Relatório de arquivos FASTA</h4><p>Script que processa todos os <code>.fasta</code> de um diretório e imprime nome, #sequências e total de bases.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">#!/bin/bash
 DIR=${1:-.}
-SAIDA='relatorio.txt'
-
-echo '=== Relatório FASTA ===' > "$SAIDA"
-echo "Data: $(date)" >> "$SAIDA"
-echo '---' >> "$SAIDA"
-
-TOTAL=0
-for f in "$DIR"/*.fasta; do
+printf '%-30s %8s %12s\n' "Arquivo" "Seqs" "Total_bp"
+for f in "$DIR"/*.fasta "$DIR"/*.fa; do
     [ -f "$f" ] || continue
-    N=$(grep -c '>' "$f")
-    TOTAL=$((TOTAL + N))
-    printf '%-40s %6d seqs\n' "$(basename $f)" "$N" >> "$SAIDA"
-done
-
-echo '---' >> "$SAIDA"
-echo "TOTAL: $TOTAL sequências" >> "$SAIDA"
-cat "$SAIDA"</code></pre></div>
-  </details>
-</div>
-<div class="exercise">
-  <h4>Exercício 3.3 — Função de validação</h4>
-  <p>Escreva uma função Bash <code>e_fasta()</code> que recebe um arquivo e retorna 0 (sucesso) se a primeira linha começar com <code>&gt;</code>, e 1 caso contrário.</p>
-  <details class="resposta">
-    <summary>Mostrar resposta</summary>
-    <div class="resposta-content"><div class='code-label bash'>bash</div><pre><code class='language-bash'>e_fasta() {
-    local arquivo=$1
-    local primeira=$(head -1 "$arquivo")
-    if [[ "$primeira" == \>* ]]; then
-        return 0
-    else
-        return 1
-    fi
+    nseqs=$(grep -c '^&gt;' "$f")
+    nbp=$(grep -v '^&gt;' "$f" | tr -d '\n' | wc -c)
+    printf '%-30s %8d %12d\n' "$(basename "$f")" "$nseqs" "$nbp"
+done</code></pre></p></div></details></div></div><div class="ex-section tab-panel" id="t4"><h2>4. Python e R — Fundamentos</h2><div class="exercise"><h4>Exercício 4.1 — Tipos e formatação</h4><p>Crie variáveis com GC% de 3 sequências, calcule a média e imprima relatório formatado.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><div class="parallel-grid"><div><div class="lang-header py">Python</div><pre><code class="language-python">gcs = [45.2, 62.8, 38.5]
+media = sum(gcs) / len(gcs)
+print(f"GC médio: {media:.2f}%")
+print(f"Min: {min(gcs):.1f}%  Max: {max(gcs):.1f}%")</code></pre></div><div><div class="lang-header r">R</div><pre><code class="language-r">gcs &lt;- c(45.2, 62.8, 38.5)
+cat(sprintf("GC médio: %.2f%%\n", mean(gcs)))
+cat(sprintf("Min: %.1f%%  Max: %.1f%%\n", min(gcs), max(gcs)))</code></pre></div></div></p></div></details></div><div class="exercise"><h4>Exercício 4.2 — Dicionário / lista nomeada para gene</h4><p>Represente um gene (nome, cromossomo, start, end, strand) e adicione o comprimento como campo calculado.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><div class="parallel-grid"><div><div class="lang-header py">Python</div><pre><code class="language-python">gene = {"nome":"BRCA1","chrom":"chr17",
+        "start":43044295,"end":43125364,"strand":"-"}
+gene["comprimento"] = gene["end"] - gene["start"]
+print(f"{gene['nome']}: {gene['comprimento']} bp")</code></pre></div><div><div class="lang-header r">R</div><pre><code class="language-r">gene &lt;- list(nome="BRCA1",chrom="chr17",
+             start=43044295L,end=43125364L,strand="-")
+gene$comprimento &lt;- gene$end - gene$start
+cat(gene$nome,":",gene$comprimento,"bp\n")</code></pre></div></div></p></div></details></div><div class="exercise"><h4>Exercício 4.3 — Tradutor de codons</h4><p>Escreva <code>traduzir(seq)</code> (DNA → proteína, mínimo Met + Stop + 6 aminoácidos) e teste com 3 sequências.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><div class="parallel-grid"><div><div class="lang-header py">Python</div><pre><code class="language-python">COD = {
+    "ATG":"M","TAA":"*","TAG":"*","TGA":"*",
+    "GCT":"A","GCC":"A","GCA":"A","GCG":"A",
+    "TGT":"C","TGC":"C","GAT":"D","GAC":"D",
+    "TTT":"F","TTC":"F","GGT":"G","GGC":"G",
 }
-
-# Uso
-if e_fasta 'meu_arquivo.fasta'; then
-    echo 'É um arquivo FASTA válido'
-else
-    echo 'Não parece um FASTA'
-fi</code></pre></div>
-  </details>
-</div></div><div class="ex-section" id="ex-aula4"><h2>4. Python e R — Fundamentos</h2>
-<div class="exercise">
-  <h4>Exercício 4.1 — Conteúdo GC</h4>
-  <p>Implemente uma função <code>conteudo_gc(seq)</code> que recebe uma string de DNA e retorna o percentual de bases G+C arredondado para 2 casas decimais.</p>
-  <details class="resposta">
-    <summary>Mostrar resposta</summary>
-    <div class="resposta-content"><div class="parallel-grid"><div><div class="lang-header py">&#x1F40D; Python</div><pre><code class="language-python">def conteudo_gc(seq):
-    seq = seq.upper()
-    gc = seq.count('G') + seq.count('C')
-    return round(gc / len(seq) * 100, 2)
-
-dna = "ATGCGGCATTTACGCAATG"
-print(f"GC: {conteudo_gc(dna)}%")  # GC: 47.37%</code></pre></div><div><div class="lang-header r">&#x1F4CA; R</div><pre><code class="language-r">conteudo_gc &lt;- function(seq) {
-  bases &lt;- strsplit(toupper(seq), "")[[1]]
-  gc    &lt;- sum(bases %in% c("G","C"))
-  round(gc / length(bases) * 100, 2)
-}
-
-dna &lt;- "ATGCGGCATTTACGCAATG"
-cat("GC:", conteudo_gc(dna), "%
-")  # GC: 47.37 %</code></pre></div></div></div>
-  </details>
-</div>
-<div class="exercise">
-  <h4>Exercício 4.2 — Tradução simples</h4>
-  <p>Escreva uma função <code>traducao(seq)</code> que traduz uma sequência de DNA para proteína (use o código genético padrão, pare no primeiro códon de parada).</p>
-  <details class="resposta">
-    <summary>Mostrar resposta</summary>
-    <div class="resposta-content"><div class="parallel-grid"><div><div class="lang-header py">&#x1F40D; Python</div><pre><code class="language-python">def traducao(seq):
-    cod = {
-        'ATG':'M','TAA':'*','TAG':'*','TGA':'*',
-        'GCT':'A','GCC':'A','GCA':'A','GCG':'A',
-        'TGT':'C','TGC':'C',
-        'GAT':'D','GAC':'D',
-        'GAA':'E','GAG':'E',
-        'TTT':'F','TTC':'F',
-        'GGT':'G','GGC':'G','GGA':'G','GGG':'G',
-        'CAT':'H','CAC':'H',
-        'ATT':'I','ATC':'I','ATA':'I',
-        'AAA':'K','AAG':'K',
-        'TTA':'L','TTG':'L','CTT':'L',
-        'CTC':'L','CTA':'L','CTG':'L',
-        'AAT':'N','AAC':'N',
-        'CCT':'P','CCC':'P','CCA':'P','CCG':'P',
-        'CAA':'Q','CAG':'Q',
-        'CGT':'R','CGC':'R','CGA':'R','CGG':'R',
-        'AGG':'R','AGA':'R',
-        'TCT':'S','TCC':'S','TCA':'S','TCG':'S',
-        'AGT':'S','AGC':'S',
-        'ACT':'T','ACC':'T','ACA':'T','ACG':'T',
-        'GTT':'V','GTC':'V','GTA':'V','GTG':'V',
-        'TGG':'W','TAT':'Y','TAC':'Y',
+def traduzir(seq):
+    seq=seq.upper(); prot=[]
+    for i in range(0,len(seq)-2,3):
+        aa=COD.get(seq[i:i+3],"?")
+        if aa=="*": break
+        prot.append(aa)
+    return "".join(prot)
+for s in ["ATGGCTTGCGATTTTAA","ATGGGCATTATGTAA"]:
+    print(f"{s} -&gt; {traduzir(s)}")</code></pre></div><div><div class="lang-header r">R</div><pre><code class="language-r">COD &lt;- c(ATG="M",TAA="*",TAG="*",TGA="*",
+         GCT="A",GCC="A",GCA="A",GCG="A",
+         TGT="C",TGC="C",GAT="D",GAC="D",
+         TTT="F",TTC="F",GGT="G",GGC="G")
+traduzir &lt;- function(seq) {
+    seq &lt;- toupper(seq); aa &lt;- character(0); i &lt;- 1
+    while(i+2 &lt;= nchar(seq)) {
+        cod &lt;- substr(seq,i,i+2)
+        a &lt;- COD[cod]
+        if(!is.na(a) &amp;&amp; a=="*") break
+        aa &lt;- c(aa,ifelse(is.na(a),"?",a)); i &lt;- i+3
     }
-    seq = seq.upper()
-    prot = ''
-    for i in range(0, len(seq)-2, 3):
-        aa = cod.get(seq[i:i+3], '?')
-        if aa == '*': break
-        prot += aa
-    return prot
-
-print(traducao("ATGGCATGGTAA"))  # MA</code></pre></div><div><div class="lang-header r">&#x1F4CA; R</div><pre><code class="language-r"># R com Biostrings (tidier)
-# install.packages("BiocManager")
-# BiocManager::install("Biostrings")
-library(Biostrings)
-
-dna &lt;- DNAString("ATGGCATGGTAA")
-rna &lt;- RNAString(dna)
-prot &lt;- translate(rna)
-as.character(prot)  # "MA*" (inclui stop codon)
-
-# Alternativa sem Biostrings (manual simplificado)
-traducao &lt;- function(seq) {
-  cod &lt;- c(ATG="M", TAA="*", TAG="*", TGA="*",
-           GCT="A", GCC="A", GCA="A", GCG="A",
-           TGT="C", TGC="C", GAT="D", GAC="D",
-           TTT="F", TTC="F",
-           GGT="G", GGC="G", GGA="G", GGG="G")
-  seq   &lt;- toupper(seq)
-  n     &lt;- nchar(seq)
-  codons &lt;- substring(seq, seq(1,n-2,3), seq(3,n,3))
-  aa &lt;- cod[codons]
-  stop_pos &lt;- which(aa == "*")
-  if (length(stop_pos)) aa &lt;- aa[seq_len(stop_pos[1]-1)]
-  paste(aa, collapse="")
+    paste(aa,collapse="")
 }
-traducao("ATGGCATGGTAA")  # "MA" </code></pre></div></div></div>
-  </details>
-</div>
-<div class="exercise">
-  <h4>Exercício 4.3 — Estatísticas de um conjunto de sequências</h4>
-  <p>Dada uma lista/vetor de sequências de DNA, escreva uma função que retorne um dicionário/lista com: número de sequências, tamanho mínimo, máximo e médio.</p>
-  <details class="resposta">
-    <summary>Mostrar resposta</summary>
-    <div class="resposta-content"><div class="parallel-grid"><div><div class="lang-header py">&#x1F40D; Python</div><pre><code class="language-python">def estatisticas_seq(seqs):
-    tamanhos = [len(s) for s in seqs]
-    return {
-        "n":      len(seqs),
-        "min":    min(tamanhos),
-        "max":    max(tamanhos),
-        "media":  round(sum(tamanhos)/len(tamanhos), 1),
-    }
+for(s in c("ATGGCTTGCGATTTTAA","ATGGGCATTATGTAA"))
+    cat(s,"-&gt;",traduzir(s),"\n")</code></pre></div></div></p></div></details></div><div class="exercise"><h4>Exercício 4.4 — Análise completa de sequência</h4><p>Funções: (a) GC%, (b) complemento reverso, (c) posições de um motif. Aplique em <code>ATGCGCATTTACGCAATGCGC</code>.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><div class="parallel-grid"><div><div class="lang-header py">Python</div><pre><code class="language-python">def gc(s):
+    s=s.upper(); return round((s.count("G")+s.count("C"))/len(s)*100,2)
+def rev_comp(s):
+    t=str.maketrans("ATGCN","TACGN")
+    return s.upper().translate(t)[::-1]
+def find_motif(s,m):
+    s,m=s.upper(),m.upper()
+    return [i for i in range(len(s)-len(m)+1) if s[i:i+len(m)]==m]
+seq="ATGCGCATTTACGCAATGCGC"
+print(f"GC: {gc(seq)}%")
+print(f"RevComp: {rev_comp(seq)}")
+print(f"ATG em: {find_motif(seq,'ATG')}")</code></pre></div><div><div class="lang-header r">R</div><pre><code class="language-r">gc &lt;- function(s){b&lt;-strsplit(toupper(s),"")[[1]]
+    round(sum(b %in% c("G","C"))/length(b)*100,2)}
+rev_comp &lt;- function(s){
+    tab&lt;-c(A="T",T="A",G="C",C="G",N="N")
+    paste(rev(tab[strsplit(toupper(s),"")[[1]]]),collapse="")}
+find_motif&lt;-function(s,m) gregexpr(m,toupper(s),fixed=TRUE)[[1]]
+seq&lt;-"ATGCGCATTTACGCAATGCGC"
+cat("GC:",gc(seq),"%\n")
+cat("RevComp:",rev_comp(seq),"\n")
+cat("ATG em:",find_motif(seq,"ATG"),"\n")</code></pre></div></div></p></div></details></div><div class="exercise"><h4>Exercício 4.5 — Filtro por GC e ordenação</h4><p>Gere 10 sequências aleatórias (20–60 bp). Filtre as com GC entre 40–60% e ordene por tamanho crescente.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><div class="parallel-grid"><div><div class="lang-header py">Python</div><pre><code class="language-python">import random
+random.seed(42)
+seqs=["".join(random.choices("ATGC",weights=[.3,.3,.2,.2],
+       k=random.randint(20,60))) for _ in range(10)]
+def gc(s): return (s.count("G")+s.count("C"))/len(s)*100
+filt=sorted([s for s in seqs if 40&lt;=gc(s)&lt;=60],key=len)
+for s in filt:
+    print(f"len={len(s):2d}  GC={gc(s):.1f}%  {s}")</code></pre></div><div><div class="lang-header r">R</div><pre><code class="language-r">set.seed(42)
+gc&lt;-function(s){b&lt;-strsplit(s,"")[[1]]
+    sum(b %in% c("G","C"))/length(b)*100}
+seqs&lt;-replicate(10,{
+    n&lt;-sample(20:60,1)
+    paste(sample(c("A","T","G","C"),n,replace=TRUE,
+          prob=c(.3,.3,.2,.2)),collapse="")})
+gcs&lt;-sapply(seqs,gc)
+filt&lt;-seqs[gcs&gt;=40 &amp; gcs&lt;=60]
+filt&lt;-filt[order(nchar(filt))]
+for(s in filt) cat(sprintf("len=%2d  GC=%.1f%%  %s\n",nchar(s),gc(s),s))</code></pre></div></div></p></div></details></div></div><div class="ex-section tab-panel" id="t5"><h2>5. DataFrames</h2><div class="exercise"><h4>Exercício 5.1 — Criar e inspecionar</h4><p>Crie um DataFrame com 50 amostras (gene, organismo, condição, expressão). Inspecione dimensões, tipos e estatísticas.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><div class="parallel-grid"><div><div class="lang-header py">Python</div><pre><code class="language-python">import pandas as pd, numpy as np
+np.random.seed(0)
+n=50
+df=pd.DataFrame({"gene":[f"G{i:03d}" for i in range(n)],
+    "org":np.random.choice(["Hs","Mm"],n),
+    "cond":np.random.choice(["ctrl","trat"],n),
+    "expr":np.round(np.random.lognormal(1.5,.8,n),3)})
+print(df.shape)
+print(df.dtypes)
+df.describe()</code></pre></div><div><div class="lang-header r">R</div><pre><code class="language-r">library(tidyverse); set.seed(0)
+df&lt;-tibble(gene=sprintf("G%03d",1:50),
+    org=sample(c("Hs","Mm"),50,replace=TRUE),
+    cond=sample(c("ctrl","trat"),50,replace=TRUE),
+    expr=round(rlnorm(50,1.5,.8),3))
+glimpse(df)
+summary(df)</code></pre></div></div></p></div></details></div><div class="exercise"><h4>Exercício 5.2 — Filtro composto</h4><p>Filtre Homo sapiens em tratamento com expressão acima da mediana geral. Quantas linhas sobraram?</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><div class="parallel-grid"><div><div class="lang-header py">Python</div><pre><code class="language-python">med=df["expr"].median()
+filt=df[(df.org=="Hs")&amp;(df.cond=="trat")&amp;(df.expr&gt;med)]
+print(len(filt),"amostras")</code></pre></div><div><div class="lang-header r">R</div><pre><code class="language-r">med&lt;-median(df$expr)
+filt&lt;-df|&gt;filter(org=="Hs",cond=="trat",expr&gt;med)
+cat(nrow(filt),"amostras\n")</code></pre></div></div></p></div></details></div><div class="exercise"><h4>Exercício 5.3 — Groupby e pivot</h4><p>Calcule média e DP por organismo × condição. Depois gere uma tabela pivô (organismos nas linhas, condições nas colunas).</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><div class="parallel-grid"><div><div class="lang-header py">Python</div><pre><code class="language-python">res=df.groupby(["org","cond"])["expr"].agg(
+    media="mean",dp="std").round(3)
+print(res)
+pivot=df.pivot_table(values="expr",index="org",
+    columns="cond",aggfunc="mean").round(3)
+print(pivot)</code></pre></div><div><div class="lang-header r">R</div><pre><code class="language-r">res&lt;-df|&gt;group_by(org,cond)|&gt;
+    summarise(media=mean(expr),dp=sd(expr),.groups="drop")
+print(res)
+df|&gt;pivot_wider(id_cols=org,names_from=cond,
+    values_from=expr,values_fn=mean)</code></pre></div></div></p></div></details></div><div class="exercise"><h4>Exercício 5.4 — Join com metadados</h4><p>Crie tabela de metadados (nome completo, genoma_Mb). Faça left join e identifique organismos sem correspondência.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><div class="parallel-grid"><div><div class="lang-header py">Python</div><pre><code class="language-python">meta=pd.DataFrame({"org":["Hs","Mm","Dr"],
+    "nome":["Homo sapiens","Mus musculus","Danio rerio"],
+    "genoma_Mb":[3200,2700,1400]})
+m=pd.merge(df,meta,on="org",how="left")
+print("Sem match:",m["nome"].isna().sum())</code></pre></div><div><div class="lang-header r">R</div><pre><code class="language-r">meta&lt;-tibble(org=c("Hs","Mm","Dr"),
+    nome=c("Homo sapiens","Mus musculus","Danio rerio"),
+    genoma_Mb=c(3200L,2700L,1400L))
+m&lt;-left_join(df,meta,by="org")
+cat("Sem match:",sum(is.na(m$nome)),"\n")</code></pre></div></div></p></div></details></div><div class="exercise"><h4>Exercício 5.5 — Dados faltantes e imputação</h4><p>Introduza NAs em 10% das linhas. Compare: remover vs. imputar pela mediana por grupo.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><div class="parallel-grid"><div><div class="lang-header py">Python</div><pre><code class="language-python">np.random.seed(7)
+df_na=df.copy()
+idx=np.random.choice(df.index,size=int(.1*len(df)),replace=False)
+df_na.loc[idx,"expr"]=np.nan
+print("NAs:",df_na.expr.isna().sum())
+df_drop=df_na.dropna()
+df_imp=df_na.copy()
+df_imp["expr"]=df_imp.groupby(["org","cond"])["expr"]\
+    .transform(lambda x:x.fillna(x.median()))
+print("Após imputação NAs:",df_imp.expr.isna().sum())</code></pre></div><div><div class="lang-header r">R</div><pre><code class="language-r">set.seed(7)
+df_na&lt;-df; df_na$expr[sample(nrow(df),5)]&lt;-NA
+cat("NAs:",sum(is.na(df_na$expr)),"\n")
+df_drop&lt;-drop_na(df_na,expr)
+df_imp&lt;-df_na|&gt;group_by(org,cond)|&gt;
+    mutate(expr=ifelse(is.na(expr),
+        median(expr,na.rm=TRUE),expr))|&gt;ungroup()
+cat("Após imputação:",sum(is.na(df_imp$expr)),"\n")</code></pre></div></div></p></div></details></div></div><div class="ex-section tab-panel" id="t6"><h2>6. Visualização e Git</h2><div class="exercise"><h4>Exercício 6.1 — Scatter com linha de regressão</h4><p>Scatter de GC% vs. log2_expr, colorido por condição, com linha de regressão por grupo.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><div class="parallel-grid"><div><div class="lang-header py">Python</div><pre><code class="language-python">import matplotlib.pyplot as plt, seaborn as sns
+sns.set_theme(style="whitegrid")
+fig,ax=plt.subplots(figsize=(7,5))
+sns.scatterplot(data=df,x="gc_pct",y="log2_expr",
+    hue="cond",alpha=.7,ax=ax)
+for g,sub in df.groupby("cond"):
+    sns.regplot(data=sub,x="gc_pct",y="log2_expr",
+        scatter=False,ax=ax,label=None)
+ax.set(title="GC% vs. Expressão",xlabel="GC%",ylabel="log2 expr")
+plt.tight_layout(); plt.show()</code></pre></div><div><div class="lang-header r">R</div><pre><code class="language-r">library(ggplot2)
+ggplot(df,aes(x=gc_pct,y=log2_expr,color=cond))+
+    geom_point(alpha=.7,size=2)+
+    geom_smooth(method="lm",se=TRUE)+
+    labs(title="GC% vs. Expressão por Condição",
+         x="GC%",y="log2 expr")+
+    theme_classic(base_size=13)</code></pre></div></div></p></div></details></div><div class="exercise"><h4>Exercício 6.2 — Painel histograma + boxplot</h4><p>Painel 1×2: (a) histograma+KDE por organismo, (b) boxplot+jitter por condição.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><div class="parallel-grid"><div><div class="lang-header py">Python</div><pre><code class="language-python">fig,axes=plt.subplots(1,2,figsize=(12,5))
+sns.histplot(data=df,x="log2_expr",hue="org",
+    bins=18,kde=True,ax=axes[0])
+axes[0].set_title("Distribuição por Organismo")
+sns.boxplot(data=df,x="cond",y="log2_expr",
+    palette="Set2",ax=axes[1])
+sns.stripplot(data=df,x="cond",y="log2_expr",
+    color=".3",alpha=.4,size=3,ax=axes[1])
+axes[1].set_title("Expressão por Condição")
+plt.tight_layout(); plt.show()</code></pre></div><div><div class="lang-header r">R</div><pre><code class="language-r">library(patchwork)
+p1&lt;-ggplot(df,aes(x=log2_expr,fill=org))+
+    geom_histogram(bins=18,alpha=.7,position="identity")+
+    geom_density(aes(y=after_stat(count)),alpha=.3)+
+    labs(title="Distribuição por Organismo")+theme_classic()
+p2&lt;-ggplot(df,aes(x=cond,y=log2_expr,fill=cond))+
+    geom_boxplot(outlier.shape=NA,alpha=.8)+
+    geom_jitter(width=.2,alpha=.4,size=1.5)+
+    labs(title="Expressão por Condição")+
+    theme_classic()+theme(legend.position="none")
+p1+p2</code></pre></div></div></p></div></details></div><div class="exercise"><h4>Exercício 6.3 — Heatmap com Z-score</h4><p>Selecione os 15 genes de maior variância. Gere heatmap com agrupamento hierárquico e escala Z-score.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><div class="parallel-grid"><div><div class="lang-header py">Python</div><pre><code class="language-python">import seaborn as sns
+top=df.groupby("gene")["log2_expr"].var().nlargest(15).index
+mat=df[df.gene.isin(top)].pivot_table(
+    index="gene",columns="cond",values="log2_expr")
+from scipy.stats import zscore
+mat_z=mat.apply(zscore,axis=1)
+sns.clustermap(mat_z,cmap="RdBu_r",center=0,
+    col_cluster=False,figsize=(5,7))
+plt.show()</code></pre></div><div><div class="lang-header r">R</div><pre><code class="language-r">library(pheatmap)
+vars&lt;-tapply(df$log2_expr,df$gene,var)
+top&lt;-names(sort(vars,decreasing=TRUE)[1:15])
+mat&lt;-df[df$gene %in% top,]|&gt;
+    group_by(gene,cond)|&gt;summarise(m=mean(log2_expr),.groups="drop")|&gt;
+    pivot_wider(names_from=cond,values_from=m)|&gt;
+    column_to_rownames("gene")
+mat_z&lt;-t(scale(t(mat)))
+pheatmap(mat_z,cluster_cols=FALSE,
+    color=colorRampPalette(c("blue","white","red"))(50))</code></pre></div></div></p></div></details></div><div class="exercise"><h4>Exercício 6.4 — Exportação para publicação</h4><p>Gere figura composta (scatter + boxplot) em PNG (300 dpi) e PDF dimensionada para uma coluna de revista (~88 mm).</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><div class="parallel-grid"><div><div class="lang-header py">Python</div><pre><code class="language-python">fig,axes=plt.subplots(1,2,figsize=(6.9,3.2))
+sns.scatterplot(data=df,x="gc_pct",y="log2_expr",
+    hue="cond",s=25,alpha=.7,ax=axes[0],legend=False)
+axes[0].set(xlabel="GC%",ylabel="log2 expr")
+sns.boxplot(data=df,x="cond",y="log2_expr",
+    palette="Set2",ax=axes[1],width=.5)
+axes[1].set(xlabel="Condição",ylabel="")
+for ax in axes: ax.tick_params(labelsize=7)
+fig.tight_layout(pad=.8)
+fig.savefig("fig1.png",dpi=300,bbox_inches="tight")
+fig.savefig("fig1.pdf",bbox_inches="tight")</code></pre></div><div><div class="lang-header r">R</div><pre><code class="language-r">library(patchwork)
+p1&lt;-ggplot(df,aes(gc_pct,log2_expr,color=cond))+
+    geom_point(size=.8,alpha=.7)+
+    labs(x="GC%",y="log2 expr")+
+    theme_classic(base_size=7)+theme(legend.position="none")
+p2&lt;-ggplot(df,aes(cond,log2_expr,fill=cond))+
+    geom_boxplot(width=.5,outlier.size=.5)+
+    labs(x="Condição",y="")+
+    theme_classic(base_size=7)+theme(legend.position="none")
+fig&lt;-p1+p2
+ggsave("fig1.png",fig,width=88,height=60,units="mm",dpi=300)
+ggsave("fig1.pdf",fig,width=88,height=60,units="mm")</code></pre></div></div></p></div></details></div><div class="exercise"><h4>Exercício 6.5 — Git básico</h4><p>Inicialize um repositório Git para seu projeto. Faça commits em 3 etapas lógicas com mensagens descritivas.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">git init analise_expressao &amp;&amp; cd analise_expressao
+mkdir -p {data,scripts,results/figures}
+git add .
+git commit -m "Inicializa estrutura do projeto"
 
-seqs = ["ATGCGC", "TTACG", "GGCATTTACGCAATG", "ATGC"]
-print(estatisticas_seq(seqs))
-# {'n': 4, 'min': 4, 'max': 15, 'media': 9.0}</code></pre></div><div><div class="lang-header r">&#x1F4CA; R</div><pre><code class="language-r">estatisticas_seq &lt;- function(seqs) {
-  tam &lt;- nchar(seqs)
-  list(
-    n     = length(seqs),
-    min   = min(tam),
-    max   = max(tam),
-    media = round(mean(tam), 1)
-  )
+cp ~/clean_data.py scripts/
+git add scripts/clean_data.py
+git commit -m "Adiciona script de limpeza e normalização"
+
+git log --oneline</code></pre></p><p>Commits atômicos e mensagens no imperativo. Use <code>.gitignore</code> para excluir dados grandes e arquivos temporários.</p></div></details></div></div><script>
+function showTab(e,id){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  e.currentTarget.classList.add('active');
+  document.getElementById(id).classList.add('active');
 }
-
-seqs &lt;- c("ATGCGC","TTACG","GGCATTTACGCAATG","ATGC")
-print(estatisticas_seq(seqs))
-# $n [1] 4  $min [1] 4  $max [1] 15  $media [1] 9</code></pre></div></div></div>
-  </details>
-</div></div><div class="ex-section" id="ex-aula5"><h2>5. DataFrames</h2>
-<div class="exercise">
-  <h4>Exercício 5.1 — Filtragem e sumarização</h4>
-  <p>Com o DataFrame <code>expressao.csv</code> (colunas: <code>gene, organismo, expressao</code>):</p><ol><li>Liste os 10 genes mais expressos.</li><li>Calcule a média de expressão por organismo.</li><li>Filtre genes de <em>Homo sapiens</em> com expressão &gt; 5.</li></ol>
-  <details class="resposta">
-    <summary>Mostrar resposta</summary>
-    <div class="resposta-content"><div class="parallel-grid"><div><div class="lang-header py">&#x1F40D; Python</div><pre><code class="language-python">import pandas as pd
-
-df = pd.read_csv("expressao.csv")
-
-# a) Top 10 mais expressos
-top10 = (df.sort_values("expressao", ascending=False)
-           .head(10)[["gene", "expressao"]])
-
-# b) Média por organismo
-media_org = df.groupby("organismo")["expressao"].mean()
-
-# c) Genes com expressao &gt; 5 em humanos
-humanos_altos = df[
-    (df["organismo"] == "Homo sapiens") &amp;
-    (df["expressao"] &gt; 5)
-]["gene"].tolist()
-
-print(top10)
-print(media_org)
-print(humanos_altos)</code></pre></div><div><div class="lang-header r">&#x1F4CA; R</div><pre><code class="language-r">library(tidyverse)
-
-df &lt;- read_csv("expressao.csv")
-
-# a) Top 10 mais expressos
-top10 &lt;- df |&gt;
-  arrange(desc(expressao)) |&gt;
-  slice_head(n=10) |&gt;
-  select(gene, expressao)
-
-# b) Média por organismo
-media_org &lt;- df |&gt;
-  group_by(organismo) |&gt;
-  summarise(media=mean(expressao))
-
-# c) Genes humanos com alta expressão
-humanos_altos &lt;- df |&gt;
-  filter(organismo=="Homo sapiens",
-         expressao &gt; 5) |&gt;
-  pull(gene)
-
-print(top10)
-print(media_org)
-print(humanos_altos)</code></pre></div></div></div>
-  </details>
-</div>
-<div class="exercise">
-  <h4>Exercício 5.2 — Junção de tabelas</h4>
-  <p>Dados dois arquivos: <code>clinico.csv</code> (<code>id, paciente, diagnostico</code>) e <code>molecular.csv</code> (<code>id, gene, expressao</code>), faça um inner join e calcule a expressão média por diagnóstico.</p>
-  <details class="resposta">
-    <summary>Mostrar resposta</summary>
-    <div class="resposta-content"><div class="parallel-grid"><div><div class="lang-header py">&#x1F40D; Python</div><pre><code class="language-python">import pandas as pd
-
-clinico  = pd.read_csv("clinico.csv")    # id, paciente, diagnostico
-molecular = pd.read_csv("molecular.csv") # id, gene, expressao
-
-# Merge e análise
-merged = pd.merge(clinico, molecular, on="id")
-
-# Expressão média por diagnóstico
-resultado = (merged.groupby("diagnostico")
-                   .agg(media_expr=("expressao","mean"),
-                        n_amostras=("id","count"))
-                   .sort_values("media_expr", ascending=False))
-print(resultado)</code></pre></div><div><div class="lang-header r">&#x1F4CA; R</div><pre><code class="language-r">library(tidyverse)
-
-clinico  &lt;- read_csv("clinico.csv")
-molecular &lt;- read_csv("molecular.csv")
-
-# Join e análise
-resultado &lt;- inner_join(clinico, molecular, by="id") |&gt;
-  group_by(diagnostico) |&gt;
-  summarise(
-    media_expr = mean(expressao),
-    n_amostras = n(),
-    .groups="drop"
-  ) |&gt;
-  arrange(desc(media_expr))
-
-print(resultado)</code></pre></div></div></div>
-  </details>
-</div></div><div class="ex-section" id="ex-aula6"><h2>6. Visualização</h2>
-<div class="exercise">
-  <h4>Exercício 6.1 — Figura combinada</h4>
-  <p>Com <code>expressao.csv</code> (colunas: <code>gene, condicao, expressao, gc_pct, organismo</code>), crie uma figura com dois painéis lado a lado: (a) boxplot de expressão por condição com pontos individuais sobrepostos; (b) scatter de GC% vs. expressão colorido por organismo. Salve como PNG 300 dpi.</p>
-  <details class="resposta">
-    <summary>Mostrar resposta</summary>
-    <div class="resposta-content"><div class="parallel-grid"><div><div class="lang-header py">&#x1F40D; Python</div><pre><code class="language-python">import matplotlib.pyplot as plt
-import seaborn as sns
-import pandas as pd
-
-df = pd.read_csv("expressao.csv")
-
-fig, axes = plt.subplots(1, 2, figsize=(12, 5))
-
-# Boxplot por condição
-sns.boxplot(data=df, x="condicao", y="expressao",
-            palette="Set2", ax=axes[0])
-sns.stripplot(data=df, x="condicao", y="expressao",
-              color="black", alpha=0.3, size=3, ax=axes[0])
-axes[0].set_title("Expressão por condição")
-axes[0].set_xlabel("Condição")
-axes[0].set_ylabel("Expressão (log2)")
-
-# Scatter: GC vs. expressão
-sns.scatterplot(data=df, x="gc_pct", y="expressao",
-                hue="organismo", alpha=0.6, ax=axes[1])
-axes[1].set_title("GC% vs. expressão")
-axes[1].set_xlabel("Conteúdo GC (%)")
-axes[1].set_ylabel("Expressão (log2)")
-
-plt.tight_layout()
-fig.savefig("figura_combinada.png", dpi=300,
-            bbox_inches="tight")
-plt.show()</code></pre></div><div><div class="lang-header r">&#x1F4CA; R</div><pre><code class="language-r">library(tidyverse)
-library(patchwork)
-
-df &lt;- read_csv("expressao.csv")
-
-# Boxplot por condição
-p1 &lt;- ggplot(df, aes(x=condicao, y=expressao,
-                     fill=condicao)) +
-  geom_boxplot(outlier.shape=NA, alpha=0.7) +
-  geom_jitter(width=0.2, alpha=0.3, size=1.5) +
-  labs(title="Expressão por condição",
-       x="Condição", y="Expressão (log2)") +
-  theme_classic() +
-  theme(legend.position="none")
-
-# Scatter: GC vs. expressão
-p2 &lt;- ggplot(df, aes(x=gc_pct, y=expressao,
-                     color=organismo)) +
-  geom_point(alpha=0.6, size=2) +
-  labs(title="GC% vs. expressão",
-       x="Conteúdo GC (%)",
-       y="Expressão (log2)") +
-  theme_classic()
-
-p_final &lt;- p1 + p2
-ggsave("figura_combinada.png", p_final,
-       width=12, height=5, dpi=300)</code></pre></div></div></div>
-  </details>
-</div>
-<div class="exercise">
-  <h4>Exercício 6.2 — Heatmap de correlação</h4>
-  <p>Calcule a correlação entre os 15 genes com maior expressão média e gere um heatmap anotado com os valores de correlação. Salve a figura.</p>
-  <details class="resposta">
-    <summary>Mostrar resposta</summary>
-    <div class="resposta-content"><div class="parallel-grid"><div><div class="lang-header py">&#x1F40D; Python</div><pre><code class="language-python">import seaborn as sns
-import matplotlib.pyplot as plt
-import pandas as pd
-
-df = pd.read_csv("expressao.csv")
-
-# Selecionar alguns genes para a matriz
-genes_top = (df.groupby("gene")["expressao"]
-               .mean()
-               .nlargest(15)
-               .index.tolist())
-
-df_wide = (df[df["gene"].isin(genes_top)]
-             .pivot_table(index="amostra",
-                          columns="gene",
-                          values="expressao"))
-
-corr = df_wide.corr()
-
-fig, ax = plt.subplots(figsize=(9, 8))
-sns.heatmap(corr, annot=True, fmt=".2f",
-            cmap="RdBu_r", center=0,
-            vmin=-1, vmax=1, square=True,
-            ax=ax)
-ax.set_title("Correlação entre os 15 genes mais expressos")
-plt.tight_layout()
-fig.savefig("heatmap_genes.png", dpi=300)</code></pre></div><div><div class="lang-header r">&#x1F4CA; R</div><pre><code class="language-r">library(tidyverse)
-library(pheatmap)
-
-df &lt;- read_csv("expressao.csv")
-
-# Top 15 genes mais expressos (por média)
-genes_top &lt;- df |&gt;
-  group_by(gene) |&gt;
-  summarise(media=mean(expressao)) |&gt;
-  slice_max(media, n=15) |&gt;
-  pull(gene)
-
-df_wide &lt;- df |&gt;
-  filter(gene %in% genes_top) |&gt;
-  pivot_wider(names_from=gene,
-              values_from=expressao,
-              id_cols=amostra) |&gt;
-  column_to_rownames("amostra")
-
-pheatmap(cor(df_wide),
-         display_numbers=TRUE,
-         number_format="%.2f",
-         color=colorRampPalette(
-           c("blue","white","red"))(100),
-         main="Correlação — top 15 genes",
-         filename="heatmap_genes.png",
-         width=9, height=8)</code></pre></div></div></div>
-  </details>
-</div></div></div>
+</script></div>
     <footer class="page-footer">
       Instituto de Biofísica Carlos Chagas Filho — UFRJ<br>
       Introdução à Programação para Pesquisa Biomédica · Pedro Torres
@@ -558,14 +322,14 @@ pheatmap(cor(df_wide),
   var saved = localStorage.getItem('theme') || 'light';
   document.documentElement.setAttribute('data-theme', saved);
   var btn = document.getElementById('theme-btn');
-  if (btn) btn.textContent = saved === 'dark' ? '\u{1F319}' : '\u2600\uFE0F';
+  if (btn) btn.textContent = saved === 'dark' ? '🌙' : '☀️';
   window.toggleTheme = function() {
     var cur = document.documentElement.getAttribute('data-theme');
     var next = cur === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
     var b = document.getElementById('theme-btn');
-    if (b) b.textContent = next === 'dark' ? '\u{1F319}' : '\u2600\uFE0F';
+    if (b) b.textContent = next === 'dark' ? '🌙' : '☀️';
   };
 })();
 document.addEventListener('click', function(e) {

@@ -231,7 +231,12 @@ body {
 .page-header {
   background: var(--bg);
   border-bottom: 1px solid var(--border);
-  padding: 48px 56px 40px;
+  padding: 48px 0 40px;
+}
+
+.page-header-inner {
+  max-width: 860px;
+  padding: 0 56px;
 }
 
 .aula-num {
@@ -255,7 +260,7 @@ body {
 .page-desc {
   font-size: 15px;
   color: var(--fg-muted);
-  max-width: 640px;
+  max-width: 600px;
   line-height: 1.7;
 }
 
@@ -263,7 +268,7 @@ body {
 .page-body {
   flex: 1;
   padding: 48px 56px;
-  max-width: 900px;
+  max-width: 916px;
   background: var(--bg);
 }
 
@@ -634,6 +639,45 @@ details.resposta summary:hover { opacity: .8; }
   background: var(--bg);
   line-height: 1.8;
 }
+
+/* ─── Tabs (exercicios page) ─────────────────────────────────────────── */
+.tab-bar {
+  display: flex;
+  gap: 2px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 36px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tab-bar::-webkit-scrollbar { display: none; }
+
+.tab-btn {
+  flex-shrink: 0;
+  padding: 9px 16px;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--fg-muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color .12s, border-color .12s;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.tab-btn:hover { color: var(--fg); }
+
+.tab-btn.active {
+  color: var(--blue);
+  border-bottom-color: var(--blue);
+  font-weight: 600;
+}
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
 
 /* ─── Sidebar Toggle (mobile) ────────────────────────────────────────── */
 .sidebar-toggle {
