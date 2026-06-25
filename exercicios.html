@@ -112,7 +112,116 @@ for f in "$DIR"/*.fasta "$DIR"/*.fa; do
     nseqs=$(grep -c '^&gt;' "$f")
     nbp=$(grep -v '^&gt;' "$f" | tr -d '\n' | wc -c)
     printf '%-30s %8d %12d\n' "$(basename "$f")" "$nseqs" "$nbp"
-done</code></pre></p></div></details></div></article>
+done</code></pre></p></div></details></div><div class="exercise"><h4>Exercício 3.6 — Tabela de números aleatórios com <code>paste</code></h4><p>Crie um script <code>tabela_rand.sh</code> que gere uma tabela com 5 colunas e 20 linhas de números inteiros aleatórios (1–100), separados por tabulação, usando <code>paste</code>. Salve em <code>tabela.tsv</code> com um cabeçalho <code>C1 C2 C3 C4 C5</code>.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">#!/bin/bash
+# Gera 5 colunas de 20 números aleatórios (1-100) e une com paste
+LINHAS=20
+COLUNAS=5
+
+echo -e "C1	C2	C3	C4	C5" &gt; tabela.tsv
+
+for col in $(seq 1 $COLUNAS); do
+    for linha in $(seq 1 $LINHAS); do
+        echo $(( RANDOM % 100 + 1 ))
+    done &gt; /tmp/col_${col}.tmp
+done
+
+paste /tmp/col_*.tmp &gt;&gt; tabela.tsv
+rm /tmp/col_*.tmp
+
+echo "Tabela gerada: tabela.tsv"
+cat tabela.tsv</code></pre></p><p>A chave é gerar cada coluna como arquivo temporário e depois unir com <code>paste</code>, que lê arquivos linha a linha em paralelo.</p></div></details></div><div class="exercise"><h4>Exercício 3.7 — Estatísticas com <code>bc</code></h4><p>Usando a <code>tabela.tsv</code> do exercício anterior, crie um script <code>estatisticas.sh</code> que calcule para cada coluna: <strong>média</strong>, <strong>mediana</strong> e <strong>desvio padrão</strong>, usando apenas <code>awk</code> e <code>bc</code>. Exiba os resultados formatados.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">#!/bin/bash
+ARQ=${1:-tabela.tsv}
+NCOLS=$(head -1 "$ARQ" | awk '{print NF}')
+
+echo "Coluna    Média     Mediana   DesvPad"
+echo "------    -----     -------   -------"
+
+for col in $(seq 1 $NCOLS); do
+    # extrai coluna (pula cabeçalho), ordena para mediana
+    NOME=$(head -1 "$ARQ" | awk -v c=$col '{print $c}')
+    DADOS=$(tail -n +2 "$ARQ" | awk -v c=$col '{print $c}' | sort -n)
+    N=$(echo "$DADOS" | wc -l)
+
+    # Média
+    SOMA=$(echo "$DADOS" | awk '{s+=$1} END{print s}')
+    MEDIA=$(echo "scale=2; $SOMA / $N" | bc)
+
+    # Mediana
+    MID=$(( (N + 1) / 2 ))
+    if (( N % 2 == 0 )); then
+        A=$(echo "$DADOS" | sed -n "${MID}p")
+        B=$(echo "$DADOS" | sed -n "$(( MID + 1 ))p")
+        MEDIANA=$(echo "scale=2; ($A + $B) / 2" | bc)
+    else
+        MEDIANA=$(echo "$DADOS" | sed -n "${MID}p")
+    fi
+
+    # Desvio padrão (população)
+    DSVPAD=$(echo "$DADOS" | awk -v media=$MEDIA -v n=$N '
+        {soma += ($1 - media)^2}
+        END {printf "%.2f", sqrt(soma/n)}')
+
+    printf "%-10s %-10s %-10s %-10s
+" "$NOME" "$MEDIA" "$MEDIANA" "$DSVPAD"
+done</code></pre></p><p><strong>Nota:</strong> <code>bc</code> faz aritmética de ponto flutuante com precisão controlável via <code>scale=</code>. Para raiz quadrada usamos <code>awk</code> (que tem <code>sqrt</code> nativo) com o valor do <code>bc</code>.</p></div></details></div><div class="exercise"><h4>Exercício 3.8 — Download e separação de multi-FASTA do UniProt</h4><p>Crie um script <code>split_uniprot.sh</code> que: (1) baixe via <code>curl</code> um multi-FASTA de proteínas humanas da família das kinases do UniProt; (2) separe cada sequência em um arquivo individual com nome baseado no ID UniProt; (3) imprima um relatório com ID, comprimento e descrição de cada sequência.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><pre><code class="language-bash">#!/bin/bash
+# URL da API REST do UniProt — busca kinases humanas (primeiras 20)
+URL="https://rest.uniprot.org/uniprotkb/search?query=organism_id:9606+AND+keyword:kinase&amp;format=fasta&amp;size=20"
+OUTDIR="kinases_fasta"
+MULTI="kinases.fasta"
+
+mkdir -p "$OUTDIR"
+
+echo "Baixando multi-FASTA do UniProt..."
+curl -s -o "$MULTI" "$URL"
+
+if [[ ! -s "$MULTI" ]]; then
+    echo "Erro: download falhou ou arquivo vazio" &gt;&amp;2; exit 1
+fi
+
+TOTAL=$(grep -c '^&gt;' "$MULTI")
+echo "Sequências encontradas: $TOTAL"
+echo ""
+printf '%-15s %-8s %s
+' "UniProt_ID" "Length" "Descrição"
+printf '%-15s %-8s %s
+' "----------" "------" "---------"
+
+# Separa cada sequência: acumula linhas até próximo '>' ou EOF
+ID=""
+DESC=""
+SEQ=""
+
+while IFS= read -r linha || [[ -n "$ID" ]]; do
+    if [[ "$linha" =~ ^\&gt; ]]; then
+        # grava sequência anterior
+        if [[ -n "$ID" ]]; then
+            echo "&gt;${ID} ${DESC}" &gt; "$OUTDIR/${ID}.fasta"
+            echo "$SEQ" &gt;&gt; "$OUTDIR/${ID}.fasta"
+            LEN=${#SEQ}
+            printf '%-15s %-8d %s
+' "$ID" "$LEN" "${DESC:0:50}"
+        fi
+        # inicia nova
+        HEADER="${linha#&gt;}"
+        ID=$(echo "$HEADER" | awk -F'|' '{print $2}')
+        DESC=$(echo "$HEADER" | awk -F'|' '{print $3}' | cut -d' ' -f2-)
+        SEQ=""
+    else
+        SEQ="${SEQ}${linha}"
+    fi
+done &lt; "$MULTI"
+
+# último registro
+if [[ -n "$ID" ]]; then
+    echo "&gt;${ID} ${DESC}" &gt; "$OUTDIR/${ID}.fasta"
+    echo "$SEQ" &gt;&gt; "$OUTDIR/${ID}.fasta"
+    LEN=${#SEQ}
+    printf '%-15s %-8d %s
+' "$ID" "$LEN" "${DESC:0:50}"
+fi
+
+echo ""
+echo "Arquivos salvos em: $OUTDIR/ ($(ls "$OUTDIR" | wc -l) arquivos)"</code></pre></p><p>O header FASTA do UniProt tem formato <code>&gt;sp|P12345|GENE_HUMAN Descrição OS=...</code> — o script extrai o ID do campo 2 e a descrição do campo 3 via <code>awk -F'|'</code>.</p></div></details></div></article>
 <article id="ex-pyr" class="topic"><div class="topic-num">7.4</div><h1 class="topic-title">Python e R — Fundamentos</h1><div class="exercise"><h4>Exercício 4.1 — Tipos e formatação</h4><p>Crie variáveis com GC% de 3 sequências, calcule a média e imprima relatório formatado.</p><details class="resposta"><summary>Mostrar resposta</summary><div class="resposta-content"><p><div class="parallel-grid"><div><div class="lang-header py">Python</div><pre><code class="language-python">gcs = [45.2, 62.8, 38.5]
 media = sum(gcs) / len(gcs)
 print(f"GC médio: {media:.2f}%")
